@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.kull</groupId>
+    <artifactId>kull-mvn</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>com.kull</groupId>
+  <artifactId>kull-webapp</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>kull-webapp Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+  
+  
+  <build>
+    <finalName>kull-webapp</finalName>
+    <plugins>
+     <plugin>            
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-war-plugin</artifactId>
+  <configuration>
+   
+    <webappDirectory>WebContent\</webappDirectory>       
+  </configuration>
+</plugin>
+   </plugins>
+  </build>
+  <dependencies>
+  	<dependency>
+  		<groupId>mysql</groupId>
+  		<artifactId>mysql-connector-java</artifactId>
+  		<version>5.1.16</version>
+  	</dependency>
+  
+  	<dependency>
+  		<groupId>com.kull</groupId>
+  		<artifactId>kull-core</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
+</project>
