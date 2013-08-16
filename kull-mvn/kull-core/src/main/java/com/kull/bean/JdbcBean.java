@@ -639,7 +639,7 @@ public int insert(Object...objs) throws Exception{
 	
 	
 	
-	public <T> int executeUpdate(String sql,Object ...params)throws SQLException{
+	public  int executeUpdate(String sql,Object ...params)throws SQLException{
 		PreparedStatement ps=null;
 		int eff=0;
 		

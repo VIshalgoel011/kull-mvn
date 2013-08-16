@@ -1,5 +1,9 @@
 package com.kull.annotation;
 
+import java.lang.annotation.*;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
 public @interface SimpleOrmTable {
 
 	String name();
