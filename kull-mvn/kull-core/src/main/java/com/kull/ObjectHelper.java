@@ -396,9 +396,15 @@ public class ObjectHelper {
 	
 	
 
-	
+	public static Method getSetter(Class c,Field field) throws NoSuchMethodException, SecurityException{
+		String settername="set"+field.getName().substring(0,1).toUpperCase()+field.getName().substring(1);
+	    return c.getMethod(settername,field.getType());
+	}
 
-	
+	public static Method getGetter(Class c,Field field) throws NoSuchMethodException, SecurityException{
+		String settername="get"+field.getName().substring(0,1).toUpperCase()+field.getName().substring(1);
+	    return c.getMethod(settername);
+	}
 	
 	
 	public static String toCsv(String[] fields) {
