@@ -3,25 +3,41 @@ package com.kull.mr;
 import java.io.IOException;
 
 import org.apache.hadoop.io.FloatWritable;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.Mapper;
 
 import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reporter;
-import org.apache.hadoop.mapreduce.Mapper;
+
 import org.apache.hadoop.io.*;
 
-public class PageRankViewerMapper  extends Mapper<IntWritable,Text ,FloatWritable , Text> {
+public class PageRankViewerMapper  implements Mapper<IntWritable,Text ,FloatWritable , IntWritable> {
 
 
 
 
 
-public void map(Text key, Text value,
-		OutputCollector<FloatWritable, Text> output, Reporter arg3)
+
+@Override
+public void configure(JobConf arg0) {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void close() throws IOException {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void map(IntWritable key, Text value,
+		OutputCollector<FloatWritable, IntWritable> output, Reporter arg3)
 		throws IOException {
 	// TODO Auto-generated method stub
 	String data = ((Text)value).toString();

@@ -27,8 +27,8 @@ public class PageRankViewer {
     //conf.setInputPath(new Path(args[0]));
     //conf.setOutputPath(new Path(args[1]));
     
-    //conf.setMapperClass(PageRankViewerMapper.class);
-    //conf.setReducerClass(org.apache.hadoop.mapred.lib.IdentityReducer.class);
+    conf.setMapperClass(PageRankViewerMapper.class);
+    conf.setReducerClass(org.apache.hadoop.mapred.lib.IdentityReducer.class);
 
     client.setConf(conf);
     try {
