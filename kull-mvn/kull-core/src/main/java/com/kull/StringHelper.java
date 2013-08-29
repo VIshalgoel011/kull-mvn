@@ -260,7 +260,7 @@ public class StringHelper {
 		html=html.replace(">", "&gt;");
 		return html;
 	}
-	
+	 
 	public static String concat(String ...vals){
 		String re="";
 		for(String val :vals){
@@ -269,4 +269,10 @@ public class StringHelper {
 		return re;
 	}
 	
+	public static String firstNotBlank(String...vals){
+		for(String val:vals){
+			if(isNotBlank(val))return val;
+		}
+		return "";
+	}
 }

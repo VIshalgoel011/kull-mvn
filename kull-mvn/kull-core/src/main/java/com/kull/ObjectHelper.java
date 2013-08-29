@@ -25,7 +25,7 @@ public class ObjectHelper {
 	
 	public static enum DataType {
 		json,xml,rss,excell,file,image,html,csv,bson,atom
-	}
+	} 
 	
 	public static <T> Set<T> evalProperties(Collection collection,String name){
 		Set<T> propertis=new HashSet<T>();
@@ -264,27 +264,19 @@ public class ObjectHelper {
 	
 	
 	
-	public static boolean isEquals(Object obj1,Object obj2){
+	public static  boolean isEquals(Object obj1,Object obj2){
 		if(obj1!=null&&obj2!=null){
 			return obj1.equals(obj2);
 		}
-		else if(obj1==null&&obj2==null){
-			return true;
-		}else if(obj2==null&&obj1!=null){
-			return false;
-		}else if(obj1==null&&obj2!=null){
-			return false;
-		}else{
-			return false;
-		}
+		return obj1==null&&obj2==null;
 	}
 	
-	public static boolean isNotEquals(Object obj1,Object obj2){
+	public static <T> boolean isNotEquals(Object obj1,Object obj2){
 		return !isEquals(obj1, obj2);
 	}
 	
-	public static boolean isIn(Object obj1,Object... objs){
-		for(Object obj:objs){
+	public static <T> boolean isIn(T obj1,T... objs){
+		for(T obj:objs){
 			if(isEquals(obj1, obj))return true;
 		}
 		return false;
@@ -292,7 +284,7 @@ public class ObjectHelper {
 	
 	
 	
-	public static boolean isNotIn(Object obj1,Object... objs){
+	public static <T> boolean isNotIn(T obj1,T... objs){
 		return !isIn(obj1,objs);
 	}
 	
@@ -407,12 +399,7 @@ public class ObjectHelper {
 	}
 	
 	
-	public static String toCsv(String[] fields) {
-		// TODO Auto-generated method stub
-		
-		return null;
-	}
-
+	
 	
 
 	public static <T> Object attr(Object obj, String pattern, T value) throws Exception {

@@ -18,7 +18,7 @@ public final class NumberHelper {
 	     }
 	     return v;
 	}
-	
+	 
 	public static <N extends Number> N avg(N[] numbers){
 		Double v=0.00;
 		for(int i=0;i<numbers.length;i++){
