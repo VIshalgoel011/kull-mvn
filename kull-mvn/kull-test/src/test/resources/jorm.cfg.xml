@@ -32,6 +32,17 @@
       <property name="jndi.url">java:comp/env/kull</property>
     </connection>
     
+    <connection name="oa89">
+      <property name="connection.implementation">org.javaclub.jorm.jdbc.connection.impl.SimpleConnection</property>
+      <property name="connection.dialect">PostgreSQLDialect</property>
+      <property name="connection.driver">jdbc:jtds:sqlserver://172.19.7.89/PanchinaOA</property>
+      <property name="connection.jdbcurl">jdbc:postgresql://localhost:51147/kull</property>
+      <property name="connection.database">kull</property>
+      <property name="connection.username">postgres</property>
+      <property name="connection.password">sa</property>
+   </connection>
+    
+    
   </connections>
 
 </jdbc-configuration>

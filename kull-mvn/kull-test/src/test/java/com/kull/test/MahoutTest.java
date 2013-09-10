@@ -19,7 +19,7 @@ import com.Console;
 
 public class MahoutTest {
 
-	@Test
+	//@Test
 	public void recommender() throws Exception{
 		
 		DataModel model=new FileDataModel(new File("J:\\ws-sts\\kull-mvn\\kull-core\\src\\test\\resources\\datasource\\intro.csv"));
