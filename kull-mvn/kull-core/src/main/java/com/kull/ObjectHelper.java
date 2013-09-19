@@ -241,7 +241,7 @@ public class ObjectHelper {
 			}
 			return map;
 		}
-		Set<Class> lAllClass=getAllClass(obj.getClass());
+		Class[] lAllClass=getAllClass(obj.getClass());
 		for (Class c : lAllClass) {
 		   
 			Field[] lArrField=c.getDeclaredFields();
@@ -351,28 +351,38 @@ public class ObjectHelper {
 	
 
 
+	private static Map<Class,Class[]> CACHE_CLASSS=new HashMap<Class, Class[]>();
+	private static Map<Class,Field[]> CACHE_FIELDS=new HashMap<Class, Field[]>();
+	private static Map<Class,Map<String,Method>> CACHE_SETTERS=new HashMap<Class,Map<String,Method>>()
+			,CACHE_GETTERS=new HashMap<Class,Map<String,Method>>()
+			;
 	
-	
-
-	
-	public static Set<Class> getAllClass(Class c){
-		Set<Class> lClassReturn=new HashSet<Class>();
+	public static Class[] getAllClass(Class c){
+		if(CACHE_CLASSS.containsKey(c))return CACHE_CLASSS.get(c);
+		List<Class> lClassReturn=new ArrayList<Class>();
 		lClassReturn.add(c);
 		if(!c.getSuperclass().equals(Object.class)){
-			lClassReturn.addAll(getAllClass(c.getSuperclass()));
+			
+			for(Class cls : ObjectHelper.getAllClass(c)){
+				lClassReturn.add(cls);
+			}
 		}	
-		return lClassReturn;
+		Class[] cs= lClassReturn.toArray(new Class[lClassReturn.size()]);
+		CACHE_CLASSS.put(c,	cs);
+		return cs;
 	}
 	
-	public static Set<Field> getAllDeclaredFields(Class c){
-		Set<Field> fields=new HashSet<Field>();
+	public static Field[] getAllDeclaredFields(Class c){
+		if(CACHE_FIELDS.containsKey(c))return CACHE_FIELDS.get(c);
+		List<Field> fields=new ArrayList<Field>();
 		for(Class cls : ObjectHelper.getAllClass(c)){
 			for(Field field :cls.getDeclaredFields()){
 				fields.add(field);
-				
 			}
 		}
-		return fields;
+		Field[] fs= fields.toArray(new Field[fields.size()]);
+		CACHE_FIELDS.put(c, fs);
+		return fs;
 	}
 	
 	public static Set<Method> getAllDeclaredMethods(Class c){
@@ -389,17 +399,38 @@ public class ObjectHelper {
 	
 
 	public static Method getSetter(Class c,Field field) throws NoSuchMethodException, SecurityException{
-		String settername="set"+field.getName().substring(0,1).toUpperCase()+field.getName().substring(1);
-	    return c.getMethod(settername,field.getType());
+		
+	    return getSetters(c).get(field.getName());
 	}
 
 	public static Method getGetter(Class c,Field field) throws NoSuchMethodException, SecurityException{
-		String settername="get"+field.getName().substring(0,1).toUpperCase()+field.getName().substring(1);
-	    return c.getMethod(settername);
+		
+	    return getGetters(c).get(field.getName());
 	}
 	
 	
 	
+	public static Map<String,Method> getSetters(Class c) throws NoSuchMethodException, SecurityException{
+		if(CACHE_SETTERS.containsKey(c))return CACHE_SETTERS.get(c);
+		Map<String,Method> setters=new HashMap<String,Method>();
+		for(Field field : ObjectHelper.getAllDeclaredFields(c)){
+		String settername="set"+field.getName().substring(0,1).toUpperCase()+field.getName().substring(1);
+	      setters.put(field.getName(), c.getMethod(settername,field.getType()));
+		}
+		CACHE_SETTERS.put(c, setters);
+		return setters;
+	}
+
+	public static Map<String,Method> getGetters(Class c) throws NoSuchMethodException, SecurityException{
+		if(CACHE_GETTERS.containsKey(c))return CACHE_GETTERS.get(c);
+		Map<String,Method> getters=new HashMap<String,Method>();
+		for(Field field : ObjectHelper.getAllDeclaredFields(c)){
+		String settername="get"+field.getName().substring(0,1).toUpperCase()+field.getName().substring(1);
+		 getters.put(field.getName(), c.getMethod(settername));
+		}
+		CACHE_GETTERS.put(c, getters);
+		return getters;
+	}
 	
 
 	public static <T> Object attr(Object obj, String pattern, T value) throws Exception {
@@ -409,7 +440,7 @@ public class ObjectHelper {
 			return obj;
 		}
 		boolean isOk=false;
-		Set<Class> lAllClass=getAllClass(obj.getClass());
+		Class[] lAllClass=getAllClass(obj.getClass());
 		String lTempName="set"+StringHelper.format(pattern, StringHelper.Format.upcaseFirstChar);
 		for (Class c : lAllClass) {
 			try{
@@ -434,7 +465,7 @@ public class ObjectHelper {
 			return (T) ((Map)obj).get(pattern);
 		}
 		boolean isOk=false;
-		Set<Class> lAllClass=getAllClass(obj.getClass());
+		Class[] lAllClass=getAllClass(obj.getClass());
 		String lTempName="get"+StringHelper.format(pattern, StringHelper.Format.upcaseFirstChar);
 		T lObjFieldValue=null;
 		for (Class c : lAllClass) {
@@ -480,11 +511,6 @@ public class ObjectHelper {
 
 
 
-	public static Type fieldType(Object obj, Enum en) throws Exception {
-		// TODO Auto-generated method stub
-		return fieldType(obj,en.name());
-	}
-
 	
 
 
@@ -493,7 +519,7 @@ public class ObjectHelper {
 	public static Type fieldType(Object obj,String pattern) throws Exception {
 		// TODO Auto-generated method stub
 		boolean isOk=false;
-		Set<Class> lAllClass=getAllClass(obj.getClass());
+		Class[] lAllClass=getAllClass(obj.getClass());
 		Type t=null;
 		//String lTempName="set"+StringHelper.format(pattern, EStringFormat.upcaseFirstChar);
 		for (Class c : lAllClass) {
