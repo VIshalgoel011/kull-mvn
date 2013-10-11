@@ -16,6 +16,8 @@ import com.kull.util.IUpdateable;
 
 public  class LinqHelper {
 
+	
+	
 	public  static <E> ArrayList<E>  where(Collection<E> list,IQueryable<E>... iquerys){
 		
 		return where(list, list.size(), iquerys);
@@ -23,13 +25,14 @@ public  class LinqHelper {
 	
 	public  static <E> ArrayList<E> where(Collection<E> list,int limit,IQueryable<E>... iquerys){
 		ArrayList<E> dlist=new ArrayList<E>();
+		int size=list.size();
 		for(Iterator<E> it=list.iterator();it.hasNext();){
 			E e=it.next();
-			if(query(e, iquerys))list.add(e);
-			if(list.size()==limit)break;
+			if(query(e, iquerys))dlist.add(e);
+			if(size==limit)break;
 		}
 		return dlist;
-	}
+	} 
 	
 	public  static <E> E single(Collection<E> list,IQueryable<E>... iquerys) throws NullPointerException{
 		ArrayList<E> dlist=where(list, 1,iquerys);
@@ -45,7 +48,7 @@ public  class LinqHelper {
     
     public static <E> HashSet<E>  union(Collection<E> ... colls){
     	HashSet<E> dset=new HashSet<E>();
-    	for(Collection<E> coll :colls){
+    	for(Iterable<E> coll :colls){
             for(Iterator<E> it=coll.iterator();it.hasNext();){
             	dset.add(it.next());
             }
@@ -55,7 +58,7 @@ public  class LinqHelper {
     
     public static <E> HashSet<E> intersect(Collection<E> ... colls){
     	HashSet<E>dset=new HashSet<E>();
-    	for(Collection<E> coll :colls){
+    	for(Iterable<E> coll :colls){
             for(Iterator<E> it=coll.iterator();it.hasNext();){
             	E e=it.next();
             	if(dset.contains(e))continue;
@@ -66,7 +69,7 @@ public  class LinqHelper {
     }
     
     public static <E> boolean isIn(E e,Collection<E> ... colls){
-    	for(Collection<E> coll :colls){
+    	for(Iterable<E> coll :colls){
             for(Iterator<E> it=coll.iterator();it.hasNext();){
             	if(ObjectHelper.isEquals(e, it.next()))return true;
             }

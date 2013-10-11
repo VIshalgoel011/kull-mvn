@@ -182,32 +182,16 @@ public class WebHelper {
         return is;
     }
 	
-    public static String streamToString(InputStream is){
+    public static String streamToString(InputStream is) throws IOException{
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(is)); 
 	    StringBuilder sb = new StringBuilder(); 
 	    String line = null; 
-	    try 
-	    { 
+	   
 	      while ((line = reader.readLine()) != null) 
 	      { 
 	        sb.append(line); 
 	      } 
-	    } 
-	    catch (IOException e) 
-	    { 
-	      e.printStackTrace(); 
-	    } 
-	    finally 
-	    { 
-	      try 
-	      { 
-	        is.close(); 
-	      } 
-	      catch (IOException e) 
-	      { 
-	        e.printStackTrace(); 
-	      } 
-	    } 
+	   
 	    return sb.toString(); 
 	}
 	
