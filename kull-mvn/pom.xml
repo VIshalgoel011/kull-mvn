@@ -12,8 +12,9 @@
   	
   	<module>kull-test</module>
   	
-  	<module>kull-mr</module>
+  	
   	<module>kull-applet</module>
+  	<module>kull-bigdata</module>
   </modules>
   
  <properties>
@@ -199,11 +200,6 @@
    	<groupId>org.apache.activemq</groupId>
    	<artifactId>activemq-all</artifactId>
    	<version>5.8.0</version>
-   </dependency>
-   <dependency>
-   	<groupId>org.apache.mahout</groupId>
-   	<artifactId>mahout-core</artifactId>
-   	<version>0.7</version>
    </dependency>
   </dependencies>
   <dependencyManagement>

@@ -1,4 +1,4 @@
-package com.kull.hadoop;
+package com.kull.mr;
 
 import java.util.Date;
 
