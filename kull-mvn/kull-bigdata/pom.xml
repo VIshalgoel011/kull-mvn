@@ -47,5 +47,10 @@
   		<artifactId>hbase-examples</artifactId>
   		<version>0.95.2-hadoop2</version>
   	</dependency>
+  	<dependency>
+  		<groupId>org.springframework.data</groupId>
+  		<artifactId>spring-data-hadoop</artifactId>
+  		<version>1.0.1.RELEASE-hadoop21</version>
+  	</dependency>
   </dependencies>
 </project>
