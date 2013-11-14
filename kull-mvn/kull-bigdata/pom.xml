@@ -52,5 +52,14 @@
   		<artifactId>spring-data-hadoop</artifactId>
   		<version>1.0.1.RELEASE-hadoop21</version>
   	</dependency>
+  
+  <dependency>
+  <groupId>com.kull</groupId>
+  <artifactId>giraph</artifactId>
+  <version>1.0.0</version>
+</dependency>
+  
   </dependencies>
+  
+  
 </project>

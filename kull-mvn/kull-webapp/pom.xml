@@ -30,6 +30,15 @@
    </plugins>
   </build>
   <dependencies>
+  
+  <dependency>
+        	<groupId>javax.servlet</groupId>
+        	<artifactId>servlet-api</artifactId>
+        	<version>2.5</version>
+
+        	<scope>provided</scope>
+        </dependency>
+  
   	<dependency>
   		<groupId>mysql</groupId>
   		<artifactId>mysql-connector-java</artifactId>
@@ -41,5 +50,33 @@
   		<artifactId>kull-core</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	
+  	<dependency>
+   	<groupId>org.xerial</groupId>
+   	<artifactId>sqlite-jdbc</artifactId>
+   	<version>3.7.2</version>
+   </dependency>
+  	
+  	 <dependency>
+           <groupId>net.sf.javaclub</groupId>
+           <artifactId>gerald-jorm</artifactId>
+           <version>1.0.8.RC1</version>
+           <exclusions>
+           	<exclusion>
+           		<artifactId>proxool</artifactId>
+           		<groupId>proxool</groupId>
+           	</exclusion>
+           	<exclusion>
+           		<artifactId>proxool-cglib</artifactId>
+           		<groupId>proxool</groupId>
+           	</exclusion>
+           	<exclusion>
+           		<artifactId>bonecp</artifactId>
+           		<groupId>com.jolbox</groupId>
+           	</exclusion>
+           </exclusions>
+   </dependency>
+  	
+  	
   </dependencies>
 </project>
