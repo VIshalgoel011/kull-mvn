@@ -26,7 +26,8 @@ import org.dom4j.Node;
 
 
 
-import com.kull.WebHelper;
+
+import com.kull.NetHelper;
 import com.sun.mail.util.BASE64DecoderStream;
 
 
@@ -72,7 +73,7 @@ public abstract  class BaseWebXmlService {
          );
          System.err.println(url);
 		 HttpGet get=new HttpGet(url);
-		 String context=WebHelper.doGet(get).getMsg();
+		 String context=NetHelper.doGet(get).getMsg();
 		 try{
 		 doc= DocumentHelper.parseText(context);
 		 }catch(Exception ex){
@@ -98,7 +99,7 @@ public abstract  class BaseWebXmlService {
 		 }
 		
 		 post.setParams(params);
-		 String context=WebHelper.doPost(post).getMsg();
+		 String context=NetHelper.doPost(post).getMsg();
 		 try{
 		 doc= DocumentHelper.parseText(context);
 		 }catch(Exception ex){

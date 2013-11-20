@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 
 
-import com.kull.ObjectHelper.DataType;
+import com.kull.DataType;
 
 public class RegApi extends BaseDiguApi {
 

@@ -10,8 +10,8 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.kull.ObjectHelper.DataType;
-import com.kull.DateTimeHelper;
+import com.kull.DataType;
+
 
 public class StatuseApi extends BaseDiguApi {
 
@@ -131,35 +131,7 @@ public class StatuseApi extends BaseDiguApi {
 	 	    return this.doGet(edf,url);
 	}
 	
-	public static void main(String[] args){
-		DiguClient diguClient=new DiguClient();
-		StatuseApi api=new StatuseApi(diguClient);
-		//System.out.println(statuseApi.public_timeline(DataType.json));
-		String testUser="smartken";
-		DiguClient authDiguClient=new DiguClient(testUser, "chipchina");
-		api=new StatuseApi(authDiguClient);
-		try {
-		//	System.out.println("public_timeline:"+api.public_timeline(DataType.json));
-		//	System.out.println("friends_timeline:"+api.friends_timeline(DataType.json));
-//			System.out.println("followers:"+statuseApi.followers(DataType.json));
-//			System.out.println("followers_count:"+statuseApi.followers_count(DataType.json));
-//			System.out.println("friends:"+statuseApi.friends(DataType.json));
-//			System.out.println("friends_count:"+statuseApi.friends_count(DataType.json));
-		//	System.out.println("user_timeline:"+statuseApi.user_timeline(DataType.json,testUser));
-			//System.out.println("show:"+statuseApi.show(DataType.json,"85108796"));
-			File image0=new File("h:\\test.jpg");
-			api.setImage0(image0);
-			//api.setImage1(image0);
-			api.setUploadImg("xiexiezhichi");
-			String strNow= DateTimeHelper.DateTimeFormatter.DATE_FORMAT_DB.format();
-			System.out.println("update:"+api.update(DataType.json,strNow+":龟爷仲未死,用java api测试图片上传"));
-      //		System.out.println("replies:"+statuseApi.replies(DataType.json));
-		//	System.out.println("destroy:"+statuseApi.destroy(DataType.json, "85137431"));
-		} catch (DiguException e) {
-			// TODO Auto-generated catch block
-			System.out.println(e.getMessage());
-		}
-	}
+
 
 
 	@Override

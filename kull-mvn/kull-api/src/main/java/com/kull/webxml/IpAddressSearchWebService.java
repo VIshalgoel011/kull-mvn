@@ -8,6 +8,12 @@ import org.dom4j.Node;
 
 import com.kull.MachineUtil;
 
+import java.io.BufferedReader;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 
 
 public class IpAddressSearchWebService extends BaseWebXmlService {
@@ -48,22 +54,7 @@ public class IpAddressSearchWebService extends BaseWebXmlService {
 		
 	}
 	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-         IpAddressSearchWebService service=new IpAddressSearchWebService();
-         try {
-			IpGeo ipGeo=service.getCountryCityByIp("10.42.170.92");
-			ipGeo=service.thisIpGeo();
-			System.out.println(ipGeo.ip+":"+ipGeo.geo);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+	 
 
 	
 	

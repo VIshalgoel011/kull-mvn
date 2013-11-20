@@ -3,7 +3,7 @@ package com.kull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.math.BigDecimal;
-import java.net.URLEncoder;
+
 import java.sql.Timestamp;
 import java.text.*;
 import java.util.*;
@@ -12,7 +12,7 @@ import java.util.*;
 
 
 
-import com.kull.util.IScript;
+
 
 
 
@@ -23,9 +23,7 @@ import com.kull.util.IScript;
 public class ObjectHelper {
 
 	
-	public static enum DataType {
-		json,xml,rss,excell,file,image,html,csv,bson,atom
-	} 
+	
 	
 	public static <T> Set<T> evalProperties(Collection collection,String name){
 		Set<T> propertis=new HashSet<T>();
@@ -561,34 +559,7 @@ public class ObjectHelper {
 
  
 
-   public static Object formatObject(Object obj,DataType dfe){
-	   Object reObj=null;
-       try{
-           if(obj==null){
-        	  return null;
-           }else if(obj instanceof String
-           		||obj instanceof Number||dfe.equals(DataType.bson)){
-        	   reObj=obj;
-           }
-           else if(obj instanceof Date ){
-				Date d=(Date)obj;
-				reObj=DateTimeHelper.DateTimeFormatter.DATE_FORMAT_DB.format(d);
-			}else if( obj instanceof Timestamp){
-			   Timestamp t=(Timestamp)obj;
-			   reObj=DateTimeHelper.DateTimeFormatter.DATE_FORMAT_DB.format(t);
-			}
-			//else if(obj instanceof byte[]){
-				//reObj=Base64Coder.encodeLines((byte[])obj);
-			//}
-			
-			else{
-				reObj=obj;
-			}
-            return reObj;
-	   }catch(Exception ex){
-		   return null;
-	   }
-   }
+  
 	
 	
 	

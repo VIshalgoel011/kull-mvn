@@ -15,6 +15,7 @@
   	
   	<module>kull-applet</module>
   	<module>kull-bigdata</module>
+  	<module>kull-api</module>
   </modules>
   
  <properties>
@@ -83,7 +84,17 @@
    	<artifactId>gson</artifactId>
    	<version>2.2.4</version>
    </dependency>
-   
+
+   <dependency>
+   	<groupId>org.apache.httpcomponents</groupId>
+   	<artifactId>httpclient</artifactId>
+   	<version>4.3</version>
+   </dependency>
+   <dependency>
+   	<groupId>org.apache.httpcomponents</groupId>
+   	<artifactId>httpmime</artifactId>
+   	<version>4.3-alpha1</version>
+   </dependency>
   </dependencies>
   
 

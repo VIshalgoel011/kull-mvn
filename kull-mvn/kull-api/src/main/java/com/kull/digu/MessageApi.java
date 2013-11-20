@@ -2,7 +2,7 @@ package com.kull.digu;
 
 import java.text.MessageFormat;
 
-import com.kull.ObjectHelper.DataType;
+import com.kull.DataType;
 
 public class MessageApi extends BaseDiguApi {
 
