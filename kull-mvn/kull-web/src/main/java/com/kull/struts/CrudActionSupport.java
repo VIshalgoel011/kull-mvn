@@ -3,12 +3,13 @@ package com.kull.struts;
 
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 
 
 
-import com.google.api.client.util.Data;
+
 
 import com.kull.StringHelper;
 import com.kull.bean.WebBean;
@@ -69,7 +70,7 @@ public abstract class CrudActionSupport<M extends Serializable> extends AwareAct
     protected void onCreateSuccess(M m,ResultJSONObject resultJSONObject){
     	
     	try {
-			resultJSONObject.setMsg("{0} 成功创建一条数据",new Data().toString());
+			resultJSONObject.setMsg("{0} 成功创建一条数据",new Date().toString());
 			resultJSONObject.setCode(ResultJSONObject.CODE_SUCCESS);
 			resultJSONObject.setIcon(ResultJSONObject.Icon.info.name());
 	    	resultJSONObject.setTitle("创建成功");
@@ -83,7 +84,7 @@ public abstract class CrudActionSupport<M extends Serializable> extends AwareAct
     protected void onCreateError(M m,ResultJSONObject resultJSONObject,Exception ex){
     	
     	try {
-			resultJSONObject.setMsg("{0} {1}",new Data().toString(),ex.getLocalizedMessage());
+			resultJSONObject.setMsg("{0} {1}",new Date().toString(),ex.getLocalizedMessage());
 			resultJSONObject.setCode(ResultJSONObject.CODE_EXCEPTION);
 			resultJSONObject.setIcon(ResultJSONObject.Icon.error.name());
 	    	resultJSONObject.setTitle("创建异常");
@@ -116,7 +117,7 @@ public abstract class CrudActionSupport<M extends Serializable> extends AwareAct
 	
 	protected void onUpdateSuccess(M m,ResultJSONObject resultJSONObject){
 		try {
-			resultJSONObject.setMsg("{0} 成功保存一条数据",new Data().toString());
+			resultJSONObject.setMsg("{0} 成功保存一条数据",new Date().toString());
 			resultJSONObject.setCode(ResultJSONObject.CODE_SUCCESS);
 			resultJSONObject.setIcon(ResultJSONObject.Icon.info.name());
 	    	resultJSONObject.setTitle("保存成功");
@@ -129,7 +130,7 @@ public abstract class CrudActionSupport<M extends Serializable> extends AwareAct
 	    
 	protected void onUpdateError(M m,ResultJSONObject resultJSONObject,Exception ex){
 		try {
-			resultJSONObject.setMsg("{0} {1}",new Data().toString(),ex.getLocalizedMessage());
+			resultJSONObject.setMsg("{0} {1}",new Date().toString(),ex.getLocalizedMessage());
 			resultJSONObject.setCode(ResultJSONObject.CODE_EXCEPTION);
 			resultJSONObject.setIcon(ResultJSONObject.Icon.error.name());
 	    	resultJSONObject.setTitle("保存异常");
@@ -161,7 +162,7 @@ public abstract class CrudActionSupport<M extends Serializable> extends AwareAct
 	    
 	protected void onDeleteSuccess(M m,ResultJSONObject resultJSONObject){
 		try {
-			resultJSONObject.setMsg("{0} 成功删除一条数据",new Data().toString());
+			resultJSONObject.setMsg("{0} 成功删除一条数据",new Date().toString());
 			resultJSONObject.setCode(ResultJSONObject.CODE_SUCCESS);
 			resultJSONObject.setIcon(ResultJSONObject.Icon.info.name());
 	    	resultJSONObject.setTitle("删除成功");
@@ -174,7 +175,7 @@ public abstract class CrudActionSupport<M extends Serializable> extends AwareAct
 	    
 	protected void onDeleteError(M m,ResultJSONObject resultJSONObject,Exception ex){
 		try {
-			resultJSONObject.setMsg("{0} {1}",new Data().toString(),ex.getLocalizedMessage());
+			resultJSONObject.setMsg("{0} {1}",new Date().toString(),ex.getLocalizedMessage());
 			resultJSONObject.setCode(ResultJSONObject.CODE_EXCEPTION);
 			resultJSONObject.setIcon(ResultJSONObject.Icon.error.name());
 	    	resultJSONObject.setTitle("删除异常");

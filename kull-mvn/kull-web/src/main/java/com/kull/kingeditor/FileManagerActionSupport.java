@@ -1,4 +1,4 @@
-package com.kull.kindeditor;
+package com.kull.kingeditor;
 
 import java.io.File;
 import java.io.IOException;

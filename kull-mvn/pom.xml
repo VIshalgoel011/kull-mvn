@@ -16,6 +16,7 @@
   	<module>kull-applet</module>
   	<module>kull-bigdata</module>
   	<module>kull-api</module>
+  	<module>kull-web</module>
   </modules>
   
  <properties>
