@@ -17,7 +17,7 @@ import com.kull.bean.JdbcBean;
 
 public class LdapTest {
      
-	@Test
+	//@Test
 	public void decodePwd(){
 		Connection conn = null;
 		PreparedStatement ps = null;
