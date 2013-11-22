@@ -1,4 +1,4 @@
-package com.kull.applet;
+package com.kull;
 
 import java.applet.Applet;
 import java.awt.Container;

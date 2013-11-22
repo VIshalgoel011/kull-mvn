@@ -1,4 +1,4 @@
-package com.kull.js;
+package com.kull.script;
 
 import java.text.MessageFormat;
 import java.util.HashMap;

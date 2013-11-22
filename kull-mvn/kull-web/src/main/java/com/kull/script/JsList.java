@@ -1,4 +1,4 @@
-package com.kull.js;
+package com.kull.script;
 
 import java.util.ArrayList;
 import java.util.Iterator;

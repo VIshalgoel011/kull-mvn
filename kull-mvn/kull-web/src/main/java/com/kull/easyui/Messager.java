@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
-import com.kull.js.JsFunction;
+import com.kull.script.*;
 import com.kull.util.IScript;
 
 

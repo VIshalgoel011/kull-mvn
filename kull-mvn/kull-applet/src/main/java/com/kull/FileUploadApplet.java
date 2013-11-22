@@ -1,4 +1,4 @@
-package com.kull.applet;
+package com.kull;
 
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;

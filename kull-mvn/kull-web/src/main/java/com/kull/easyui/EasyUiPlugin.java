@@ -14,9 +14,7 @@ import javax.swing.plaf.basic.BasicComboBoxUI.ComboBoxLayoutManager;
 
 import org.json.*;
 
-import com.kull.js.JsFunction;
-import com.kull.js.JsList;
-import com.kull.js.JsMap;
+import com.kull.script.*;
 import com.kull.util.IScript;
 
 

@@ -1,4 +1,4 @@
-package com.kull.applet;
+package com.kull;
 
 import javax.swing.*;
 import java.io.*;
@@ -17,6 +17,8 @@ import java.awt.image.*;
 import java.awt.event.*;
 
 import jmapps.util.*;
+
+import com.kull.BaseApplet;
 import com.sun.image.codec.jpeg.*;
 import javax.media.protocol.DataSource;
 import java.applet.AppletContext;

@@ -19,8 +19,8 @@ import org.json.JSONObject;
 import org.json.JSONStringer;
 
 
-import com.kull.js.JsContext;
-import com.kull.js.JsMap;
+import com.kull.script.*;
+
 import com.kull.easyui.EasyUiPlugin;
 import com.kull.easyui.TreeNodeJSONObject;
 import com.kull.easyui.TreeNodeJSONObject.ITreeNodeable;

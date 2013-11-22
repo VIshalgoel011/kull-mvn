@@ -13,7 +13,7 @@ import org.javaclub.jorm.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.postgresql.Driver;
+
 
 public class PostgreSqlTest {
 

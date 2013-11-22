@@ -751,7 +751,7 @@ public  class MapperTemplate  {
     			,this.getEnum()  //11
     			,this.dialect.getClass().getName()  //12
     			,this.getQueryColsContext()  //13
-    			,DateTimeHelper.DateTimeFormatter.DATE_FORMAT_DB.format()  //14
+    			,DateTimeHelper.Formatter.DATE_FORMAT_DB.format()  //14
     			,this.getDbCols("") //15
     	);
 		return lStrMapper;
@@ -1049,7 +1049,7 @@ public  class MapperTemplate  {
     			,this.getEnum()  //11
     			,this.dialect.getClass().getName()  //12
     			,this.getQueryColsContext()  //13
-    			,DateTimeHelper.DateTimeFormatter.DATE_FORMAT_DB.format()
+    			,DateTimeHelper.Formatter.DATE_FORMAT_DB.format()
     	        ,this.getDbCols("") //15
     			);
 		return lStrMapper;

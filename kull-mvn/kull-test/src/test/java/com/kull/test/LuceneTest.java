@@ -13,7 +13,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.FieldType;
+
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.BooleanQuery;
@@ -43,7 +43,7 @@ public class LuceneTest {
 	String testDirPath="I:/百度云/doc";
 
 	public LuceneTest() throws Exception {
-		analyzer=new StandardAnalyzer(Version.LUCENE_43);
+		analyzer=new StandardAnalyzer(Version.LUCENE_36);
 		fsRamDirectory=new FsRamDirectory("k:/cn-index/",analyzer);
 		
 	}

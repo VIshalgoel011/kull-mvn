@@ -15,7 +15,7 @@ import com.kull.StringHelper;
 import com.kull.bean.JdbcBean;
 import com.kull.easyui.EasyUiPlugin.ComboBox;
 import com.kull.jdbc.Dialect;
-import com.kull.js.JsMap;
+import com.kull.script.JsMap;
 
 import com.kull.struts.DialectViewActionSupport;
 import com.kull.struts.SimpleViewActionSupport;

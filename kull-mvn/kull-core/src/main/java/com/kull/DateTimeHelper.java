@@ -11,9 +11,33 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.qpid.proton.codec.Data;
+
 public class DateTimeHelper {
 
-	public enum DateTimeFormatter{
+	
+    public enum MilSecond{
+     	SECOND(1000),
+     	MINUTE(SECOND.getMilSecond()*60),
+     	HOUR(MINUTE.getMilSecond()*60),
+     	DAY(HOUR.getMilSecond()*24),
+     	WEEK(DAY.getMilSecond()*7)
+     	;
+     	
+     	private long milSecond;
+     	
+     	MilSecond(long milSecond){
+     		this.milSecond=milSecond;
+     	}
+
+		public long getMilSecond() {
+			return milSecond;
+		}
+     	
+     	
+    }
+	
+	public enum Formatter{
 		DATE_FORMAT_DB("yyyy-MM-dd"),DATE_FORMAT_YMD("yyyy/MM/dd"),DATE_FORMAT_DMY("dd/MM/yyyy")
 		,TIME_FORMAT_HMS ("HH:mm:ss"),TIME_FORMAT_HM ("HH:mm"),TIMESTAMP_FORMAT_HMSS("yyyy-MM-dd HH:mm:ss.S")
 		,DATETIME_FORMAT_DB("yyyy-MM-dd HH:mm:ss")
@@ -21,7 +45,7 @@ public class DateTimeHelper {
 		
 		String pattern;
 		SimpleDateFormat simpleDateFormat;
-		DateTimeFormatter(String patern){
+		Formatter(String patern){
 			this.pattern=patern;
 			this.simpleDateFormat=new SimpleDateFormat(patern);
 		}
@@ -105,8 +129,8 @@ public class DateTimeHelper {
 		try{
 			dateReturn=new SimpleDateFormat().parse(dateString);
 		}catch(Exception ex){
-			String[] listDateFormat={DateTimeFormatter.DATE_FORMAT_DB.getPattern(),DateTimeFormatter.DATETIME_FORMAT_DB.getPattern(),DateTimeFormatter.DATE_FORMAT_DMY.getPattern(),DateTimeFormatter.DATE_FORMAT_YMD.getPattern()};
-		    String[] listTimeFormat={DateTimeFormatter.TIME_FORMAT_HMS.getPattern(),DateTimeFormatter.TIME_FORMAT_HMS.getPattern()};
+			String[] listDateFormat={Formatter.DATE_FORMAT_DB.getPattern(),Formatter.DATETIME_FORMAT_DB.getPattern(),Formatter.DATE_FORMAT_DMY.getPattern(),Formatter.DATE_FORMAT_YMD.getPattern()};
+		    String[] listTimeFormat={Formatter.TIME_FORMAT_HMS.getPattern(),Formatter.TIME_FORMAT_HMS.getPattern()};
 			for (String dateFormat : listDateFormat) {
 			try {
 				if(dateString.trim().length()!=dateFormat.length())continue;
@@ -185,6 +209,45 @@ public class DateTimeHelper {
 		//return calendar.getTime();
 	}
 	
+	public static boolean isEquals(int field,Date... dates){
+	      if(dates.length<=1)return true;
+	      boolean isSame=true;
+	      Calendar calendar=Calendar.getInstance();
+	      for(int i=0,j=1;i<dates.length-1;i++,j++){
+	    	 calendar.setTime(dates[i]);
+	    	 int attr0=calendar.get(field);
+	    	 calendar.setTime(dates[j]);
+	    	 int attr1=calendar.get(field);
+	    	 if(attr0!=attr1){
+	    		 isSame=false;
+	    		 break;
+	    	 }
+	      }
+	      return isSame;
+	}
 	
+	public static boolean isSameYear(Date... dates){
+	      return isEquals(Calendar.YEAR, dates);
+	}
+	
+	public static boolean isSameMonth(Date... dates){
+	      return isSameYear(dates)&&isEquals(Calendar.MONTH, dates);
+	}
+
+	public static boolean isSameDay(Date... dates){
+	      return isSameYear(dates)&&isEquals(Calendar.DAY_OF_YEAR, dates);
+	}
+	
+	public static boolean isSameHour(Date... dates){
+	      return isSameDay(dates)&&isEquals(Calendar.HOUR_OF_DAY, dates);
+	}
+	
+	public static boolean isSameMinute(Date... dates){
+	      return isSameHour(dates)&&isEquals(Calendar.MINUTE, dates);
+	}
+	
+	public static boolean isSameMoment(Date... dates){
+	      return isSameMinute(dates)&&isEquals(Calendar.SECOND, dates);
+	}
 	
 }
