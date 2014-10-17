@@ -478,7 +478,10 @@ public class ObjectHelper {
 		return lObjFieldValue;
 	}
 	
-	
+	public static <T> void cp(T source, T target) throws Exception{
+		// TODO Auto-generated method stub
+		     
+        }
 
 	
 
