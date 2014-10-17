@@ -1,6 +1,6 @@
 package com.kull.web.struts.easyui;
 
-import com.kull.easyui.*;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
