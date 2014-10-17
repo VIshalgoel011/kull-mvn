@@ -8,7 +8,8 @@ package com.kull.web.struts;
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
 import com.kull.bean.JdbcBean;
-import static com.kull.struts.AwareActionSupport.fieldset;
+import com.kull.script.Html;
+
 import com.kull.web.Utils;
 import java.io.IOException;
 import java.sql.Connection;
@@ -290,8 +291,8 @@ public abstract class DSActionSupport extends AwareActionSupport {
 		
 		html
 		.append("<html><body>")
-		.append(fieldset("easyui-datagrid html", "<pre>"+StringHelper.htmlWapper(datagrid.toString())+"</pre>"))
-		.append(fieldset("easyui-datagrid js", "<pre>"+StringHelper.htmlWapper(datagrid_js.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-datagrid html", "<pre>"+StringHelper.htmlWapper(datagrid.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-datagrid js", "<pre>"+StringHelper.htmlWapper(datagrid_js.toString())+"</pre>"))
 		.append("</body></html>");
                 JdbcBean.close(connection, ps, null);
                 Utils.writeJavascript(this.response, html.toString());

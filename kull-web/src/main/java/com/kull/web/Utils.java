@@ -126,9 +126,7 @@ public  class Utils {
 	
 	
         
-        public static String fieldset(String legend, String context){
-		return MessageFormat.format("<fieldset><legend>{0}</legend>{1}</fieldset>", legend,context);
-	}
+
         
         
         public static boolean isPost(HttpServletRequest request) {

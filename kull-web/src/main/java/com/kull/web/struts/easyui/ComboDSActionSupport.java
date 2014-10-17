@@ -7,6 +7,7 @@ package com.kull.web.struts.easyui;
 
 import com.kull.StringHelper;
 import com.kull.bean.JdbcBean;
+import com.kull.script.Html;
 
 import com.kull.script.JsMap;
 import com.kull.web.Utils;
@@ -106,10 +107,10 @@ public abstract class ComboDSActionSupport extends DSActionSupport{
 		.append("editor:\n\n {type:\"combogrid\",options:"+opts.toScirpt()+"}");
 		html
 		.append("<html><body>")
-		.append(Utils.fieldset("easyui-combobox  url", "<pre>"+StringHelper.htmlWapper(combobox_url.toString())+"</pre>"))
-		.append(Utils.fieldset("easyui-combobox  data", "<pre>"+StringHelper.htmlWapper(combobox_data.toString())+"</pre>"))
-		.append(Utils.fieldset("easyui-combogrid  url", "<pre>"+StringHelper.htmlWapper(combogrid_url.toString())+"</pre>"))
-		.append(Utils.fieldset("easyui-combogrid  data", "<pre>"+StringHelper.htmlWapper(combogrid_data.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-combobox  url", "<pre>"+StringHelper.htmlWapper(combobox_url.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-combobox  data", "<pre>"+StringHelper.htmlWapper(combobox_data.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-combogrid  url", "<pre>"+StringHelper.htmlWapper(combogrid_url.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-combogrid  data", "<pre>"+StringHelper.htmlWapper(combogrid_data.toString())+"</pre>"))
 		//.append(fieldset("easyui-treegrid", "<pre>"+StringHelper.htmlWapper(treegrid.toString())+"</pre>"))
 		.append("</body></html>");
 		this.response.getWriter().write(html.toString());
