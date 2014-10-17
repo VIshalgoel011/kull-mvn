@@ -5,7 +5,7 @@
  */
 package com.kull.web;
 
-import com.kull.bean.WebBean;
+
 import com.kull.script.JsContext;
 import java.io.IOException;
 import java.text.MessageFormat;
