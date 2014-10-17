@@ -1,17 +1,17 @@
-package com.kull.jfc;
+package com.kull.web.struts.jfc;
+
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
+
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.chart.plot.PlotOrientation;
+
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.PieDataset;
+
 
 import com.kull.StringHelper;
-import com.kull.struts.AwareActionSupport;
+
 
 public abstract class CategoryChartActionSupport extends ChartActionSupport{
 

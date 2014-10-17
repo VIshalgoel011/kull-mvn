@@ -1,20 +1,19 @@
-package com.kull.jfc;
+package com.kull.web.struts.jfc;
 
-import java.io.IOException;
-import java.util.Map;
+
 
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
+
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
-import org.jfree.chart.plot.Plot;
+
 import org.jfree.chart.plot.RingPlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
 import com.kull.StringHelper;
-import com.kull.struts.AwareActionSupport;
+
 
 public abstract class PieChartActionSupport extends ChartActionSupport {
 

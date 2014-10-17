@@ -1,8 +1,9 @@
-package com.kull.jfc;
+package com.kull.web.struts.jfc;
+
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.Plot;
+
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYDataset;
 

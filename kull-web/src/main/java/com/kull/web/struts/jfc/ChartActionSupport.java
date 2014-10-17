@@ -1,5 +1,7 @@
-package com.kull.jfc;
+package com.kull.web.struts.jfc;
 
+
+import com.kull.web.struts.AwareActionSupport;
 import java.io.IOException;
 
 import org.jfree.chart.ChartFactory;
@@ -8,7 +10,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.plot.PlotOrientation;
 
-import com.kull.struts.AwareActionSupport;
 
 public abstract class ChartActionSupport extends AwareActionSupport {
 	protected String title=this.getClass().getName();
