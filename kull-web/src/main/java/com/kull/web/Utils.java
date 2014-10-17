@@ -134,12 +134,12 @@ public  class Utils {
         public static boolean isPost(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		
-		return WebBean.Method.post.name().equals(request.getMethod().toLowerCase());
+		return Method.post.name().equals(request.getMethod().toLowerCase());
 	}
 
 	public static boolean isGet(HttpServletRequest request) {
 		// TODO Auto-generated method stub
-		return WebBean.Method.get.name().equals(request.getMethod().toLowerCase());
+		return Method.get.name().equals(request.getMethod().toLowerCase());
 	}
 	
 	public static boolean alert(HttpServletResponse response,String msg){
