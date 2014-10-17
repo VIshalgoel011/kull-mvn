@@ -143,4 +143,46 @@ public  class LinqHelper {
     	}
     	return map;
     }
+    
+ 
+
+        public static <M> M selectByPK(String pkName,Object pkval,List<M> list)
+        {
+            M m = null;
+            for (int i=0;i<list.size();i++)
+            {
+                M l = list.get(i);
+                try
+                {
+                    if (ObjectHelper.isEquals(pkval.toString(),ObjectHelper.attr(l, pkName).toString()))
+                    {
+                        m = l;
+                    }
+                }catch(Exception ex){}
+            }
+           
+            return m;
+        }
+
+        
+
+        public static <M>  int  indexOfByPk(String pkName,Object pkval, List<M> list)
+        {
+            int index = -1;
+            for (int i = 0; i < list.size(); i++)
+            {
+                M l = list.get(i);
+                try
+                {
+                     if (ObjectHelper.isEquals(pkval.toString(),ObjectHelper.attr(l, pkName).toString()))
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                catch(Exception ex){}
+            }
+
+            return index;
+        }
 }
