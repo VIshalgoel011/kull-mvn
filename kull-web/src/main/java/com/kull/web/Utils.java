@@ -5,11 +5,17 @@
  */
 package com.kull.web;
 
+import com.kull.bean.WebBean;
+import com.kull.script.JsContext;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
 
 
 /**
@@ -18,14 +24,54 @@ import javax.servlet.http.HttpServletResponse;
  */
 public  class Utils {
     
+    public enum ContentType{
+		text("text/plain; charset=UTF-8"),
+		html("text/html; charset=UTF-8"),
+                json("text/json; charset=UTF-8"),
+                javascript("text/javascript; charset=UTF-8"),
+		img("image; charset=UTF-8"),
+		pdf("application/pdf"),
+		doc("application/msword"),
+		excel("application/vnd.ms-excel")
+		;
+		
+		String contextType;
+		ContentType(String context){
+			this.contextType=context;
+		}
+
+        public String getContextType() {
+            return contextType;
+        }
+	}
+	
+	public  enum Method{
+    	get,post,put,delete
+    }
+    
     public static void writeJavascript(HttpServletResponse response,String script) throws IOException{
 		
-	response.setContentType("text/javascript");
+	response.setContentType(ContentType.javascript.getContextType());
 	response.getWriter().write(script);
 		
 	}
+    
+     public static void writeJson(HttpServletResponse response,Object obj) throws IOException{
+		
+	response.setContentType(ContentType.json.getContextType());
+	response.getWriter().write(toJson(obj).toString());
+		
+	}
+     
+       public static JSON toJson(Object obj) throws IOException{
+		
+	return JSONSerializer.toJSON(obj);
+		
+	}
+    
+       
 
-        protected void checkParam(HttpServletRequest request, String... names) throws NullPointerException{
+        public static void checkParam(HttpServletRequest request, String... names) throws NullPointerException{
                 boolean isNotNull=true;
                 Set<String> nullkeys = new HashSet<String>();
                 for(String name : names){
@@ -41,58 +87,91 @@ public  class Utils {
                     }
                     throw new NullPointerException(errinfo);
                 }
+                
 	}
     
         
-        protected Integer paramInt(String name) throws NullPointerException,NumberFormatException{
-		Integer i=paramInt(name,null);
-		if(i==null)throw new NullPointerException();
-		return i;
+        public static Integer[] paramInt(HttpServletRequest request,String... names) throws NumberFormatException{
+                checkParam(request, names);
+                Integer[] res=new Integer[names.length];
+                for(int i=0;i<names.length;i++){
+                   res[i]=Integer.valueOf(request.getParameter(names[i]));
+                }
+		return res;
 	}
 	
-	protected Integer paramInt(String name,Integer defaultVal) throws NumberFormatException{
-		if(!hasParam(name))return defaultVal;
-		String[] vals=parameters.get(name);
+	
+	
+	public static Float[] paramFloat(HttpServletRequest request,String... names) throws NumberFormatException{
+                checkParam(request, names);
+                Float[] res=new Float[names.length];
+                for(int i=0;i<names.length;i++){
+                   res[i]=Float.valueOf(request.getParameter(names[i]));
+                }
+		return res;
+	}
+	
+	
+	
+	public static Double[] paramDouble(HttpServletRequest request,String... names) throws NumberFormatException{
+                checkParam(request, names);
+                Double[] res=new Double[names.length];
+                for(int i=0;i<names.length;i++){
+                   res[i]=Double.valueOf(request.getParameter(names[i]));
+                }
+		return res;
+	}
+	
+	
+	
+	
+        
+        public static String fieldset(String legend, String context){
+		return MessageFormat.format("<fieldset><legend>{0}</legend>{1}</fieldset>", legend,context);
+	}
+        
+        
+        public static boolean isPost(HttpServletRequest request) {
+		// TODO Auto-generated method stub
 		
-		return Integer.parseInt(vals[0]);
+		return WebBean.Method.post.name().equals(request.getMethod().toLowerCase());
+	}
+
+	public static boolean isGet(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return WebBean.Method.get.name().equals(request.getMethod().toLowerCase());
 	}
 	
-	protected Float paramFloat(String name) throws NullPointerException,NumberFormatException{
-		Float i=paramFloat(name,null);
-		if(i==null)throw new NullPointerException();
-		return i;
+	public static boolean alert(HttpServletResponse response,String msg){
+		StringBuffer context=new StringBuffer("");
+		context.append(JsContext.SCRIPT_START);
+		context.append("alert(\""+msg+"\");");
+		context.append(JsContext.SCRIPT_END);
+		try {
+			response.getWriter().write(context.toString());
+		} catch (IOException e) {return false;}
+		return true;
 	}
 	
-	protected Float paramFloat(String name,Float defaultVal) throws NumberFormatException{
-		if(!hasParam(name))return defaultVal;
-		String[] vals=parameters.get(name);
+	public static boolean confirm(HttpServletResponse response,String msg,String scriptYes,String scriptNo){
+		StringBuffer context=new StringBuffer("");
+		context.append(JsContext.SCRIPT_START)
+		.append("if(confirm(\""+msg+"\")")
+		.append("'{' "+scriptYes+" '}'")
+		.append("else '{' "+scriptNo+" '}'")
+		.append(JsContext.SCRIPT_END);
+		try {
+			response.getWriter().write(context.toString());
+		} catch (IOException e) {return false;}
+		return true;
+	}
+        
+        public static String webRoot(HttpServletRequest request){
 		
-		return Float.parseFloat(vals[0]);
-	}
-	
-	protected Double paramDouble(String name) throws NullPointerException,NumberFormatException{
-		Double i=paramDouble(name,null);
-		if(i==null)throw new NullPointerException();
-		return i;
-	}
-	
-	protected Double paramDouble(String name,Double defaultVal) throws NumberFormatException{
-		if(!hasParam(name))return defaultVal;
-		String[] vals=parameters.get(name);
-		
-		return Double.parseDouble(vals[0]);
-	}
-	
-	protected String paramString(String name) throws NullPointerException{
-		String i=paramString(name,null);
-		if(i==null)throw new NullPointerException();
-		return i;
-	}
-	
-	protected String paramString(String name,String defaultVal) {
-		if(!hasParam(name))return defaultVal;
-		String[] vals=parameters.get(name);
-		
-		return vals[0];
+                int port=request.getServerPort();
+                if(port==80){
+                  return request.getScheme()+"://"+request.getServerName()+request.getContextPath();
+                }
+		return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 	}
 }
