@@ -1,9 +1,8 @@
 package com.kull.action.demo;
 
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
+import com.kull.web.struts.jfc.CategoryChartActionSupport;
 
-import com.kull.jfc.CategoryChartActionSupport;
+
 
 
 
@@ -28,10 +27,6 @@ public class JFC_DemoCGAction extends CategoryChartActionSupport{
 		return dataset;
 	}*/
 
-	@Override
-	protected String toJson(Object obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }

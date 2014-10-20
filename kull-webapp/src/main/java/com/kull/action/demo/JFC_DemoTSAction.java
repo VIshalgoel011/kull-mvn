@@ -6,7 +6,8 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.time.Year;
 import org.jfree.data.xy.XYDataset;
 
-import com.kull.jfc.TSChartActionSupport;
+
+import com.kull.web.struts.jfc.TSChartActionSupport;
 
 public class JFC_DemoTSAction extends TSChartActionSupport {
 
@@ -32,10 +33,6 @@ public class JFC_DemoTSAction extends TSChartActionSupport {
 		return tsc;
 	}
 
-	@Override
-	protected String toJson(Object obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }

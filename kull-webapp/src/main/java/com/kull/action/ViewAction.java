@@ -1,78 +1,53 @@
 package com.kull.action;
 
-import java.sql.Connection;
-import java.util.Set;
 
 
-import javax.sql.DataSource;
-
+import com.kull.bean.JdbcBean;
+import com.kull.web.struts.DSActionSupport;
+import com.opensymphony.xwork2.Preparable;
 import org.javaclub.jorm.Jorm;
-
-import com.google.gson.Gson;
-import com.kull.jdbc.Dialect;
-import com.kull.jdbc.PostgreSQLDialect;
-import com.kull.struts.DialectViewActionSupport;
-import com.kull.struts.SimpleViewActionSupport;
+import org.javaclub.jorm.jdbc.sql.Dialect;
+import org.javaclub.jorm.jdbc.sql.impl.MySQLDialect;
 
 
 
 
-public abstract class ViewAction extends DialectViewActionSupport {
 
+public abstract class ViewAction extends DSActionSupport implements Preparable{
+
+    public void prepare() throws Exception {
+       this.connection=Jorm.getConnection();
+    }
+
+    @Override
+    public String execute() throws Exception {
+        
+        String re= super.execute(); //To change body of generated methods, choose Tools | Templates.
+        JdbcBean.close(connection, null, null);
+        return re;
+    }
+
+    
 	
-	
-	private final static Gson GSON=new Gson();
-    private final static Dialect DIALECT=new PostgreSQLDialect();
+   protected static Dialect dialect=new MySQLDialect();
+
+
+    @Override
+    protected String createPageSql(String dataSql, int start, int limit) {
+        return dialect.pageable(dataSql, start, limit);
+    }
 	
 	
     
-    
-	@Override
-	protected Dialect getDialect() {
-		// TODO Auto-generated method stub
-		return DIALECT;
-	}
-
-
-	
-
-
-	
-
-
-	@Override
-	protected Connection createConnection() {
-		// TODO Auto-generated method stub
-		return Jorm.getSession().getConnection(true);
-	}
-
 	
 	
 
 	
 
-	@Override
-	protected int postStart() {
-		// TODO Auto-generated method stub
-		int page=paramInt("page", 1);
-		int start=(page-1)*this.postLimit();
-		return start;
-	}
+	
 
 
-	@Override
-	protected int postLimit() {
-		// TODO Auto-generated method stub
-		return paramInt("rows", 100);
-	}
-
-
-	@Override
-	protected String toJson(Object obj) {
-		// TODO Auto-generated method stub
-		return GSON.toJson(obj);
-		
-	}
+	
 
 	
 }

@@ -1,7 +1,6 @@
 package com.kull.action.sa;
 
 import com.kull.action.TreegridViewAction;
-import com.kull.action.ViewAction;
 
 public class V_MenuAction extends TreegridViewAction {
 

@@ -1,5 +1,6 @@
 package com.kull.action.demo;
 
+import com.kull.web.struts.jfc.XYBarChartActionSupport;
 import java.util.Random;
 
 import org.jfree.data.xy.IntervalXYDataset;
@@ -7,7 +8,7 @@ import org.jfree.data.xy.XYBarDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import com.kull.jfc.XYBarChartActionSupport;
+
 
 public class JFC_DemoXYBarAction extends XYBarChartActionSupport {
 
@@ -28,10 +29,6 @@ public class JFC_DemoXYBarAction extends XYBarChartActionSupport {
 	  return dataset;
 	}
 
-	@Override
-	protected String toJson(Object obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }

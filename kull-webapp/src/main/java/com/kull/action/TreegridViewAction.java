@@ -1,36 +1,22 @@
 package com.kull.action;
 
-import java.sql.Connection;
 
-import org.javaclub.jorm.Jorm;
+import com.kull.web.struts.easyui.TreegridDSActionSupport;
 
-import com.google.gson.Gson;
-import com.kull.easyui.TreegridViewActionSupport;
 
-public abstract class TreegridViewAction extends TreegridViewActionSupport {
-
-	private final static Gson GSON=new Gson();
-	
-	@Override
-	protected Connection createConnection() {
-		// TODO Auto-generated method stub
-		return Jorm.getSession().getConnection(true);
-	}
+public abstract class TreegridViewAction extends TreegridDSActionSupport {
 
 	
 
-	@Deprecated
-	@Override
-	protected String createPageSql(int start, int limit) {
-		// TODO Auto-generated method stub
-		return this.createDataSql();
-	}
+    @Override
+    protected String createPageSql(String dataSql, int start, int limit) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+	
+	
+	
 
 	
-	@Override
-	protected String toJson(Object obj) {
-		// TODO Auto-generated method stub
-		return GSON.toJson(obj);
+
 	
-	}
 }

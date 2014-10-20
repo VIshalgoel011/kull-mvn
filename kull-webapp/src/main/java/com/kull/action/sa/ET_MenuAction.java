@@ -3,11 +3,11 @@ package com.kull.action.sa;
 import org.javaclub.jorm.Jorm;
 import org.javaclub.jorm.Session;
 
-import com.google.gson.Gson;
 import com.kull.StringHelper;
-import com.kull.easyui.ETreeActionSupport;
+
 import com.kull.entity.sa.MenuEntity;
-import com.kull.struts.CrudActionSupport;
+import com.kull.web.struts.easyui.ETreeActionSupport;
+
 
 public class ET_MenuAction extends ETreeActionSupport {
 
@@ -76,11 +76,7 @@ public class ET_MenuAction extends ETreeActionSupport {
 		
 	}
 
-	@Override
-	protected String toJson(Object obj) {
-		// TODO Auto-generated method stub
-		return new Gson().toJson(obj);
-	}
+	
 
 	
 
