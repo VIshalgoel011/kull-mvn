@@ -18,19 +18,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -45,7 +39,7 @@ import org.apache.http.params.HttpParams;
 
 
 
-import com.kull.util.ResultJSONObject;
+import com.kull.util.Resultable;
 
 
 
@@ -58,13 +52,13 @@ import com.kull.util.ResultJSONObject;
 public class NetHelper {
 
 	
-	public static ResultJSONObject doGet(String url){
+	public static Resultable doGet(String url){
 		
         return doGet(url,new HashMap<String, Object>());
 		
 	}
 	
-	public static ResultJSONObject doGet(String url,Map<String, Object> params){
+	public static Resultable doGet(String url,Map<String, Object> params){
 		HttpGet get=new HttpGet(url);
 		HttpParams httpParams=new BasicHttpParams();
         for(Iterator<String> it=params.keySet().iterator();it.hasNext();){
@@ -76,12 +70,12 @@ public class NetHelper {
 		
 	}
 	
-	public static ResultJSONObject doGet(HttpGet get){
+	public static Resultable doGet(HttpGet get){
 		DefaultHttpClient httpclient=new DefaultHttpClient();
 		String context="";
 		HttpResponse response=null;
 		InputStream is=null;
-		ResultJSONObject resultModel=new ResultJSONObject();
+		Resultable resultModel=new Resultable();
 		try {
 		    response = httpclient.execute(get);
 			is = response.getEntity().getContent();
@@ -89,20 +83,20 @@ public class NetHelper {
 			httpclient.clearRequestInterceptors();
             httpclient.clearResponseInterceptors();
 			is.close();
-			resultModel.setCode(ResultJSONObject.CODE_SUCCESS);
+			resultModel.setCode(Resultable.CODE_SUCCESS);
 			resultModel.setMsg(context);
 		} catch (Exception e) {
-		    resultModel=	ResultJSONObject.create(e);
+		    resultModel=	Resultable.create(e);
 		}
 		return resultModel;
 	}
 	
-	public static ResultJSONObject doPost(HttpPost post){
+	public static Resultable doPost(HttpPost post){
 		DefaultHttpClient httpclient=new DefaultHttpClient();
 		String context="";
 		HttpResponse response=null;
 		InputStream is=null;
-		ResultJSONObject resultModel=new ResultJSONObject();
+		Resultable resultModel=new Resultable();
 		try {
 		    response = httpclient.execute(post);
 		    is = response.getEntity().getContent();
@@ -110,15 +104,15 @@ public class NetHelper {
 			httpclient.clearRequestInterceptors();
             httpclient.clearResponseInterceptors();
 			is.close();
-			resultModel.setCode(ResultJSONObject.CODE_SUCCESS);
+			resultModel.setCode(Resultable.CODE_SUCCESS);
 			resultModel.setMsg(context);
 		} catch (Exception e) {
-			 resultModel=	ResultJSONObject.create(e);
+			 resultModel=	Resultable.create(e);
 		}
 		return resultModel;
 	}
 	
-	public static ResultJSONObject doPost(String url,Map<String, Object> params, Map<String, File> postFiles){
+	public static Resultable doPost(String url,Map<String, Object> params, Map<String, File> postFiles){
 		List<NameValuePair> nvps=new ArrayList<NameValuePair>();
 		for(Iterator<String> it=params.keySet().iterator();it.hasNext();){
 			String key=it.next();
@@ -129,7 +123,7 @@ public class NetHelper {
 	   return doPost(url, nvps, postFiles);
 	}
 	
-	public static ResultJSONObject doPost(String url,List<NameValuePair> nvps, Map<String, File> postFiles){
+	public static Resultable doPost(String url,List<NameValuePair> nvps, Map<String, File> postFiles){
 		
 		HttpPost httpPost=new HttpPost(url);
 		String responseText="";

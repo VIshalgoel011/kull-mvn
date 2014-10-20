@@ -38,7 +38,8 @@ import com.kull.*;
 import com.kull.bean.JdbcBean;
 import com.kull.jdbc.Dialect;
 import com.kull.util.IModel;
-import com.kull.util.ResultJSONObject;
+import com.kull.util.Resultable;
+
 
 
 public  class MapperTemplate  {
@@ -1138,7 +1139,7 @@ public  class MapperTemplate  {
     	
         boolean isSuccess=false;
     	StringBuffer context=new StringBuffer("");
-    	Class[] importClss={List.class,Date.class,Timestamp.class,IModel.class,ResultJSONObject.class,Set.class,ObjectHelper.class};
+    	Class[] importClss={List.class,Date.class,Timestamp.class,IModel.class,Resultable.class,Set.class,ObjectHelper.class};
     	context
     	.append("package "+this.modelClass.getPackage().getName()+";").append(StringHelper.ln(2));
     	for(Class importCls : importClss){
@@ -1376,7 +1377,7 @@ public  class MapperTemplate  {
        return MessageFormat.format(contextPattern.toString(), 
        this.pkColumn.getJavaName()
         ,setContext
-        ,ResultJSONObject.class.getSimpleName()
+        ,Resultable.class.getSimpleName()
         ,genPkContext
 	   );
 	   
