@@ -13,7 +13,7 @@ import java.util.Map;
 import javax.swing.plaf.basic.BasicComboBoxUI.ComboBoxLayoutManager;
 
 
-import org.json.*;
+
 
 import com.kull.script.*;
 import com.kull.util.IScript;
@@ -816,7 +816,7 @@ public static final class Dialog
 //end form
 	
 	@SuppressWarnings("unchecked")
-	public static void main(String[] args) throws JSONException
+	public static void main(String[] args) 
 	{
         EasyUiPlugin weekPbDG=new EasyUiPlugin("#weekPbDG",EasyUiPlugin.DataGrid.NAME);
         weekPbDG.appendAttrs(EasyUiPlugin.DataGrid.Properties.TITLE,"周排班管理",true)

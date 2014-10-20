@@ -3,7 +3,7 @@ package com.kull.web.struts.easyui;
 
 import java.text.MessageFormat;
 
-import org.json.JSONObject;
+
 
 
 import com.kull.ObjectHelper;
@@ -13,7 +13,7 @@ import com.kull.util.IScript;
 
 
 
-public class Messager extends JSONObject implements IScript {
+public class Messager  implements IScript {
 
 	public static String SHOW_TYPE_SLIDE="slide";
 	public static String SHOW_TYPE_FADE="fade";

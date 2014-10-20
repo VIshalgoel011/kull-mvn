@@ -6,10 +6,12 @@
 package com.kull.web;
 
 
+import com.kull.ObjectHelper;
 import com.kull.script.JsContext;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -171,5 +173,30 @@ public  class Utils {
                   return request.getScheme()+"://"+request.getServerName()+request.getContextPath();
                 }
 		return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+	}
+        
+        
+        
+        public static <T>  T evalParameterModel(HttpServletRequest request,T t,String prefix,String subfix) {
+		return evalParameterModel(request,t, prefix, subfix, true);
+	}
+	
+	public static <T>  T evalParameterModel(HttpServletRequest request,T t,String prefix,String subfix,boolean isRewrite) {
+	
+			 for(Iterator<String> it=request.getParameterMap().keySet().iterator();it.hasNext(); ){
+				 
+				 String key=it.next();
+				 String name=key.substring(key.indexOf(prefix)+prefix.length(),key.lastIndexOf(subfix));
+				 String value=request.getParameter(name);
+				 try{
+				 if(!isRewrite){
+					 continue;
+				 }
+				 t= (T) ObjectHelper.attr(t,name,value);
+				 }catch(Exception ex){}
+			 }
+	
+		return t;
+		
 	}
 }

@@ -9,7 +9,8 @@ package com.kull.web.struts;
 import com.kull.LinqHelper;
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
-import com.kull.util.ResultJSONObject;
+import com.kull.util.Resultable;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +42,16 @@ public abstract class DSMActionSupport<M> extends DSActionSupport{
    protected abstract void _update(M m);
 
 
-        protected  boolean onCreate( M m, ResultJSONObject re,List<M> sources,List<M> submits  ){return true;}
-        protected boolean onUpdate( M m, ResultJSONObject re, List<M> sources, List<M> submits){return true;}
-        protected  boolean onDelete( M m, ResultJSONObject re, List<M> sources, List<M> submits){return true;}
+        protected  boolean onCreate( M m, Resultable re,List<M> sources,List<M> submits  ){return true;}
+        protected boolean onUpdate( M m, Resultable re, List<M> sources, List<M> submits){return true;}
+        protected  boolean onDelete( M m, Resultable re, List<M> sources, List<M> submits){return true;}
     
         
         protected abstract List<M> loadSource();
 
         protected  List<M> loadSubmit(String rows) throws Exception
         {
-            JSONArray jarr = new JSONArray();
+            JSONArray jarr = JSONArray.fromObject(rows);
 
             List<M> submits=new ArrayList<M>();
             for (int i=0;i<jarr.size();i++ )
@@ -66,7 +67,7 @@ public abstract class DSMActionSupport<M> extends DSActionSupport{
         } 
     
     public final void save() throws IOException{
-         ResultJSONObject re=new ResultJSONObject();
+         Resultable re=new Resultable();
           
             List<M> sources = null,submits=null; 
             try
@@ -113,7 +114,7 @@ public abstract class DSMActionSupport<M> extends DSActionSupport{
             catch (Exception ex)
             {
                 re.setMsg(ex.getMessage());
-                re.setCode(ResultJSONObject.CODE_EXCEPTION);
+                re.setCode(Resultable.CODE_EXCEPTION);
             }
            
            this.response.getWriter().write(re.toString());

@@ -21,10 +21,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
+import net.sf.json.JSONObject;
+
 
 /**
  *
@@ -194,10 +192,10 @@ public abstract class DSActionSupport extends AwareActionSupport {
                 grid.put(totalName, count);
             }
         } catch (Exception ex) {
-            try {
+            
                 grid.put(errMsgName, ex.getMessage());
                 grid.put(errTypeName, ex.getClass().getName());
-            } catch (JSONException ex1) {}
+           
         }
         JdbcBean.close(connection, null, null);
         this.response.getWriter().write(grid.toString());
