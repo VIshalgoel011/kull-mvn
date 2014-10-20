@@ -1,51 +1,29 @@
 package com.kull.digu;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.MalformedChallengeException;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.AuthCache;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.BasicAuthCache;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.BasicHttpContext;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 
 import com.kull.DateTimeHelper;
 import com.kull.DataType;
 import com.kull.bean.HttpClientBean;
+import net.sf.json.JSONObject;
+
 
 
 
@@ -309,14 +287,12 @@ public abstract class BaseDiguApi {
 		switch (edf) {
 		case json:{
 			try {
-				JSONObject json=new JSONObject(responseText);
+				JSONObject json=JSONObject.fromObject(responseText);
 				Object error= json.get("error");
 				if(error!=null){
 					re=Integer.parseInt(error.toString());
 				}
 				break;
-			} catch (JSONException e) {
-				// TODO Auto-generated catch bloc
 			}catch(NumberFormatException nfe){
 				nfe.printStackTrace();
 			}
@@ -661,7 +637,7 @@ public abstract class BaseDiguApi {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
-		String str=DateTimeHelper.DateTimeFormatter.DATE_FORMAT_DB.format(birthday);
+		String str=DateTimeHelper.Formatter.DATE_FORMAT_DB.format(birthday);
 		this.addParma("birthday", str);
 	}
 

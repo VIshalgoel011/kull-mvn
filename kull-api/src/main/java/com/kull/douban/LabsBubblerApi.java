@@ -1,11 +1,6 @@
 package com.kull.douban;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.kull.NetHelper;
@@ -14,7 +9,7 @@ import com.kull.NetHelper;
 public  class LabsBubblerApi {
 
 	public final String baseUrl="http://api.douban.com/labs/bubbler";
-	
+	 
 	
 	public UserEntity user(String uid)throws Exception{
 		UserEntity entity=new UserEntity();

@@ -121,7 +121,7 @@ public class ChinaTVprogramWebService extends BaseWebXmlService {
 	public List<TvProgram> getTVprogramString(int theTVchannelID,Date theDate,String userID)throws Exception{
 		List<TvProgram> programs=new ArrayList<ChinaTVprogramWebService.TvProgram>();
 		String param=MessageFormat.format("theTVchannelID={0}&theDate={1}&userID={2}"
-				,String.valueOf(theTVchannelID),DateTimeHelper.format(theDate, DateTimeHelper.DateTimeFormatter.DATE_FORMAT_DB.getPattern()),userID);
+				,String.valueOf(theTVchannelID),DateTimeHelper.format(theDate, DateTimeHelper.Formatter.DATE_FORMAT_DB.getPattern()),userID);
 	    Document doc=this.doGetEndPoint(Endpoint.getTVprogramString.name(), param);
 	    List<Node> nodes=doc.getRootElement().elements();
 	    for(Node node:nodes){
@@ -150,7 +150,7 @@ public class ChinaTVprogramWebService extends BaseWebXmlService {
 	public List<TvProgram> getTVprogramDateSet(int theTVchannelID,Date theDate,String userID)throws Exception{
 		List<TvProgram> programs=new ArrayList<ChinaTVprogramWebService.TvProgram>();
 		String param=MessageFormat.format("theTVchannelID={0}&theDate={1}&userID={2}"
-				,String.valueOf(theTVchannelID),DateTimeHelper.format(theDate, DateTimeHelper.DateTimeFormatter.DATE_FORMAT_DB.getPattern()),userID);
+				,String.valueOf(theTVchannelID),DateTimeHelper.format(theDate, DateTimeHelper.Formatter.DATE_FORMAT_DB.getPattern()),userID);
 	    Document doc=this.doGetEndPoint(Endpoint.getTVprogramDateSet.name(), param);
 	    List<Node> nodes=this.parseDataSets(doc, "TV", "tvProgramTable");
 	    for(Node node:nodes){

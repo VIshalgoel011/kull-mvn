@@ -15,11 +15,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.DefaultedHttpParams;
 import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -28,7 +25,8 @@ import org.dom4j.Node;
 
 
 import com.kull.NetHelper;
-import com.sun.mail.util.BASE64DecoderStream;
+
+import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BASE64DecoderStream;
 
 
 
