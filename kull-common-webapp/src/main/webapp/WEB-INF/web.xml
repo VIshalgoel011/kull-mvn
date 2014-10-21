@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns="http://java.sun.com/xml/ns/javaee" 
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+id="WebApp_ID" version="2.5">
+  <display-name>kull-common-webapp</display-name>
+  
+   <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Secure Pages</web-resource-name>
+      <url-pattern>/index.jsp</url-pattern>
+     
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin-gui</role-name>
+    </auth-constraint>
+  </security-constraint>
+  
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>kull</realm-name>
+    
+  </login-config>
+    <!--  
+  <filter>
+  <filter-name>struts-cleanup</filter-name>
+  <filter-class>org.apache.struts2.dispatcher.ActionContextCleanUp</filter-class>
+ </filter>
+ <filter-mapping>
+      <filter-name>struts-cleanup</filter-name>
+      <url-pattern>*</url-pattern>
+  </filter-mapping>
+  -->
+  
+ 
+ 
+ 
+  <filter>
+    <filter-name>ecoding</filter-name>
+    <filter-class>com.kull.web.servlet.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  <filter-name>ecoding</filter-name>
+  <url-pattern>*</url-pattern>
+ </filter-mapping>
+ 
+ <filter>
+  <filter-name>struts2</filter-name>
+  <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+ </filter>
+ 
+  <filter-mapping>
+  <filter-name>struts2</filter-name>
+  <url-pattern>*</url-pattern>
+ </filter-mapping>
+ 
+ 
+  <listener>
+  <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  
+ </listener>
+ <!--在spring 中配置Log4J，注意要用到log4jConfigLocation ，这个也是网上找到的资料才明白，原来在spring中使用log4j，还需要在web.xml中配置 -->
+ <listener>
+  <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+ </listener>
+ 
+ <context-param>
+  <param-name>contextConfigLocation</param-name>
+  <param-value>
+			/WEB-INF/classes/applicationContext.xml</param-value>
+ </context-param>
+ 
+  <!--t由Sprng载入的Log4j配置文件位置 -->
+ <context-param>
+  <param-name>log4jConfigLocation</param-name>
+  <param-value>/WEB-INF/classes/log4j.xml</param-value>
+ </context-param>
+ <!--tSpring默认刷新Log4j配置文件的间隔,单位为millisecond -->
+ <context-param>
+  <param-name>log4jRefreshInterval</param-name>
+  <param-value>60000</param-value>
+ </context-param>
+ 
+ 
+ 
+ <!-- 
+ <context-param> 
+       <param-name>brokerURI</param-name> 
+       <param-value>/WEB-INF/classes/activemq.xml</param-value > 
+    </context-param> 
+  
+    <listener > 
+      <listener-class >org.apache.activemq.web.SpringBrokerContextListener</listener-class > 
+    </listener >
+-->
+  <!-- 
+    <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <page-encoding>utf-8</page-encoding>
+      <include-prelude>/jspf/prelude.jspf</include-prelude>
+      <include-coda>/jspf/coda.jspf</include-coda>
+      
+    </jsp-property-group>
+    
+  </jsp-config>
+   -->
+</web-app>

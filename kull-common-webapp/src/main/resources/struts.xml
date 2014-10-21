@@ -45,7 +45,7 @@ struts.mapper.newMethodName：设置不带 id 请求参数、且指定操作 edi
    		   </interceptor-stack>
    		</interceptors>
    	<action name="*/*/*/*" 
-     class="com.kull.action.{1}.{2}Action" method="{3}"
+     class="com.kull.common.action.{1}.{2}Action" method="{3}"
      >
        <param name="pk">{4}</param>  
        <result name="jsp">/{1}/{2}.{3}.jsp</result>

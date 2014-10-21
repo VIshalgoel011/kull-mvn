@@ -30,7 +30,25 @@
             <artifactId>kull-web</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-      
+        <dependency>
+            <groupId>net.sf.javaclub</groupId>
+            <artifactId>gerald-jorm</artifactId>
+            <version>1.0.8.RC1</version>
+            <exclusions>
+           	<exclusion>
+           		<artifactId>proxool</artifactId>
+           		<groupId>proxool</groupId>
+           	</exclusion>
+           	<exclusion>
+           		<artifactId>proxool-cglib</artifactId>
+           		<groupId>proxool</groupId>
+           	</exclusion>
+           	<exclusion>
+           		<artifactId>bonecp</artifactId>
+           		<groupId>com.jolbox</groupId>
+           	</exclusion>
+           </exclusions>
+        </dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
