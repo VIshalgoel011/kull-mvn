@@ -18,14 +18,14 @@ import org.apache.struts2.interceptor.PrincipalProxy;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
-import org.springframework.web.context.ServletConfigAware;
+
 
 /**
  *
  * @author lin
  */
 public class AwareActionSupport extends ActionSupport implements ServletRequestAware,ServletResponseAware,SessionAware,
-ApplicationAware,CookiesAware,ParameterAware,PrincipalAware,ServletConfigAware {
+ApplicationAware,CookiesAware,ParameterAware,PrincipalAware {
     
     	protected HttpServletResponse response;
 	protected HttpServletRequest request;
@@ -72,9 +72,5 @@ ApplicationAware,CookiesAware,ParameterAware,PrincipalAware,ServletConfigAware {
 		this.principalProxy=principalProxy;
 	}
 
-	@Override
-	public void setServletConfig(ServletConfig servletConfig) {
-		// TODO Auto-generated method stub
-		this.servletConfig=servletConfig;
-	}
+	
 }
