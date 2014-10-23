@@ -19,6 +19,7 @@ struts.mapper.newMethodName：设置不带 id 请求参数、且指定操作 edi
 	 -->
 	
 	<!--struts.objectFactory=com.opensymphony.xwork2.ObjectFactory to struts.properties -->
+        <constant name="struts.objectFactory" value="com.opensymphony.xwork2.ObjectFactory" />
 	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
 	<constant name="struts.devMode" value="false" />
 	<constant name="struts.ui.theme" value="simple" />
@@ -27,13 +28,12 @@ struts.mapper.newMethodName：设置不带 id 请求参数、且指定操作 edi
 	<constant name="struts.custom.i18n.resources" value="system-config"/>
 	<constant name="struts.enable.SlashesInActionNames" value="true" />
 	<constant name="struts.i18n.encoding" value="UTF-8" />
-    <constant name="struts.locale" value="zh_CN"></constant>
 
-	 <constant name="struts.convention.default.parent.package"
-        value="rest-default"/> 
+
+
 	
 	
-	 <package name="base-package" extends="struts-default" >  	
+	 <package name="base-package" extends="struts-default" namespace="/" >  	
 	 
 	 
 	 
@@ -44,21 +44,16 @@ struts.mapper.newMethodName：设置不带 id 请求参数、且指定操作 edi
    		     <interceptor-ref name="fileUploadStack"></interceptor-ref>
    		   </interceptor-stack>
    		</interceptors>
-   	<action name="*/*/*/*" 
-     class="com.kull.common.action.{1}.{2}Action" method="{3}"
-     >
-       <param name="pk">{4}</param>  
-       <result name="jsp">/{1}/{2}.{3}.jsp</result>
-      
-   </action>
-   	<!-- 
-   	    <global-results>
-
-       <result name="error">/jsp/error.jsp</result>
-       
-   </global-results>
-    -->
-</package>
+                
+                <action name="*/*/*/*"  class="com.kull.common.action.{1}.{2}Action" method="{3}"  >
+                        <param name="pk">{4}</param>  
+                        <result name="jsp">/{1}/{2}.{3}.jsp</result>
+               </action>
+                
+         </package>       
+                
+   	
+    
 
 	
 </struts>

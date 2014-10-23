@@ -6,10 +6,12 @@
 package com.kull.common.action;
 
 
+import com.kull.common.Utils;
+import com.kull.jdbc.Dialect;
+import com.kull.jdbc.SqliteDialect;
 import com.kull.web.struts.DSActionSupport;
 import com.opensymphony.xwork2.Preparable;
-import org.javaclub.jorm.Jorm;
-import org.javaclub.jorm.jdbc.sql.Dialect;
+
 
 /**
  *
@@ -17,17 +19,27 @@ import org.javaclub.jorm.jdbc.sql.Dialect;
  */
 public abstract class DSAction extends DSActionSupport implements Preparable{
   
+    public final static  Dialect dialect=new SqliteDialect();
+    
+    protected String pk;
+
+    public void setPk(String pk) {
+        this.pk = pk;
+    }
+    
+    
     
     @Override
     protected String createPageSql(String dataSql, int start, int limit) {
-         return dataSql;
+         return dialect.getLimitString(dataSql,start, limit);
     }
 
     @Override
     public void prepare() throws Exception {
-        this.connection=Jorm.getConnection();
+        //this.connection=Utils.dbmeta();
     }
     
-    
+    public void index(){
+    }
     
 }

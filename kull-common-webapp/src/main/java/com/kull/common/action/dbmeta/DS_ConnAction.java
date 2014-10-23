@@ -6,6 +6,8 @@
 package com.kull.common.action.dbmeta;
 
 import com.kull.common.action.DSAction;
+import com.kull.web.Utils;
+import java.io.IOException;
 
 /**
  *
@@ -23,4 +25,8 @@ public class DS_ConnAction extends DSAction{
         return "数据库连接管理"; //To change body of generated methods, choose Tools | Templates.
     }
     
+    
+    public void pk() throws IOException{
+        Utils.writeJson(response, this.pk);
+    }
 }
