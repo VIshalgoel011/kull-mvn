@@ -32,14 +32,14 @@ public abstract class DSActionSupport extends AwareActionSupport {
 
     protected Connection connection;
 
-    protected int start, limit;
+    protected Integer start=0, limit=Integer.MAX_VALUE ;
     protected String rowsName="rows",totalName="total",errTypeName="errtype",errMsgName="errmsg";
 
-    public void setStart(int start) {
+    public void setStart(Integer start) {
         this.start = start;
     }
 
-    public void setLimit(int limit) {
+    public void setLimit(Integer limit) {
         this.limit = limit;
     }
 
@@ -116,7 +116,7 @@ public abstract class DSActionSupport extends AwareActionSupport {
     }
 
     protected final String createDataSql() {
-        String sql = "", sqlPattern = "select {0} from {1} {2} {3}";
+        String sql = "", sqlPattern = "select {0} from {1} {2} ";
         String condition = "", columns = this.columns(), viewName = viewName(), baseCondition = this.baseCondition(), postCondition = this.postCondition();
         if (StringHelper.isNotBlank(baseCondition) && StringHelper.isNotBlank(postCondition)) {
             baseCondition = StringHelper.trim(baseCondition, ",", "and", "or", "and");
@@ -174,7 +174,7 @@ public abstract class DSActionSupport extends AwareActionSupport {
 
         JdbcBean jdbcBean = new JdbcBean(connection);
 
-        String sql = createPageSql(this.createDataSql(),start, limit);
+        String sql = createPageSql(this.createOrderbySql(),start, limit);
 
         JSONObject grid=new JSONObject();
         try {
