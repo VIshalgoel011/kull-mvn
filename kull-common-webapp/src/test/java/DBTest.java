@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import com.kull.bean.JdbcBean;
 import com.kull.common.Utils;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,7 +12,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 
 /**
  *
@@ -46,7 +47,9 @@ public class DBTest {
     //
      @Test
      public void dbmeta() throws SQLException {
-         String sql="select * from dbmeta_conn ";
-             connDbmeta.prepareStatement(sql).executeQuery();
+         String sql="select * from dbmeta_conn; ";
+          //connDbmeta.createStatement().executeUpdate("create table people (name, occupation);");
+           // connDbmeta.createStatement().executeQuery(sql);
+          //JdbcBean.close(connDbmeta, null, null);
      }
 }

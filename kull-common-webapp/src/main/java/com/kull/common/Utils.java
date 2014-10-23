@@ -5,10 +5,11 @@
  */
 package com.kull.common;
 
+
 import com.kull.IOHelper;
 import com.kull.bean.JdbcBean;
 import java.sql.Connection;
-import java.text.MessageFormat;
+
 
 /**
  *
@@ -17,7 +18,7 @@ import java.text.MessageFormat;
 public class Utils {
     
     public static Connection dbmeta() throws Exception{
-        String dbpath="I:\\ws-nb\\kull-mvn\\kull-common-webapp\\src\\main\\resources\\kull.db3";
+        String dbpath=Utils.class.getClassLoader().getResource("kull-common.db3").getFile();
         return JdbcBean.createSqllteConnection(dbpath);
         
     }

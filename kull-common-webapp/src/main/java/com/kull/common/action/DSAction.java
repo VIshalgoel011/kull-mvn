@@ -23,9 +23,12 @@ public abstract class DSAction extends DSActionSupport implements Preparable{
     
     protected String pk;
 
-    public void setPk(String pk) {
-        this.pk = pk;
-    }
+   
+
+    
+   
+   
+    
     
     
     
@@ -36,7 +39,7 @@ public abstract class DSAction extends DSActionSupport implements Preparable{
 
     @Override
     public void prepare() throws Exception {
-        //this.connection=Utils.dbmeta();
+        this.connection=Utils.dbmeta();
     }
     
     public void index(){
