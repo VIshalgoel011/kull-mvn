@@ -304,12 +304,10 @@ public class ObjectHelper {
 		  
 	}
 	
-	public static <A extends Annotation> A getAnnotation (Class cls,Class<A> annCls) throws NullPointerException{
+	public static <A extends Annotation> A annotationBy (Class cls,Class<A> annCls) throws NullPointerException{
 		Class superCls=cls;
-		A ann=null;
-		try{
-		ann=(A) superCls.getAnnotation(annCls);
-		}catch(Exception ex){}
+		A ann=(A) superCls.getAnnotation(annCls);
+		
 		while(ann==null&&!Object.class.equals(superCls)){
 			//throw new NullPointerException("Annotation is not exist");
 			try{
@@ -370,11 +368,12 @@ public class ObjectHelper {
 		return cs;
 	}
 	
-	public static Field[] getAllDeclaredFields(Class c){
+	public static Field[] allDeclaredFieldsBy(Class c){
 		if(CACHE_FIELDS.containsKey(c))return CACHE_FIELDS.get(c);
 		List<Field> fields=new ArrayList<Field>();
 		for(Class cls : ObjectHelper.getAllClass(c)){
 			for(Field field :cls.getDeclaredFields()){
+                                if(isThis0(field))continue;
 				fields.add(field);
 			}
 		}
@@ -396,22 +395,22 @@ public class ObjectHelper {
 	
 	
 
-	public static Method getSetter(Class c,Field field) throws NoSuchMethodException, SecurityException{
+	public static Method setterBy(Class c,Field field) throws NoSuchMethodException, SecurityException{
 		
-	    return getSetters(c).get(field.getName());
+	    return settersBy(c).get(field.getName());
 	}
 
-	public static Method getGetter(Class c,Field field) throws NoSuchMethodException, SecurityException{
+	public static Method getterBy(Class c,Field field) throws NoSuchMethodException, SecurityException{
 		
-	    return getGetters(c).get(field.getName());
+	    return gettersBy(c).get(field.getName());
 	}
 	
 	
 	
-	public static Map<String,Method> getSetters(Class c) throws NoSuchMethodException, SecurityException{
+	public static Map<String,Method> settersBy(Class c) throws NoSuchMethodException, SecurityException{
 		if(CACHE_SETTERS.containsKey(c))return CACHE_SETTERS.get(c);
 		Map<String,Method> setters=new HashMap<String,Method>();
-		for(Field field : ObjectHelper.getAllDeclaredFields(c)){
+		for(Field field : ObjectHelper.allDeclaredFieldsBy(c)){
 		String settername="set"+field.getName().substring(0,1).toUpperCase()+field.getName().substring(1);
 	      setters.put(field.getName(), c.getMethod(settername,field.getType()));
 		}
@@ -419,10 +418,10 @@ public class ObjectHelper {
 		return setters;
 	}
 
-	public static Map<String,Method> getGetters(Class c) throws NoSuchMethodException, SecurityException{
+	public static Map<String,Method> gettersBy(Class c) throws NoSuchMethodException, SecurityException{
 		if(CACHE_GETTERS.containsKey(c))return CACHE_GETTERS.get(c);
 		Map<String,Method> getters=new HashMap<String,Method>();
-		for(Field field : ObjectHelper.getAllDeclaredFields(c)){
+		for(Field field : ObjectHelper.allDeclaredFieldsBy(c)){
 		String settername="get"+field.getName().substring(0,1).toUpperCase()+field.getName().substring(1);
 		 getters.put(field.getName(), c.getMethod(settername));
 		}
@@ -480,7 +479,18 @@ public class ObjectHelper {
 	
 	public static <T> void cp(T source, T target) throws Exception{
 		// TODO Auto-generated method stub
-		     
+	       if(source==null||target==null)throw new NullPointerException("source or target can't be null");
+               Map<String,Method> getters=gettersBy(source.getClass())
+                       ,setters=settersBy(source.getClass())
+               ;
+               for (Map.Entry<String, Method> entrySet : getters.entrySet()) {
+                String key = entrySet.getKey();
+                Method getter = entrySet.getValue(),setter=setters.get(key);
+                if(getter==null||setter==null)continue;
+                Object val=getter.invoke(source);
+                if(val==null)continue;
+                setter.invoke(target, val);
+            }
         }
 
 	
@@ -539,7 +549,9 @@ public class ObjectHelper {
 	}
 
 
-
+        public static boolean isThis0(Field field){
+           return field.getName().equals("this$0");
+        }
 
 
 

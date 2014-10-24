@@ -26,8 +26,9 @@ import org.apache.ibatis.type.JdbcType;
 
 
 import com.kull.LinqHelper;
+import com.kull.ObjectHelper;
 import com.kull.StringHelper;
-import com.kull.annotation.SimpleOrmTable;
+import com.kull.annotation.OrmTable;
 import com.kull.jdbc.*;
 
 
@@ -262,39 +263,10 @@ public class JdbcBean {
 		 return load(t, pk);
 	}
 	
-	public <T> T load(T t,Object pk) {
-		if(t==null)return t;
-		SimpleOrmTable table=null;
-		String sql="";
-		Field pkField=null;
-		PreparedStatement preparedStatement=null;
-		ResultSet resultSet=null;
-		try{
-		table=t.getClass().getAnnotation(SimpleOrmTable.class);
-		 sql=MessageFormat.format("select * from {0} where {1}=?", table.name(),table.pk());
-		pkField=t.getClass().getDeclaredField(table.pk());
-	     preparedStatement=conn.prepareStatement(sql);
-	     /*
-		if(pkField.getType().equals(String.class)){
-			preparedStatement.setString(1, pk.toString());
-		}else if(pkField.getType().equals(Integer.class)){
-			preparedStatement.setInt(1, Integer.parseInt(pk.toString()));
-		}*/
-	    preparedStatement.setObject(1, pk);
-	    resultSet=preparedStatement.executeQuery();
-		   
-		if(resultSet.next()){
-	    	t=evalObject(t, resultSet);
-	    }
-		}catch(Exception ex){
-			return null;
-		}
-		 finally{
-			close(null,preparedStatement,resultSet);
-		}
-
-	
-		return t;
+	public <T> T load(T t,Object pk) throws SQLException, NoSuchFieldException{
+		if(t==null|| pk==null) throw new NullPointerException("t or pk can't be null");
+		OrmTable table=t.getClass().getAnnotation(OrmTable.class);
+		return (T)load(t, table.pk(), pk);
 	}
 	
 	public <T> T load(Class<T> cls,String column,Object pk) throws Exception{
@@ -302,17 +274,15 @@ public class JdbcBean {
 		 return load(t,column, pk);
 	}
 	
-	public <T> T load(T t,String column,Object pk) {
-		if(t==null)return t;
-		SimpleOrmTable table=null;
-		String sql="";
-		Field pkField=null;
+	public <T> T load(T t,String column,Object pk) throws  SQLException, NoSuchFieldException {
+		if(t==null|| pk==null) throw new NullPointerException("t or pk can't be null");
+		OrmTable table=t.getClass().getAnnotation(OrmTable.class);
+		
+		Field pkField=t.getClass().getDeclaredField(table.pk());
 		PreparedStatement preparedStatement=null;
 		ResultSet resultSet=null;
-		try{
-		table=t.getClass().getAnnotation(SimpleOrmTable.class);
-		 sql=MessageFormat.format("select * from {0} where {1}= ?", table.name(),column);
-		pkField=t.getClass().getDeclaredField(column);
+		String sql=MessageFormat.format("select * from {0} where {1}= ?", table.name(),column);
+		
 	     preparedStatement=conn.prepareStatement(sql);
 		if(pkField.getType().equals(String.class)){
 			preparedStatement.setString(1, pk.toString());
@@ -321,14 +291,16 @@ public class JdbcBean {
 		}
 	    resultSet=preparedStatement.executeQuery();
 		   
-		if(resultSet.next()){
+	    if(resultSet.next()){
 	    	t=evalObject(t, resultSet);
-	    }
-		}catch(Exception ex){}
-		 finally{
-			close(null,preparedStatement,resultSet);
+	    }else{
+                  String errormsg="can't select a model wiht sql= "+sql+ " , pk ="+pk;
+                    throw new SQLException(errormsg);
+            }
+		
+          close(null,preparedStatement,resultSet);
 	
-		}
+		
 
 	
 		return t;
@@ -340,12 +312,12 @@ public int insert(Object...objs) throws Exception{
 		PreparedStatement preparedStatement=null;
 		for(Object obj:objs){
 			if(obj==null)continue;
-			SimpleOrmTable table=null;
+			OrmTable table=null;
 			String  sqlPattern="insert into {0} ({1}) values ({2})",sql="",
 					sqlCacheKey=obj.getClass().getSimpleName()+":insert",cols="",vals="";
 			Field[] fields=null;
 		    
-	    		table=obj.getClass().getAnnotation(SimpleOrmTable.class);
+	    		table=obj.getClass().getAnnotation(OrmTable.class);
 				fields=obj.getClass().getDeclaredFields();
 		    	if(SQL_CACHE.containsKey(sqlCacheKey)){
 		    		sql=SQL_CACHE.get(sqlCacheKey);
@@ -353,10 +325,14 @@ public int insert(Object...objs) throws Exception{
 
 					
 					for(Field field:fields){
+                                            if(ObjectHelper.isThis0(field))continue;
+                                            String fname=field.getName() ;
 						if( LinqHelper.isIn(field.getName(),table.excludeColumns())||
-								   (!table.insertPk()&& field.getName().equalsIgnoreCase(table.pk()) )
+								   (!table.insertPk()&& field.getName().equalsIgnoreCase(table.pk())
+                                                          
+                                                        )
 						)continue;	
-						cols+=MessageFormat.format(" `{0}`,",field.getName() );
+						cols+=MessageFormat.format(" `{0}`,",fname );
 						vals+=" ?,";
 						
 					}
@@ -369,6 +345,7 @@ public int insert(Object...objs) throws Exception{
 		    	preparedStatement=conn.prepareStatement(sql);
 		        int j=0;
 				for(Field field:fields){
+                                        if(ObjectHelper.isThis0(field))continue;
 					if( LinqHelper.isIn(field.getName(),table.excludeColumns())||
 					   (!table.insertPk()&& field.getName().equalsIgnoreCase(table.pk()) )
 					)continue;	
@@ -394,11 +371,11 @@ public int insert(Object...objs) throws Exception{
 		PreparedStatement preparedStatement=null;
 		for(Object obj:objs){
 			if(obj==null)continue;
-			SimpleOrmTable table=null;
+			OrmTable table=null;
 			String  sqlPattern="delete from {0} where {1}=?",sql="",
 					sqlCacheKey=obj.getClass().getSimpleName()+":delete";
 			try{
-			  table=obj.getClass().getAnnotation(SimpleOrmTable.class);
+			  table=obj.getClass().getAnnotation(OrmTable.class);
 			  if(SQL_CACHE.containsKey(sqlCacheKey)){
 				sql=SQL_CACHE.get(sqlCacheKey);  
 			  }else{
@@ -426,13 +403,13 @@ public int insert(Object...objs) throws Exception{
 		PreparedStatement preparedStatement=null;
 		for(Object obj : objs){
 			if(obj==null)continue;
-			SimpleOrmTable table=null;
+			OrmTable table=null;
 			String sqlPattern="update {0} set {1} where {2}=? ",key="",sql=""
 					,sqlCacheKey=obj.getClass().getSimpleName()+":update";
 			Field[] fields=null;
 			Field pkField=null;
 			try{
-				table=obj.getClass().getAnnotation(SimpleOrmTable.class);
+				table=obj.getClass().getAnnotation(OrmTable.class);
 				fields=obj.getClass().getDeclaredFields();
 				pkField=obj.getClass().getDeclaredField(table.pk());
 				if(SQL_CACHE.containsKey(sqlCacheKey)){
@@ -441,8 +418,11 @@ public int insert(Object...objs) throws Exception{
 	
 			int i=0;
 			for(Field field:fields){
+                                String fname=field.getName();
+                                 if(ObjectHelper.isThis0(field))continue;
 				if(LinqHelper.isIn(field.getName(),table.excludeColumns())||field.getName().equalsIgnoreCase(table.pk())){pkField=field;continue;}
-				key+=MessageFormat.format(" `{0}` =? ,",field.getName() );
+			
+                                key+=MessageFormat.format(" `{0}` =? ,", fname);
 				i++;
 			}
 			key=StringHelper.trim(key, ",");
@@ -452,6 +432,7 @@ public int insert(Object...objs) throws Exception{
 		    preparedStatement=conn.prepareStatement(sql);
 		    int j=0;
 			for(Field field:fields){
+                                if(ObjectHelper.isThis0(field))continue;
 				if(LinqHelper.isIn(field.getName(),table.excludeColumns())||field.getName().equalsIgnoreCase(table.pk()))continue;	
 				String getterName="get"+field.getName().substring(0,1).toUpperCase()+field.getName().substring(1);
 				Method m=obj.getClass().getDeclaredMethod(getterName);
@@ -582,7 +563,7 @@ public int insert(Object...objs) throws Exception{
 		PreparedStatement ps=null;
 		List<T> list=null;
 		ResultSet rs=null;
-		SimpleOrmTable table=cls.getAnnotation(SimpleOrmTable.class);
+		OrmTable table=cls.getAnnotation(OrmTable.class);
 		try {
 			 if(table!=null){
 				 sql=MessageFormat.format(sql, table.name(),table.pk());
@@ -727,4 +708,6 @@ public int insert(Object...objs) throws Exception{
 		sbrPro.append("\n\n").append(sbrGetSet);
 		return sbrPro.toString();
 	}
+        
+
 }

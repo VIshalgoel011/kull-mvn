@@ -14,7 +14,7 @@ import java.util.Set;
 
 
 import com.kull.ObjectHelper;
-import com.kull.annotation.SimpleOrmTable;
+import com.kull.annotation.OrmTable;
 import com.kull.bean.JdbcBean.Database;
 import com.kull.jdbc.Dialect;
 import com.kull.bean.JdbcBean;
@@ -63,9 +63,9 @@ public class MapperFactory {
 		Set<MapperTemplate> mapperTemplates=new HashSet<MapperTemplate>();
 		for(Class<? extends IMapper> nameSpace :nameSpaces){
 		Class modelClass=ObjectHelper.actualTypeBy(nameSpace,IMapper.INDEX_MODEL_CLASS);
-		SimpleOrmTable tableConfig=nameSpace.getAnnotation(SimpleOrmTable.class);
+		OrmTable tableConfig=nameSpace.getAnnotation(OrmTable.class);
 		if(tableConfig==null){
-			throw new NullPointerException(MessageFormat.format("class {0} don't have annotation:{1}",nameSpace.getName(),SimpleOrmTable.class.getName()));
+			throw new NullPointerException(MessageFormat.format("class {0} don't have annotation:{1}",nameSpace.getName(),OrmTable.class.getName()));
 		}
 		tablePrefix=tablePrefix==null?"":tablePrefix;
 		if(database==Database.oracle&& !"".equals(tableConfig.oracleSeqIdRegexp())){
