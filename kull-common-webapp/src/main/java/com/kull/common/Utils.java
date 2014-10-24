@@ -15,7 +15,7 @@ import java.sql.Connection;
  *
  * @author lin
  */
-public class Utils {
+public class Utils extends com.kull.web.Utils{
     
     public static Connection dbmeta() throws Exception{
         String dbpath=Utils.class.getClassLoader().getResource("kull-common.db3").getFile();
