@@ -19,6 +19,16 @@ import java.sql.Connection;
  */
 public abstract class MDAction<M> extends OrmMDActionSupport<M> implements Preparable{
 
+    protected String namespace,action;
+    
+    
+     public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
     
     @Override
     public void prepare() throws Exception {

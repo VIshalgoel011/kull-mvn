@@ -12,6 +12,9 @@ import com.kull.orm.dialect.SqliteDialect;
 
 import com.kull.web.struts.DSActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import java.io.IOException;
+import java.text.MessageFormat;
+import javax.servlet.ServletException;
 
 
 /**
@@ -22,7 +25,19 @@ public abstract class DSAction extends DSActionSupport implements Preparable{
   
     public final static  Dialect dialect=new SqliteDialect();
     
-    protected String pk;
+    protected String pk,namespace,action;
+
+    public void setPk(String pk) {
+        this.pk = pk;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
 
    
 
@@ -43,7 +58,14 @@ public abstract class DSAction extends DSActionSupport implements Preparable{
         this.connection=Utils.dbmeta();
     }
     
-    public void index(){
+    public void forward() throws ServletException, IOException{
+        String path=MessageFormat.format("/view/{0}/{1}.{2}.jsp",namespace,action,pk);
+        this.request.getRequestDispatcher(path).forward(request, response);
+        
+    }
+    
+    public String index(){
+       return "jsp";
     }
     
 }
