@@ -11,13 +11,7 @@
   <dependencies>
   
     
-        <dependency>
-        	<groupId>javax.servlet</groupId>
-        	<artifactId>servlet-api</artifactId>
-        	<version>2.5</version>
-
-        	
-        </dependency>
+       
         
           <dependency>
         	<groupId>net.sourceforge.jexcelapi</groupId>
@@ -41,11 +35,7 @@
 
 
 
-   <dependency>
-   	<groupId>org.mybatis</groupId>
-   	<artifactId>mybatis</artifactId>
-   	<version>3.2.3</version>
-   </dependency>
+   
    <dependency>
    	<groupId>org.apache.httpcomponents</groupId>
    	<artifactId>httpclient</artifactId>

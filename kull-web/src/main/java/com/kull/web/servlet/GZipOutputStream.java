@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 
 public class GZipOutputStream extends ServletOutputStream {
@@ -41,6 +42,16 @@ public class GZipOutputStream extends ServletOutputStream {
 		out.write(content);
 		out.close();
 	}
+
+    @Override
+    public boolean isReady() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setWriteListener(WriteListener wl) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 	
 	
 

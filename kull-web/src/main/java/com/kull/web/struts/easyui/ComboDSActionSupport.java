@@ -6,7 +6,8 @@
 package com.kull.web.struts.easyui;
 
 import com.kull.StringHelper;
-import com.kull.bean.JdbcBean;
+import com.kull.orm.Session;
+
 import com.kull.script.Html;
 
 import com.kull.script.JsMap;
@@ -56,11 +57,11 @@ public abstract class ComboDSActionSupport extends DSActionSupport{
 
 	public void rows() throws IOException{
 		
-		JdbcBean jdbcBean=new JdbcBean(connection);
+		Session session=new Session(connection);
 		
 		String sql=createDataSql();
-		LinkedList<Map<String,Object>> list=jdbcBean.selectList(sql);
-		JdbcBean.close(connection, null, null);
+		LinkedList<Map<String,Object>> list=session.selectList(sql);
+		Session.close(connection, null, null);
 	        Utils.writeJson(this.response,list);
 
                 
@@ -72,10 +73,10 @@ public abstract class ComboDSActionSupport extends DSActionSupport{
         	this.response.getWriter().write("缺少pk参数");
         	return;
         }
-		JdbcBean jdbcBean=new JdbcBean(connection);
+		Session session=new Session(connection);
         StringBuffer html=new StringBuffer("");
         String sql="select * from "+this.viewName();
-        List<Map<String,Object>> list=jdbcBean.selectList(sql);
+        List<Map<String,Object>> list=session.selectList(sql);
         String url=request.getRequestURI().substring(request.getContextPath().length());
         
 		StringBuffer combobox_url=new StringBuffer(""),combobox_data=new StringBuffer("")
@@ -114,6 +115,6 @@ public abstract class ComboDSActionSupport extends DSActionSupport{
 		//.append(fieldset("easyui-treegrid", "<pre>"+StringHelper.htmlWapper(treegrid.toString())+"</pre>"))
 		.append("</body></html>");
 		this.response.getWriter().write(html.toString());
-		JdbcBean.close(connection, null, null);
+		Session.close(connection, null, null);
 	}
 }

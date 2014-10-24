@@ -13,7 +13,7 @@ import java.util.Vector;
 
 
 import com.kull.ObjectHelper;
-import com.kull.bean.JdbcBean;
+import com.kull.orm.Session;
 import com.kull.web.Utils;
 import com.kull.web.struts.DSActionSupport;
 import java.io.IOException;
@@ -44,14 +44,14 @@ public abstract class TreeDSActionSupport extends DSActionSupport {
 
 	public void nodes() throws IOException{
 		
-		JdbcBean jdbcBean=new JdbcBean(connection);
+		Session session=new Session(connection);
 		String dsql=this.createDataSql();
-		LinkedList<Map<String,Object>> list= jdbcBean.selectList(dsql);
+		LinkedList<Map<String,Object>> list= session.selectList(dsql);
 		
 	    Vector<Map<String,Object>> tree=createTreeNodes(list, this.root);
 		
 		
-	    JdbcBean.close(connection, null, null);
+	    Session.close(connection, null, null);
 	    
             Utils.writeJson(this.response,tree);
 	}

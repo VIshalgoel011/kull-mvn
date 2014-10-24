@@ -6,13 +6,12 @@
 package com.kull.common.action;
 
 
-import com.kull.bean.JdbcBean;
 import com.kull.common.Utils;
+import com.kull.orm.Session;
 import com.kull.web.struts.OrmMDActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import java.sql.Connection;
-import org.javaclub.jorm.Jorm;
-import org.javaclub.jorm.Session;
+
 
 /**
  *
@@ -24,7 +23,7 @@ public abstract class MDAction<M> extends OrmMDActionSupport<M> implements Prepa
     @Override
     public void prepare() throws Exception {
         Connection conn=Utils.dbmeta();
-        setJdbcBean(new JdbcBean(conn));
+        setSession(new Session(conn));
     }
 
     

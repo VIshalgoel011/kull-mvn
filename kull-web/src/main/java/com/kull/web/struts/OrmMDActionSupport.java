@@ -5,10 +5,7 @@
  */
 package com.kull.web.struts;
 
-import com.kull.bean.JdbcBean;
-import java.sql.Connection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.kull.orm.Session;
 
 /**
  *
@@ -16,31 +13,31 @@ import java.util.logging.Logger;
  */ 
 public abstract class OrmMDActionSupport<M> extends MDActionSupport<M>{
     
-    protected JdbcBean jdbcBean;
+    protected Session session;
 
-    public void setJdbcBean(JdbcBean jdbcBean) {
-        this.jdbcBean = jdbcBean;
+    public void setSession(Session session) {
+        this.session = session;
     }
 
     @Override
     protected M readByPk(String pk) throws Exception{
-          return   jdbcBean.load(newModel(), pk); 
+          return   session.load(newModel(), pk); 
         
     }
 
     @Override
     protected void _create(M m) throws Exception {
-       jdbcBean.insert(m);
+       session.insert(m);
     }
 
     @Override
     protected void _update(M m) throws Exception {
-       jdbcBean.update(m);
+       session.update(m);
     }
 
     @Override
     protected void _delete(M m) throws Exception {
-        jdbcBean.delete(m);
+        session.delete(m);
     }
     
     

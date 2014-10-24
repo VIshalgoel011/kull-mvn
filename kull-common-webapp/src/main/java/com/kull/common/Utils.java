@@ -6,8 +6,7 @@
 package com.kull.common;
 
 
-import com.kull.IOHelper;
-import com.kull.bean.JdbcBean;
+import com.kull.orm.Database;
 import java.sql.Connection;
 
 
@@ -19,7 +18,7 @@ public class Utils extends com.kull.web.Utils{
     
     public static Connection dbmeta() throws Exception{
         String dbpath=Utils.class.getClassLoader().getResource("kull-common.db3").getFile();
-        return JdbcBean.createSqllteConnection(dbpath);
+        return Database.createSqllteConnection(dbpath);
         
     }
     

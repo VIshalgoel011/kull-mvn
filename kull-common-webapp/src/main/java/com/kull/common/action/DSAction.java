@@ -7,8 +7,9 @@ package com.kull.common.action;
 
 
 import com.kull.common.Utils;
-import com.kull.jdbc.Dialect;
-import com.kull.jdbc.SqliteDialect;
+import com.kull.orm.dialect.Dialect;
+import com.kull.orm.dialect.SqliteDialect;
+
 import com.kull.web.struts.DSActionSupport;
 import com.opensymphony.xwork2.Preparable;
 

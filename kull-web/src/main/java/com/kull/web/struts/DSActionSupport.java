@@ -7,7 +7,8 @@ package com.kull.web.struts;
 
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
-import com.kull.bean.JdbcBean;
+import com.kull.orm.Session;
+
 import com.kull.script.Html;
 
 import com.kull.web.Utils;
@@ -172,13 +173,13 @@ public abstract class DSActionSupport extends AwareActionSupport {
 
     public void grid() throws IOException {
 
-        JdbcBean jdbcBean = new JdbcBean(connection);
+        Session session = new Session(connection);
 
         String sql = createPageSql(this.createOrderbySql(),start, limit);
 
         JSONObject grid=new JSONObject();
         try {
-            LinkedList<Map<String, Object>> rows = jdbcBean.selectList(sql), rowsNew = new LinkedList<Map<String, Object>>();
+            LinkedList<Map<String, Object>> rows = session.selectList(sql), rowsNew = new LinkedList<Map<String, Object>>();
 
             for (int i = 0; i < rows.size(); i++) {
                 rowsNew.add(rowEach(rows.get(i)));
@@ -188,7 +189,7 @@ public abstract class DSActionSupport extends AwareActionSupport {
                 grid.put(totalName, rows.size());
             } else {
                 String csql = createCountSql();
-                int count = jdbcBean.selectInt(csql);
+                int count = session.selectInt(csql);
                 grid.put(totalName, count);
             }
         } catch (Exception ex) {
@@ -197,7 +198,7 @@ public abstract class DSActionSupport extends AwareActionSupport {
                 grid.put(errTypeName, ex.getClass().getName());
            
         }
-        JdbcBean.close(connection, null, null);
+        Session.close(connection, null, null);
         this.response.getWriter().write(grid.toString());
     }
     
@@ -292,7 +293,7 @@ public abstract class DSActionSupport extends AwareActionSupport {
 		.append(Html.fieldset("easyui-datagrid html", "<pre>"+StringHelper.htmlWapper(datagrid.toString())+"</pre>"))
 		.append(Html.fieldset("easyui-datagrid js", "<pre>"+StringHelper.htmlWapper(datagrid_js.toString())+"</pre>"))
 		.append("</body></html>");
-                JdbcBean.close(connection, ps, null);
+                Session.close(connection, ps, null);
                 Utils.writeJavascript(this.response, html.toString());
 		
 	}

@@ -9,11 +9,11 @@ import java.util.Map;
 
 
 import com.kull.StringHelper;
-import com.kull.bean.JdbcBean;
+import com.kull.orm.Session;
 import com.kull.script.Html;
 import com.kull.web.struts.DSActionSupport;
 
-import com.kull.web.Utils;
+
 
 
 public abstract class TreegridDSActionSupport extends DSActionSupport {
@@ -66,7 +66,7 @@ public abstract class TreegridDSActionSupport extends DSActionSupport {
 		.append(Html.fieldset("easyui-treegrid", "<pre>"+StringHelper.htmlWapper(treegrid.toString())+"</pre>"))
 		.append("</body></html>");
 		this.response.getWriter().write(html.toString());
-		JdbcBean.close(connection, ps, null);
+		Session.close(connection, ps, null);
 	}
 
 	

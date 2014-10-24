@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import com.kull.bean.JdbcBean;
+
 import com.kull.common.Utils;
 import com.kull.common.model.JormTable;
 import java.sql.Connection;
@@ -25,7 +25,7 @@ public class DBTest {
     
     Connection connDbmeta;
     Session session;
-    JdbcBean jdbcBean;
+
     
     public DBTest() {
     }
@@ -43,7 +43,7 @@ public class DBTest {
         connDbmeta=Utils.dbmeta();
         
         session=SessionFactory.newSession();
-        jdbcBean=new JdbcBean(Utils.dbmeta());
+       // jdbcBean=new JdbcBean(Utils.dbmeta());
     }
     
     @After
@@ -60,12 +60,7 @@ public class DBTest {
            // connDbmeta.createStatement().executeQuery(sql);
           //JdbcBean.close(connDbmeta, null, null);
          
-         //session.list(JormTable.dbmeta_conn.class, sql);
-         jdbcBean.select(JormTable.dbmeta_conn.class, sql);
-         JormTable.dbmeta_conn m=new JormTable().new dbmeta_conn();
-         m.setName("test");
-         m.setDescp("test");
-         jdbcBean.insert(m);
+        
          
      }
      

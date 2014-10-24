@@ -5,7 +5,7 @@
  */
 package com.kull.common.model;
 
-import com.kull.annotation.OrmTable;
+import com.kull.orm.annotation.OrmTable;
 import org.javaclub.jorm.annotation.Id;
 
 /**

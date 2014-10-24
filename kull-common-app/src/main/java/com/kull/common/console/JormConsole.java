@@ -5,12 +5,12 @@
  */
 package com.kull.common.console;
 
-import com.kull.bean.JdbcBean;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.text.MessageFormat;
-
+import com.kull.orm.Database;
 /**
  *
  * @author lin
@@ -43,11 +43,13 @@ public class JormConsole extends Console{
         }
     }
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, Exception {
         
          JormConsole console=new JormConsole();
          console.welcome();
-         console.customConnection();
+         //console.customConnection();
+         console.setConnection(Database.createSqllteConnection("I:\\ws-nb\\kull-mvn\\kull-common-webapp\\src\\main\\resources\\kull.db3"));
+    
     }
 
     @Override
