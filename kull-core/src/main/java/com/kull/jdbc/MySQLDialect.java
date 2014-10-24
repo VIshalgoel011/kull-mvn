@@ -43,7 +43,7 @@ public class MySQLDialect extends Dialect{
 
 
 
-	@Override
+
 	public String methodStrToDate(String regexp) {
 		// TODO Auto-generated method stub
 		String pattern="str_to_date({0},''{1}'')";

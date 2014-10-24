@@ -286,13 +286,13 @@ public class ObjectHelper {
 		return !isIn(obj1,objs);
 	}
 	
-	public static <T> Class<T> getClazz(Class cls,int index){
+	public static <T> Class<T> actualTypeBy(Class cls,int index){
 
-	    return getClazz(cls, index,0);
+	    return actualTypeBy(cls, index,0);
 		  
 	}
 	
-	public static <T> Class<T> getClazz(Class cls,int index,int interfaceIndex){
+	public static <T> Class<T> actualTypeBy(Class cls,int index,int interfaceIndex){
 		ParameterizedType parameterizedType=null;
 		if(cls.isInterface()){
 			parameterizedType=(ParameterizedType)cls.getGenericInterfaces()[interfaceIndex];

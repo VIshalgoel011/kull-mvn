@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.ibatis.type.JdbcType;
 
 import com.kull.ObjectHelper;
 import com.kull.annotation.SimpleOrmTable;
@@ -63,7 +62,7 @@ public class MapperFactory {
 		
 		Set<MapperTemplate> mapperTemplates=new HashSet<MapperTemplate>();
 		for(Class<? extends IMapper> nameSpace :nameSpaces){
-		Class modelClass=ObjectHelper.getClazz(nameSpace,IMapper.INDEX_MODEL_CLASS);
+		Class modelClass=ObjectHelper.actualTypeBy(nameSpace,IMapper.INDEX_MODEL_CLASS);
 		SimpleOrmTable tableConfig=nameSpace.getAnnotation(SimpleOrmTable.class);
 		if(tableConfig==null){
 			throw new NullPointerException(MessageFormat.format("class {0} don't have annotation:{1}",nameSpace.getName(),SimpleOrmTable.class.getName()));
@@ -83,7 +82,7 @@ public class MapperFactory {
 	}
 	
 	public  MapperTemplate createMapperTemplate(Class<? extends IMapper> nameSpace,String table,String pk,Set<String> excludeColumns,String idGener) throws Exception{
-		Class modelClass=(Class) ObjectHelper.getClazz(nameSpace,IMapper.INDEX_MODEL_CLASS);
+		Class modelClass=(Class) ObjectHelper.actualTypeBy(nameSpace,IMapper.INDEX_MODEL_CLASS);
 		if(modelClass==null || nameSpace==null)throw new Exception("MapperFactory creating error: nameSpace and modelclass can't be null");
 		MapperTemplate mapper=null;
 		try {
