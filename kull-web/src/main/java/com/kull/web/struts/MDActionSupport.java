@@ -11,6 +11,9 @@ import com.kull.util.Resultable;
 import com.kull.web.Utils;
 import com.opensymphony.xwork2.ModelDriven;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 
 /**
  *
@@ -18,7 +21,7 @@ import java.io.IOException;
  */
 public abstract class MDActionSupport<M> extends AwareActionSupport implements ModelDriven<M> {
     
-        protected M m;
+        private M m;
 	
 	protected String pk;
 
@@ -30,7 +33,7 @@ public abstract class MDActionSupport<M> extends AwareActionSupport implements M
         return StringHelper.isNotBlank(pk);
     }    
 	
-	protected abstract M readByPk(String pk) ;
+	protected abstract M readByPk(String pk) throws Exception ;
 	
 	protected abstract M newModel() ;
 	
@@ -41,9 +44,9 @@ public abstract class MDActionSupport<M> extends AwareActionSupport implements M
         protected void onCreateSuccess(M m,Resultable re) throws Exception{}
         
 	protected abstract void _update(M m) throws Exception;
-        protected void onUpdate(M m,Resultable re) throws Exception{}
-        protected void onUpdateError(M m,Resultable re,Exception ex) {}
-        protected void onUpdateSuccess(M m,Resultable re) throws Exception{}
+        protected void onUpdate(M m,M post,Resultable re) throws Exception{}
+        protected void onUpdateError(M m,M post,Resultable re,Exception ex) {}
+        protected void onUpdateSuccess(M m,M post,Resultable re) throws Exception{}
 	
         protected abstract void _delete(M m) throws Exception;
         protected void onDelete(M m,Resultable re) throws Exception{}
@@ -78,12 +81,12 @@ public abstract class MDActionSupport<M> extends AwareActionSupport implements M
 
                         post=Utils.evalParameterModel(this.request, newModel(), "", "");
 		        ObjectHelper.cp( post,source);
-		onUpdate(source,result);
+		onUpdate(source,post,result);
 			_update(source);
-			onUpdateSuccess(m,result);
+			onUpdateSuccess(m,post,result);
 		
 		}catch(Exception ex){
-			onUpdateError(m,result,ex);
+			onUpdateError(m,post,result,ex);
 		}
 		Utils.writeJson(this.response, result);
 	}
@@ -114,9 +117,19 @@ public abstract class MDActionSupport<M> extends AwareActionSupport implements M
 		}
 	}
 	
-	public void read() throws IOException{
+	public void read() throws Exception{
 		M m=hasPk()?readByPk(pk):newModel();
 		Utils.writeJson(this.response, m);
 	}
+
+    public M getModel() {
+            
+        if(m==null){
+            m=newModel();
+        }
+        return m;
+    }
+        
+        
         
 }
