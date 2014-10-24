@@ -2,7 +2,7 @@
 
 
 <decorators defaultdir="/decorator" >  
-    <decorator name="default" page="default.jsp" >  
+    <decorator name="default" page="jq_ko.jsp" >  
         <pattern>/*</pattern>  
     </decorator>  
 </decorators> 

@@ -64,8 +64,6 @@ public abstract class DSAction extends DSActionSupport implements Preparable{
         
     }
     
-    public String index(){
-       return "jsp";
-    }
+   
     
 }
