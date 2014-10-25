@@ -33,10 +33,10 @@
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
 				<div class="login-wrapper">
-			        <div class="box">
+                                    <div class="box" >
 			            <div class="content-wrap">
 			                <h6>Sign In</h6>
-			                <div class="social">
+			                <div class="social" style="display: none" >
 	                            <a class="face_login" href="#">
 	                                <span class="face_icon">
 	                                    <img src="images/facebook.png" alt="fb">
@@ -49,11 +49,14 @@
 	                                <hr class="right">
 	                            </div>
 	                        </div>
-			                <input class="form-control" type="text" placeholder="E-mail address">
-			                <input class="form-control" type="password" placeholder="Password">
+                                        <form action="j_security_check" method="post">
+			                <input name="j_username" class="form-control" type="text" placeholder="User">
+			                <input name="j_password" class="form-control" type="password" placeholder="Password">
 			                <div class="action">
-			                    <a class="btn btn-primary signup" href="index.html">Login</a>
-			                </div>                
+			                    <<!-- a class="btn btn-primary signup" href="index.html">Login</a>  -->
+                                            <button type="submit" class="btn btn-default" >Login</button>
+			                </div>      
+                                        </form>
 			            </div>
 			        </div>
 

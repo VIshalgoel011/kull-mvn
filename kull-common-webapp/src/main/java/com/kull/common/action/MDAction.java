@@ -8,19 +8,23 @@ package com.kull.common.action;
 
 import com.kull.common.Utils;
 import com.kull.orm.Session;
+import com.kull.web.struts.JpaMDActionSupport;
 import com.kull.web.struts.OrmMDActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import java.sql.Connection;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 
 /**
  *
  * @author lin
  */
-public abstract class MDAction<M> extends OrmMDActionSupport<M> implements Preparable{
+public abstract class MDAction<M> extends JpaMDActionSupport<M> implements Preparable{
 
     protected String namespace,action;
     
+    protected static EntityManagerFactory EMF=Persistence.createEntityManagerFactory("kull-common");
     
      public void setNamespace(String namespace) {
         this.namespace = namespace;
@@ -32,8 +36,7 @@ public abstract class MDAction<M> extends OrmMDActionSupport<M> implements Prepa
     
     @Override
     public void prepare() throws Exception {
-        Connection conn=Utils.dbmeta();
-        setSession(new Session(conn));
+        setEntityManager(EMF.createEntityManager());
     }
 
     

@@ -18,5 +18,10 @@ public class MD_ConnAction extends MDAction<JormTable.dbmeta_conn>{
     protected JormTable.dbmeta_conn newModel() {
         return new JormTable().new dbmeta_conn();
     }
+
+    @Override
+    protected Class<JormTable.dbmeta_conn> classM() {
+       return JormTable.dbmeta_conn.class;
+    }
     
 }

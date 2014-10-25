@@ -6,14 +6,17 @@
 package com.kull.common.model;
 
 import com.kull.orm.annotation.OrmTable;
-import org.javaclub.jorm.annotation.Id;
+import javax.persistence.Id;
+
 
 /**
  *
  * @author lin
  */
+
 public class JormTable {
     
+   
    @OrmTable(name = "dbmeta_conn",pk ="id")
     public class dbmeta_conn{
        
