@@ -11,7 +11,7 @@
   	<module>kull-api</module>
   	<module>kull-web</module>
     <module>kull-common-webapp</module>
-    <module>kull-app</module>
+    
     <module>kull-common-app</module>
     <module>kull-orm</module>
   </modules>
