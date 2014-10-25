@@ -8,7 +8,6 @@
   <name>kull-mvn</name>
   <modules>
   	<module>kull-core</module>
-  	<module>kull-webapp</module>
   	<module>kull-api</module>
   	<module>kull-web</module>
     <module>kull-common-webapp</module>
