@@ -28,10 +28,14 @@ public abstract class MDActionSupport<M> extends AwareActionSupport implements M
     public void setPk(String pk) {
         this.pk = pk;
     }
+    
+    
         
        public  boolean hasPk() {
         return StringHelper.isNotBlank(pk);
-    }    
+    }
+       
+       protected abstract Class<M> classM(); 
 	
 	protected abstract M readByPk(String pk) throws Exception ;
 	
