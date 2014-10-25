@@ -9,6 +9,7 @@ and open the template in the editor.
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_version=1">  
     <persistence-unit name="kull-common" transaction-type="RESOURCE_LOCAL">  
+        <provider>org.hibernate.ejb.HibernatePersistence</provider> 
         <properties>  
             <property name="hibernate.dialect" value="org.hibernate.dialect.SQLiteDialect" />  
             <property name="hibernate.connection.driver_class" value="org.sqlite.JDBC" />  
