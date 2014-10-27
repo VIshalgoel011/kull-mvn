@@ -8,8 +8,7 @@ import com.kull.common.Utils;
 import com.kull.common.model.JormTable;
 import java.sql.Connection;
 import java.sql.SQLException;
-import org.javaclub.jorm.Session;
-import org.javaclub.jorm.jdbc.SessionFactory;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -24,7 +23,7 @@ import org.junit.Test;
 public class DBTest {
     
     Connection connDbmeta;
-    Session session;
+
 
     
     public DBTest() {
@@ -42,7 +41,7 @@ public class DBTest {
     public void setUp() throws Exception {
         connDbmeta=Utils.dbmeta();
         
-        session=SessionFactory.newSession();
+      
        // jdbcBean=new JdbcBean(Utils.dbmeta());
     }
     

@@ -33,7 +33,7 @@ ApplicationAware,CookiesAware,ParameterAware,PrincipalAware {
 	protected Map<String, Object> session,application;
 	protected Map<String, String[]> parameters;
 	protected PrincipalProxy principalProxy;
-	protected ServletConfig servletConfig;
+	
     
     @Override
 	public void setServletResponse(HttpServletResponse arg0) {
