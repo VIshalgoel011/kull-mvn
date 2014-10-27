@@ -26,7 +26,7 @@ import org.dom4j.Node;
 
 import com.kull.NetHelper;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BASE64DecoderStream;
+
 
 
 
@@ -57,7 +57,8 @@ public abstract  class BaseWebXmlService {
 	
 	protected byte[] paseBase64(Document document){
 		String str=document.getRootElement().getTextTrim();
-		return BASE64DecoderStream.decode(str.getBytes());
+                return null;
+		//return BASE64DecoderStream.decode(str.getBytes());
 	}
 	
 	protected  Document doGetEndPoint(String endpiont,String param) throws Exception{
