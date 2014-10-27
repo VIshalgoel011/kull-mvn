@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>kull-web</artifactId>
-  <name>kull-web</name>
+  <name>kull-mvn:web</name>
   <dependencies>
   
   

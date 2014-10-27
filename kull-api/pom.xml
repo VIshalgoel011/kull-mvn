@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>kull-api</artifactId>
-  <name>kull-api</name>
+  <name>kull-mvn:api</name>
   <dependencies>
   	<dependency>
   		<groupId>com.kull</groupId>

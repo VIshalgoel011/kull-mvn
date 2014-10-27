@@ -12,7 +12,8 @@ import com.kull.orm.Session;
 import com.kull.script.Html;
 
 import com.kull.web.Utils;
-import com.kull.web.anntation.Ajax;
+import com.kull.web.anntation.DwrAjax;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -172,7 +173,7 @@ public abstract class DSActionSupport extends AwareActionSupport {
         return sql;
     }
 
-    @Ajax(method = Ajax.Method.post)
+    @DwrAjax(method = DwrAjax.Method.post)
     public void grid() throws IOException {
 
         Session session = new Session(connection);

@@ -8,6 +8,7 @@
     </parent>
     <artifactId>kull-orm</artifactId>
     <packaging>jar</packaging>
+    <name>kull-mvn:orm</name>
     <dependencies>
         <dependency>
             <groupId>org.mybatis</groupId>

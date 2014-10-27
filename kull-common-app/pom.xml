@@ -8,6 +8,7 @@
     </parent>
     <artifactId>kull-common-app</artifactId>
     <packaging>jar</packaging>
+    <name>kull-mvn:common-app</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
