@@ -6,22 +6,22 @@
 package com.kull.common.action.dbmeta;
 
 import com.kull.common.action.MDAction;
-import com.kull.common.model.JormTable;
+import com.kull.common.model.KullCommonDBML;
 
 /**
  *
  * @author lin
  */
-public class MD_ConnAction extends MDAction<JormTable.dbmeta_conn>{
+public class MD_ConnAction extends MDAction<KullCommonDBML.dbmeta_conn>{
 
     @Override
-    protected JormTable.dbmeta_conn newModel() {
-        return new JormTable().new dbmeta_conn();
+    protected KullCommonDBML.dbmeta_conn newModel() {
+        return new KullCommonDBML().new dbmeta_conn();
     }
 
     @Override
-    protected Class<JormTable.dbmeta_conn> classM() {
-       return JormTable.dbmeta_conn.class;
+    protected Class<KullCommonDBML.dbmeta_conn> classM() {
+       return KullCommonDBML.dbmeta_conn.class;
     }
     
 }

@@ -3,30 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package com.kull.common.test;
 
-import com.kull.common.Utils;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-
+import com.kull.common.Env;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
+import static org.junit.Assert.*;
 
 /**
  *
  * @author lin
  */
-public class DBTest {
+public class EnvTest {
     
-    Connection connDbmeta;
-
-
-    
-    public DBTest() {
+    public EnvTest() {
     }
     
     @BeforeClass
@@ -38,11 +34,7 @@ public class DBTest {
     }
     
     @Before
-    public void setUp() throws Exception {
-        connDbmeta=Utils.dbmeta();
-        
-      
-       // jdbcBean=new JdbcBean(Utils.dbmeta());
+    public void setUp() {
     }
     
     @After
@@ -53,15 +45,16 @@ public class DBTest {
     // The methods must be annotated with annotation @Test. For example:
     //
      @Test
-     public void dbmeta() throws SQLException, Exception {
-         String sql="select * from dbmeta_conn ";
-          //connDbmeta.createStatement().executeUpdate("create table people (name, occupation);");
-           // connDbmeta.createStatement().executeQuery(sql);
-          //JdbcBean.close(connDbmeta, null, null);
-         
-        
-         
+     public void hello() {
+         Map map = System.getenv();  
+Iterator it = map.entrySet().iterator();  
+while(it.hasNext())  
+{  
+    Entry entry = (Entry)it.next();  
+    System.out.print(entry.getKey()+"=");  
+    System.out.println(entry.getValue());  
+}
+        String val= Env.dbpath();
+         assertEquals(val, "i:/kull-common.db3");
      }
-     
-     
 }

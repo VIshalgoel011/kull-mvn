@@ -36,7 +36,7 @@ public abstract class DSActionSupport extends AwareActionSupport {
     protected Connection connection;
 
     protected Integer start=0, limit=Integer.MAX_VALUE ;
-    protected String rowsName="rows",totalName="total",errTypeName="errtype",errMsgName="errmsg";
+    protected final String rowsName="rows",totalName="total",errTypeName="errtype",errMsgName="errmsg";
 
     public void setStart(Integer start) {
         this.start = start;
@@ -297,7 +297,7 @@ public abstract class DSActionSupport extends AwareActionSupport {
 		.append(Html.fieldset("easyui-datagrid js", "<pre>"+StringHelper.htmlWapper(datagrid_js.toString())+"</pre>"))
 		.append("</body></html>");
                 Session.close(connection, ps, null);
-                Utils.writeJavascript(this.response, html.toString());
+                this.response.getWriter().write(html.toString());
 		
 	}
 }
