@@ -1,7 +1,10 @@
 package com.kull.orm.dialect;
 
 import com.kull.orm.Database;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.util.Set;
 
 
 
@@ -71,6 +74,16 @@ public class OracleDialect extends Dialect{
 		String pattern="to_date({0},''{1}'')";
 		return MessageFormat.format(pattern,regexp,dateRegexp);
 	}
+
+    @Override
+    public Set<String> showTables(Connection conn) throws SQLException{
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<String> showViews(Connection conn) throws SQLException{
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 	
 

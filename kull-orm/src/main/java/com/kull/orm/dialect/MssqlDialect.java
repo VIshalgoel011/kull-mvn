@@ -1,6 +1,9 @@
 package com.kull.orm.dialect;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 
 
@@ -104,6 +107,16 @@ public class MssqlDialect extends Dialect{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    @Override
+    public Set<String> showTables(Connection conn) throws SQLException{
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<String> showViews(Connection conn) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 
 }

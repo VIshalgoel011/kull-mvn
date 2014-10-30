@@ -3,6 +3,13 @@ package com.kull.orm.dialect;
 import java.text.MessageFormat;
 
 import com.kull.orm.Database;
+import com.kull.orm.Session;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 
 
@@ -46,5 +53,23 @@ public class MySQLDialect extends Dialect{
 		String pattern="str_to_date({0},''{1}'')";
 		return MessageFormat.format(pattern,regexp,dateRegexp);
 	}   
+
+    @Override
+    public Set<String> showTables(Connection conn) throws SQLException {
+        String sql="show tables";
+        Set<String> tables=new HashSet<>();
+        PreparedStatement ps= conn.prepareStatement(sql);
+        ResultSet rs=ps.executeQuery();
+        while(rs.next()){
+           tables.add(rs.getString(1));
+        }
+        Session.close(null, ps, rs);
+        return tables;
+    }
+
+    @Override
+    public Set<String> showViews(Connection conn) throws SQLException{
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
   
 }

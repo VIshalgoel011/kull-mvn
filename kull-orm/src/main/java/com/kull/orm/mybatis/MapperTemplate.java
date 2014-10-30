@@ -50,7 +50,7 @@ public  class MapperTemplate  {
 	
 	private boolean isOverWriterExtra=false;
 	
-	private String baseModelPrefix="Base";
+	private String baseModelPrefix="";
 	
 	public void setOverWriterExtra(boolean isOverWriterExtra) {
 		this.isOverWriterExtra = isOverWriterExtra;
@@ -1136,40 +1136,46 @@ public  class MapperTemplate  {
     	return document;
     }
     
-    public boolean generalBaseModel(String srcPath){
+    public StringBuffer contextBaseModel(String classSimpleName){
+        StringBuffer context=new StringBuffer("");
     	
-        boolean isSuccess=false;
-    	StringBuffer context=new StringBuffer("");
-    	Class[] importClss={List.class,Date.class,Timestamp.class,IModel.class,Resultable.class,Set.class,ObjectHelper.class};
-    	context
-    	.append("package "+this.modelClass.getPackage().getName()+";").append(StringHelper.ln(2));
-    	for(Class importCls : importClss){
-    		context.append("import "+importCls.getName()+";").append(StringHelper.ln())
-        	;
-    	}
-    	
-    	context
+        
+        context
     	.append(StringHelper.ln(3))
-    	.append("public abstract class "+baseModelPrefix+this.modelClass.getSimpleName()+" implements "+IModel.class.getSimpleName()+"{").append(StringHelper.ln(2))
-   	.append(StringHelper.tab()).append("public enum F { \n \t"+this.getEnum()+" \n\t }").append(StringHelper.ln(2))
-    .append(this.implementIModelContext()).append(StringHelper.ln(3))	
+        .append("@OrmTable(name=\""+classSimpleName+"\",pk=\""+pk+"\" )").append("\n")
+    	.append("public  class "+baseModelPrefix+classSimpleName+" {").append(StringHelper.ln(2))
+   	//.append(StringHelper.tab()).append("public enum F { \n \t"+this.getEnum()+" \n\t }").append(StringHelper.ln(2))
+
    	.append(this.getJavaColsContext()).append(StringHelper.ln(3))
     	;
-    	
-    	for (ColumnTemplate columnTemplate : this.cols) {
+                
+        for (ColumnTemplate columnTemplate : this.cols) {
     		
     		context
     		.append(getsetContext(columnTemplate)).append(StringHelper.ln(2))
 			;
 		}
-    	
-    	context
-    	.append("public class Query {\n\n")
-    	.append(this.getQueryColsContext()).append(StringHelper.ln(2))
-    	.append("}  //end Query").append(StringHelper.ln(3))
-    	.append("} //end "+this.modelClass.getSimpleName());
-    	
+           	context
+    	//.append("public class Query {\n\n")
+    	//.append(this.getQueryColsContext()).append(StringHelper.ln(2))
+    	//.append("}  //end Query").append(StringHelper.ln(3))
+    	.append("} //end "+classSimpleName);
+        return context;
+    }
     
+    public boolean generalBaseModel(String srcPath){
+    	
+        boolean isSuccess=false;
+    	StringBuffer context=new StringBuffer();
+        Class[] importClss={List.class,Date.class,Timestamp.class,IModel.class,Resultable.class,Set.class,ObjectHelper.class};
+    	context
+    	.append("package "+this.modelClass.getPackage().getName()+";").append(StringHelper.ln(2));
+    	for(Class importCls : importClss){
+    		context.append("import "+importCls.getName()+";").append(StringHelper.ln())
+        	;
+    	}        
+        context.append(contextBaseModel(this.modelClass.getSimpleName()));
+    	
     	//System.out.println(context);
     	String path=srcPath+this.modelClass.getPackage().getName().replace('.','/')+"/"+baseModelPrefix+this.modelClass.getSimpleName()+".java";
     	File javaFile=new File(path);

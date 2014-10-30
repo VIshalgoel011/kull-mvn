@@ -82,9 +82,14 @@ public class MapperFactory {
 	}
 	
 	public  MapperTemplate createMapperTemplate(Class<? extends IMapper> nameSpace,String table,String pk,Set<String> excludeColumns,String idGener) throws Exception{
-		Class modelClass=(Class) ObjectHelper.actualTypeBy(nameSpace,IMapper.INDEX_MODEL_CLASS);
-		if(modelClass==null || nameSpace==null)throw new Exception("MapperFactory creating error: nameSpace and modelclass can't be null");
-		MapperTemplate mapper=null;
+	   MapperTemplate mapper=null;	
+           Class modelClass=null;
+            if(nameSpace!=null){
+                 modelClass=(Class) ObjectHelper.actualTypeBy(nameSpace,IMapper.INDEX_MODEL_CLASS);
+		if(modelClass==null )throw new Exception("MapperFactory creating error: nameSpace and modelclass can't be null");
+		
+                }
+                
 		try {
 			
 			String pattern="select * from {0} where 1=2";

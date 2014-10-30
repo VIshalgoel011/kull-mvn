@@ -1,5 +1,8 @@
 package com.kull.orm.dialect;
 
+import java.sql.Connection;
+import java.util.Set;
+
 
 
 
@@ -28,5 +31,15 @@ public class SybaseDialect extends Dialect{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    @Override
+    public Set<String> showTables(Connection conn) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<String> showViews(Connection conn) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
