@@ -5,28 +5,32 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@page import="com.kull.common.Html"%>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <script type="text/javascript">
+            com.kull.writeScript("js/com.kull.easyui.js");
+            com.kull.writeScript("<%=Html.cdnPath %>/jquery-easyui-datagridview/datagrid-groupview.js"); 
+             
+           
+        </script>
     </head>
     <body>
-        <table id="table-datagrid" class="easyui-datagrid" data-options="url:'/kull-common-webapp/dbmeta/DS_Conn/grid',fit:true,toolbar:'#div-toolbar',idField:'_id'"> 
+        <table id="grid" class="easyui-datagrid"  data-options="url:'dbmeta/DS_Conn/grid',fit:true,toolbar:'#div-toolbar',idField:'id'
+             , groupField:'driver' ,view: groupview,curl:'dbmeta/MD_Conn/save/{id}',uurl:'dbmeta/MD_Conn/save/{id}',durl:'dbmeta/MD_Conn/delete/{id}',rurl:'dbmeta/MD_Conn/read/{id}'
+               "> 
 <thead data-options="frozen:true"><tr> </thead><thead><tr> 
-	<th data-options="field:'id',width:180,title:'id',editor:{ type:'validatebox',options:{required:true } }">id</th> 
+	
 	<th data-options="field:'name',width:180,title:'name',editor:{ type:'validatebox',options:{required:true } }">name</th> 
 	<th data-options="field:'descp',width:180,title:'descp',editor:{ type:'validatebox',options:{required:true } }">descp</th> 
-	<th data-options="field:'dialect',width:180,title:'dialect',editor:{ type:'validatebox',options:{required:true } }">dialect</th> 
+	
 	<th data-options="field:'driver',width:180,title:'driver',editor:{ type:'validatebox',options:{required:true } }">driver</th> 
-	<th data-options="field:'user',width:180,title:'user',editor:{ type:'validatebox',options:{required:true } }">user</th> 
-	<th data-options="field:'pwd',width:180,title:'pwd',editor:{ type:'validatebox',options:{required:true } }">pwd</th> 
-	<th data-options="field:'url',width:180,title:'url',editor:{ type:'validatebox',options:{required:true } }">url</th> 
-	<th data-options="field:'lastcheck_at',width:180,title:'lastcheck_at',editor:{ type:'validatebox',options:{required:true } }">lastcheck_at</th> 
-	<th data-options="field:'lastcheck_re',width:180,title:'lastcheck_re',editor:{ type:'validatebox',options:{required:true } }">lastcheck_re</th> 
-	<th data-options="field:'lastcheck_msg',width:180,title:'lastcheck_msg',editor:{ type:'validatebox',options:{required:true } }">lastcheck_msg</th> 
+	<th data-options="field:'user',width:180,title:'user',editor:{ type:'validatebox',options:{required:false } }">user</th> 
+	<th data-options="field:'pwd',width:180,title:'pwd',editor:{ type:'validatebox',options:{required:false } }">pwd</th> 
+	<th data-options="field:'url',width:180,title:'url',editor:{ type:'validatebox',options:{required:false } }">url</th> 
+	
 </thead></tr> 
 </table>
 <div id="div-toolbar"></div>

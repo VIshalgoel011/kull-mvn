@@ -219,7 +219,7 @@ $.extend($.fn.dialog.methods, {
     				var value=data[i]["value"];
     				json[name]=value;
     			}
-    			var str=Kull.stringify(json);
+    			var str=com.kull.stringify(json);
     			var textarea=$("<textarea id='textarea-paste' cols='100' rows='12' readonly></textarea>");
     			textarea.val(str);
     			$("<div></div>").append(textarea).dialog({title:"复制板",modal:true});
@@ -685,19 +685,19 @@ $.fn.datagrid.defaults.onRowContextMenu	=function(e, rowIndex, rowData){
     item_reload =divMenu.menu('findItem', "刷新");
 	var item_copy_thisrow={parent:item_copy.target,text:"本行",handler:function(){
 		var textarea=$("<textarea id='textarea-paste' cols='100' rows='12' readonly></textarea>");
-		textarea.val(Kull.stringify(rowData));
+		textarea.val(com.kull.stringify(rowData));
 		$("<div></div>").append(textarea).dialog({title:"复制板",modal:true});
 	}};
 	var item_copy_selectrow={parent:item_copy.target,text:"选择行",handler:function(){
 		var textarea=$("<textarea id='textarea-paste' cols='100' rows='12' readonly></textarea>");
 		var ds=_datagrid.datagrid("getSelections");
-		textarea.val(Kull.stringify(ds["rows"]));
+		textarea.val(com.kull.stringify(ds["rows"]));
 		$("<div></div>").append(textarea).dialog({title:"复制板",modal:true});
 	}};
 	var item_copy_allrow={parent:item_copy.target,text:"全部行",handler:function(){
 		var textarea=$("<textarea id='textarea-paste' cols='100' rows='12' readonly></textarea>");
 		var ds=_datagrid.datagrid("getData");
-		textarea.val(Kull.stringify(ds["rows"]));
+		textarea.val(com.kull.stringify(ds["rows"]));
 		$("<div></div>").append(textarea).dialog({title:"复制板",modal:true});
 	}};
 	

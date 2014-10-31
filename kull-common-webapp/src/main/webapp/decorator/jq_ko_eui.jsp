@@ -4,13 +4,14 @@
     Author     : lin
 --%>
 
+<%@page import="com.kull.common.Html"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>  
 <%@ taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %>  
 <%  
 String path = request.getContextPath();  
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";  
-String cdnPath="http://smartken.github.io/cdn",bootcdnBase="http://cdn.bootcss.com";
+
 boolean isDebug=true;   
    String script="script";
    String ver_easyui=request.getParameter("ver_easyui")
@@ -38,20 +39,28 @@ boolean isDebug=true;
           <base href="<%=basePath%>" >  
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><decorator:title default="装饰器页面"/></title>
-         <link rel="stylesheet" type="text/css" href="<%=bootcdnBase %>/normalize/3.0.1/normalize.css">
+        <link rel="stylesheet" type="text/css" href="<%=Html.bootcdnBase %>/normalize/3.0.1/normalize.css">
 
-<link rel="stylesheet" type="text/css" href="<%=cdnPath %>/jquery-easyui-<%=ver_easyui %>/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css" href="<%=cdnPath %>/jquery-easyui-<%=ver_easyui %>/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="<%=Html.cdnPath %>/jquery-easyui-<%=ver_easyui %>/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="<%=Html.cdnPath %>/jquery-easyui-<%=ver_easyui %>/themes/icon.css">
+
+<script type="text/javascript" src="js/com.kull.js"></script>
+         <script type="text/javascript" >
+             com.kull.writeScript("<%=Html.bootcdnBase %>/jquery/2.1.1-rc2/jquery.min.js");
+             com.kull.writeScript("<%=Html.bootcdnBase %>/knockout/3.2.0/knockout-min.js");
+             com.kull.writeScript("<%=Html.cdnPath %>/jquery-easyui-<%=ver_easyui %>/jquery.easyui.min.js");
+             com.kull.writeScript("<%=Html.cdnPath %>/jquery-easyui-<%=ver_easyui %>/locale/easyui-lang-zh_CN.js");
+              com.kull.writeScript("js/jeasyui.extension.js");
+         </script>
+
+
     <decorator:head />  
     </head>
     <body>
         <decorator:body  />
         
-         <script type="text/javascript" src="js/kull.js"></script>
-<script type="text/javascript" src="<%=bootcdnBase %>/jquery/2.1.1-rc2/jquery.min.js"></script>
-<script type="text/javascript" src="<%=bootcdnBase %>/knockout/3.2.0/knockout-min.js"></script>
-<script type="text/javascript" src="<%=cdnPath %>/jquery-easyui-<%=ver_easyui %>/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="<%=cdnPath %>/jquery-easyui-<%=ver_easyui %>/locale/easyui-lang-zh_CN.js"></script>
+         
+
 
 <%@include file="/view/ko.applyBindings.jspf"  %>
 

@@ -76,6 +76,14 @@ id="WebApp_ID" version="2.5">
  </filter-mapping>
  
  
+ <listener >
+     <listener-class>com.kull.common.ContextListener</listener-class>
+ </listener>
+ 
+  <context-param> 
+       <param-name>appkey</param-name> 
+       <param-value>00000</param-value > 
+    </context-param> 
  
  
  <!-- 

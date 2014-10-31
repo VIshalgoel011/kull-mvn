@@ -11,6 +11,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.text.MessageFormat;
 import com.kull.orm.Database;
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Options;
 /**
  *
  * @author lin
@@ -45,8 +49,16 @@ public class JormConsole extends Console{
     
     public static void main(String[] args) throws IOException, Exception {
         
+        
+        
          JormConsole console=new JormConsole();
          console.welcome();
+         Options options=new Options();
+         options.addOption("p",false,"");
+         
+         CommandLineParser parser=new BasicParser();
+         CommandLine cmd=parser.parse(options, args);
+         
          //console.customConnection();
          console.setConnection(Database.createSqllteConnection("I:\\ws-nb\\kull-mvn\\kull-common-webapp\\src\\main\\resources\\kull.db3"));
     
