@@ -6,18 +6,25 @@
 package com.kull.web.struts;
 
 import com.kull.orm.Session;
+import java.sql.Connection;
 
 /**
  *
  * @author lin
- */ 
-public abstract class OrmMDActionSupport<M> extends MDActionSupport<M>{
+ */
+public abstract class SqlMDActionSupport<M> extends MDActionSupport<M>{
     
-    protected Session session;
+    protected Connection connection;
+     protected Session session;
 
-    public void setSession(Session session) {
-        this.session = session;
+   
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+        this.session=new Session(this.connection);
     }
+    
+    
 
     @Override
     protected M readByPk(String pk) throws Exception{
@@ -39,8 +46,5 @@ public abstract class OrmMDActionSupport<M> extends MDActionSupport<M>{
     protected void _delete(M m) throws Exception {
         session.delete(m);
     }
-    
-    
-    
     
 }

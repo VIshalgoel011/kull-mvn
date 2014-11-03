@@ -8,7 +8,7 @@ package com.kull.common.action;
 
 import com.kull.common.Utils;
 import com.kull.orm.Session;
-import com.kull.web.struts.OrmMDActionSupport;
+import com.kull.web.struts.SqlMDActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
 
@@ -16,7 +16,7 @@ import com.opensymphony.xwork2.Preparable;
  *
  * @author lin
  */
-public abstract class MDAction<M> extends OrmMDActionSupport<M> implements Preparable{
+public abstract class MDAction<M> extends SqlMDActionSupport<M> implements Preparable{
 
     protected String namespace,action;
     
@@ -33,7 +33,8 @@ public abstract class MDAction<M> extends OrmMDActionSupport<M> implements Prepa
     @Override
     public void prepare() throws Exception {
         //setEntityManager(Persistence.createEntityManagerFactory("kull-common").createEntityManager());
-        this.setSession(new Session(Utils.dbmeta()));
+        
+        this.setConnection(Utils.dbmeta());
     }
 
     
