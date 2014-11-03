@@ -49,7 +49,7 @@ public class MemcachedTest {
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
-    @Test
+   // @Test
      public void localhost() throws InterruptedException, ExecutionException {
      
           final String host = "localhost";//控制台上的“内网地址”
