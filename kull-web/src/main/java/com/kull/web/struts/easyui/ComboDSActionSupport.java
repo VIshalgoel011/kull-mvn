@@ -13,6 +13,7 @@ import com.kull.script.Html;
 import com.kull.script.JsMap;
 import com.kull.web.Utils;
 import com.kull.web.struts.DSActionSupport;
+import com.kull.web.struts.SqlDSActionSupport;
 import java.io.IOException;
 
 import java.text.MessageFormat;
@@ -25,7 +26,7 @@ import java.util.Map;
  *
  * @author lin
  */
-public abstract class ComboDSActionSupport extends DSActionSupport{
+public abstract class ComboDSActionSupport extends SqlDSActionSupport{
     
     public final String ordernoField="_orderno",textField="_text",valueField="_code";
 

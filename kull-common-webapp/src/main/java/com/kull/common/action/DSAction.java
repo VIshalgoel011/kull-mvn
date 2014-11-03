@@ -11,6 +11,7 @@ import com.kull.orm.dialect.Dialect;
 import com.kull.orm.dialect.SqliteDialect;
 
 import com.kull.web.struts.DSActionSupport;
+import com.kull.web.struts.SqlDSActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -21,7 +22,7 @@ import javax.servlet.ServletException;
  *
  * @author lin
  */
-public abstract class DSAction extends DSActionSupport implements Preparable{
+public abstract class DSAction extends SqlDSActionSupport implements Preparable{
   
     public final static  Dialect dialect=new SqliteDialect();
     

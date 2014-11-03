@@ -16,11 +16,12 @@ import com.kull.ObjectHelper;
 import com.kull.orm.Session;
 import com.kull.web.Utils;
 import com.kull.web.struts.DSActionSupport;
+import com.kull.web.struts.SqlDSActionSupport;
 import java.io.IOException;
 
 
 
-public abstract class TreeDSActionSupport extends DSActionSupport {
+public abstract class TreeDSActionSupport extends SqlDSActionSupport {
 
 	public final String idField="id",textField="text",_parentIdField="_parentId",iconClsField="iconCls",childrenField="children",attributesField="attributes",stateField="state",checkedField="checked";
 	
@@ -60,9 +61,7 @@ public abstract class TreeDSActionSupport extends DSActionSupport {
 		
 	}
 	
-	public void grid(){
-		
-	}
+	
 	
 	protected Vector<Map<String,Object>> createTreeNodes(LinkedList<Map<String,Object>> list,String root) {
 		Vector<Map<String,Object>> nodes=new Vector<Map<String,Object>>();

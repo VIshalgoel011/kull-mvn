@@ -12,11 +12,12 @@ import com.kull.StringHelper;
 import com.kull.orm.Session;
 import com.kull.script.Html;
 import com.kull.web.struts.DSActionSupport;
+import com.kull.web.struts.SqlDSActionSupport;
 
 
 
 
-public abstract class TreegridDSActionSupport extends DSActionSupport {
+public abstract class TreegridDSActionSupport extends SqlDSActionSupport {
 	public final String _parentIdField="_parentId";
 
 	protected String root;

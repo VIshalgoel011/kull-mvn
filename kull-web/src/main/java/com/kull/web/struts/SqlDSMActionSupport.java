@@ -5,12 +5,10 @@
  */
 package com.kull.web.struts;
 
-
 import com.kull.LinqHelper;
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
 import com.kull.util.Resultable;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +16,14 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
-
-
 /**
  *
  * @author lin
  */
-public abstract class DSMActionSupport<M> extends DSActionSupport{
+public abstract class SqlDSMActionSupport<M> extends SqlDSActionSupport {
     
-    
-    protected String rows,pk,pkname="id";
+  
+        protected String rows,pk,pkname="id";
 
     public void setRows(String rows) {
         this.rows = rows;
@@ -37,9 +33,19 @@ public abstract class DSMActionSupport<M> extends DSActionSupport{
         this.pk = pk;
     }
 
-    protected abstract void _create(M m);
-   protected abstract void _delete(M m);
-   protected abstract void _update(M m);
+    protected void _create(M m) throws Exception {
+        session.insert(m);
+    }
+
+    protected void _delete(M m) throws Exception {
+        session.delete(m);
+    }
+
+    protected void _update(M m) throws Exception {
+        session.update(m);
+    }
+
+
 
 
         protected  boolean onCreate( M m, Resultable re,List<M> sources,List<M> submits  ){return true;}
@@ -158,10 +164,10 @@ public abstract class DSMActionSupport<M> extends DSActionSupport{
             return isNew;
         }
 
-    protected boolean isUndefined(Object pkval) {
+    protected static boolean isUndefined(Object pkval) {
         return pkval==null||StringHelper.isBlank(pkval.toString());
     }
    
-
-   
+    
+    
 }

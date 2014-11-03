@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/kull-common-webapp"/>
+<Context antiJARLocking="true" path="/kull-common-webapp" >
+
+     <Manager className="de.javakaffee.web.msm.MemcachedBackupSessionManager"
+    memcachedNodes="n1:2dbefb89100111e4.m.cnhzalicm10pub001.ocs.aliyuncs.com:11211"
+    failoverNodes="n1"
+    requestUriIgnorePattern=".*\.(ico|png|gif|jpg|css|js)$"
+    transcoderFactoryClass="de.javakaffee.web.msm.serializer.kryo.KryoTranscoderFactory"
+    />
+
+
+</Context>
