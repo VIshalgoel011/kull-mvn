@@ -8,7 +8,7 @@ package com.kull.web.struts;
 import com.kull.LinqHelper;
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
-import com.kull.util.Resultable;
+import com.kull.able.Resultable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,12 +1,5 @@
 package com.kull.orm;
 
-import java.util.List;
-import java.util.Date;
-import java.sql.Timestamp;
-import com.kull.util.IModel;
-import com.kull.util.Resultable;
-import java.util.Set;
-import com.kull.ObjectHelper;
 import com.kull.orm.annotation.OrmTable;
 
 

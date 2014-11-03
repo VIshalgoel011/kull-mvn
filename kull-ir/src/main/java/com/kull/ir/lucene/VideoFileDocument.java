@@ -1,4 +1,4 @@
-package com.kull.lucene;
+package com.kull.ir.lucene;
 
 import java.io.File;
 import java.io.IOException;

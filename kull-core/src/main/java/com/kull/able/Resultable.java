@@ -1,4 +1,4 @@
-package com.kull.util;
+package com.kull.able;
 
 import java.text.MessageFormat;
 

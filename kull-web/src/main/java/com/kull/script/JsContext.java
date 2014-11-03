@@ -4,13 +4,13 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.kull.util.IScript;
+import com.kull.able.Scriptable;
 
 
 
 
 
-public class JsContext implements IScript {
+public class JsContext implements Scriptable {
 
 	public static final String SCRIPT_START = null;
 	public static final String SCRIPT_END = null;
@@ -31,9 +31,9 @@ public class JsContext implements IScript {
 	public JsContext appendScript(Object script)
 	{
 		if(script==null) return this;
-		if(script instanceof IScript)
+		if(script instanceof Scriptable)
 		{
-			this.scripts.add(((IScript) script).toScirpt());
+			this.scripts.add(((Scriptable) script).toScirpt());
 		}else
 		{
 			this.scripts.add(script.toString());

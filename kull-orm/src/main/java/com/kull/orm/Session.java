@@ -9,7 +9,6 @@ import com.kull.LinqHelper;
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
 import com.kull.orm.annotation.OrmTable;
-import com.kull.util.IQueryable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

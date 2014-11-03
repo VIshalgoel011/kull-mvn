@@ -2,15 +2,13 @@ package com.kull.script;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-import com.kull.util.IScript;
+import com.kull.able.Scriptable;
 
 
 
 
-public class JsList<E> extends ArrayList<E> implements IScript {
+public class JsList<E> extends ArrayList<E> implements Scriptable {
 
 	
 	
@@ -23,7 +21,7 @@ public class JsList<E> extends ArrayList<E> implements IScript {
 			Object tempObj=it.next();
         	if((tempObj instanceof JsMap) ||( tempObj instanceof JsList) )
 			{
-			  lSbrReturn.append(((IScript)tempObj).toScirpt()).append("\n");
+			  lSbrReturn.append(((Scriptable)tempObj).toScirpt()).append("\n");
 			}
 
         	if(it.hasNext())

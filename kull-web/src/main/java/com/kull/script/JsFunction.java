@@ -1,15 +1,14 @@
 package com.kull.script;
 
 import java.text.MessageFormat;
-import java.util.Iterator;
 
 
 import com.kull.ObjectHelper;
-import com.kull.util.IScript;
+import com.kull.able.Scriptable;
 
 
 
-public class JsFunction implements IScript {
+public class JsFunction implements Scriptable {
 
 	private StringBuffer parmas=new StringBuffer("");
 	private StringBuffer context=new StringBuffer("");
@@ -61,7 +60,7 @@ public class JsFunction implements IScript {
 		return this;
 	}
 	
-	public JsFunction appendContext(IScript pContext)
+	public JsFunction appendContext(Scriptable pContext)
 	{
 		this.context.append(pContext.toScirpt()).append("\n");
 		return this;

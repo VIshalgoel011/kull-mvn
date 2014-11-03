@@ -3,18 +3,15 @@ package com.kull.script;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
-
-import javax.crypto.spec.OAEPParameterSpec;
 
 import com.kull.ObjectHelper;
-import com.kull.util.IScript;
+import com.kull.able.Scriptable;
 
 
 
 
 
-public class JQuery implements IScript {
+public class JQuery implements Scriptable {
 
 	
 	private String object;
@@ -52,9 +49,9 @@ public class JQuery implements IScript {
 	public JQuery appendParma(Object parma,boolean isStr)
 	{
 		String tempStr="";
-		if(parma instanceof IScript)
+		if(parma instanceof Scriptable)
 		{
-			tempStr=((IScript)parma).toScirpt();
+			tempStr=((Scriptable)parma).toScirpt();
 		}else
 		{
 			tempStr=parma.toString();

@@ -2,20 +2,17 @@ package com.kull.orm.dialect;
 
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
+import com.kull.able.Ormable;
 import com.kull.orm.Database;
 import com.kull.orm.annotation.OrmTable;
 import com.kull.orm.mybatis.MapperFactory;
 import com.kull.orm.mybatis.MapperTemplate;
-import com.kull.util.IModel;
-import com.kull.util.Resultable;
+
+import com.kull.able.Resultable;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -69,7 +66,7 @@ public abstract class Dialect {
          
          StringBuffer context=new StringBuffer("");
          
-        Class[] importClss={List.class,Date.class,Timestamp.class,IModel.class,Resultable.class,Set.class,ObjectHelper.class,OrmTable.class};
+        Class[] importClss={List.class,Date.class,Timestamp.class,Ormable.class,Resultable.class,Set.class,ObjectHelper.class,OrmTable.class};
     	context
     	.append("package "+packg+";").append(StringHelper.ln(2));
     	for(Class importCls : importClss){

@@ -1,27 +1,20 @@
 package com.kull.web.struts.easyui;
 
 
+import com.kull.able.Scriptable;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-
-import javax.swing.plaf.basic.BasicComboBoxUI.ComboBoxLayoutManager;
 
 
 
 
 import com.kull.script.*;
-import com.kull.util.IScript;
 
 
 
 
-public class EasyUiPlugin implements IScript{
+
+public class EasyUiPlugin implements Scriptable{
 
 	private String object;
 	private String uiName;

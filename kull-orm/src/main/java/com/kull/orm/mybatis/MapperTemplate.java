@@ -1,6 +1,5 @@
 package com.kull.orm.mybatis;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,11 +34,12 @@ import org.dom4j.io.SAXReader;
 
 
 import com.kull.*;
+import com.kull.able.Ormable;
 import com.kull.orm.Column;
 import com.kull.orm.dialect.Dialect;
 
-import com.kull.util.IModel;
-import com.kull.util.Resultable;
+
+import com.kull.able.Resultable;
 
 
 
@@ -1167,7 +1167,7 @@ public  class MapperTemplate  {
     	
         boolean isSuccess=false;
     	StringBuffer context=new StringBuffer();
-        Class[] importClss={List.class,Date.class,Timestamp.class,IModel.class,Resultable.class,Set.class,ObjectHelper.class};
+        Class[] importClss={List.class,Date.class,Timestamp.class,Ormable.class,Resultable.class,Set.class,ObjectHelper.class};
     	context
     	.append("package "+this.modelClass.getPackage().getName()+";").append(StringHelper.ln(2));
     	for(Class importCls : importClss){

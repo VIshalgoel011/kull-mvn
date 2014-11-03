@@ -7,7 +7,7 @@ package com.kull.web.struts;
 
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
-import com.kull.util.Resultable;
+import com.kull.able.Resultable;
 import com.kull.web.Utils;
 import com.opensymphony.xwork2.ModelDriven;
 import java.io.IOException;

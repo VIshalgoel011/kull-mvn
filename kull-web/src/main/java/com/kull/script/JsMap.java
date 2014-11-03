@@ -3,17 +3,15 @@ package com.kull.script;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-import com.kull.util.IScript;
+import com.kull.able.Scriptable;
 
 
 
 
 
 
-public class JsMap<K,V> extends HashMap<K, V> implements IScript{
+public class JsMap<K,V> extends HashMap<K, V> implements Scriptable{
 
 
 	
@@ -38,9 +36,9 @@ public class JsMap<K,V> extends HashMap<K, V> implements IScript{
 			K tempKey=itKey.next();
 			Object tempObj=this.get(tempKey);
 			String tempStr="";
-			if(tempObj instanceof IScript)
+			if(tempObj instanceof Scriptable)
 			{
-				tempStr=((IScript)tempObj).toScirpt();
+				tempStr=((Scriptable)tempObj).toScirpt();
 			}else
 			{
 				tempStr=tempObj.toString();

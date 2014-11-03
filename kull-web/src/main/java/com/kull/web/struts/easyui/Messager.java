@@ -8,12 +8,13 @@ import java.text.MessageFormat;
 
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
+import com.kull.able.Scriptable;
 import com.kull.script.*;
-import com.kull.util.IScript;
 
 
 
-public class Messager  implements IScript {
+
+public class Messager  implements Scriptable {
 
 	public static String SHOW_TYPE_SLIDE="slide";
 	public static String SHOW_TYPE_FADE="fade";

@@ -1,4 +1,4 @@
-package com.kull.lucene;
+package com.kull.ir.lucene;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;

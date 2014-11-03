@@ -1,7 +1,10 @@
-package com.kull.lucene;
+package com.kull.ir.lucene;
 
 import java.io.File;
 import java.io.IOException;
+
+
+
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.DirectoryReader;
@@ -9,57 +12,70 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.IOContext;
 import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
-public class RamFsDirectory extends RAMDirectory {
+public class FsRamDirectory {
 
 
 	   private final FSDirectory fsDirectory;
-	   
+	   private final RAMDirectory ramDirectory;
 	   private final  File indexDir;
 	   public final IndexWriter ramIndexWriter,fsIndexWriter;
 	   //public final IndexSearcher ramIndexSearcher;
-	   public final IndexWriterConfig indexWriterConfig;
+	  public final IndexWriterConfig indexWriterConfig;
 	   
-	   public RamFsDirectory(String path,Analyzer analyzer) throws IOException{
-		    super(NIOFSDirectory.open(new File(path)),new IOContext());
-		    IOContext ioContext=new IOContext();
+	   public FsRamDirectory(String path,Analyzer analyzer) throws IOException{
+		   IOContext ioContext=new IOContext();
 			indexDir=new File(path);
 			fsDirectory=NIOFSDirectory.open(indexDir);
+			ramDirectory=new RAMDirectory(fsDirectory,ioContext);
 			indexWriterConfig=new IndexWriterConfig(Version.LUCENE_CURRENT, analyzer);
 			indexWriterConfig.setOpenMode(OpenMode.CREATE_OR_APPEND);
-			this.ramIndexWriter=new IndexWriter(this, indexWriterConfig);
+			this.ramIndexWriter=new IndexWriter(ramDirectory, indexWriterConfig);
 			this.fsIndexWriter=new IndexWriter(fsDirectory, indexWriterConfig);
 			//this.ramIndexSearcher=new IndexSearcher(DirectoryReader.open(ramDirectory));
 		}
 	   
+		public FsRamDirectory(String path,IndexWriterConfig indexWriterConfig) throws IOException{
+			IOContext ioContext=new IOContext();
+			indexDir=new File(path);
+			fsDirectory=NIOFSDirectory.open(indexDir);
+			ramDirectory=new RAMDirectory(fsDirectory,ioContext);
+			this.indexWriterConfig=indexWriterConfig;
+			this.ramIndexWriter=new IndexWriter(ramDirectory, this.indexWriterConfig);
+			this.fsIndexWriter=new IndexWriter(fsDirectory, this.indexWriterConfig);
+			//this.ramIndexSearcher=new IndexSearcher(DirectoryReader.open(ramDirectory));
+		}
 		
 		
+		public File getIndexDir() {
+			return indexDir;
+		}
 		
 		
-		public IndexSearcher createIndexSearcher() throws IOException{
+		public IndexSearcher createRamIndexSearcher() throws IOException{
 			//unlock();
 			return new IndexSearcher(DirectoryReader.open(ramIndexWriter,true));
 		}
 		
 		
-
+		
 		
 		public void unlock(){
 			
 			try {
-				if(IndexWriter.isLocked(this)){
+				if(IndexWriter.isLocked(ramDirectory)){
 					
-					IndexWriter.unlock(this);
+					IndexWriter.unlock(ramDirectory);
 				}
 				if(IndexWriter.isLocked(fsDirectory)){
 					//fsDirectory.close();
@@ -74,7 +90,7 @@ public class RamFsDirectory extends RAMDirectory {
 		
 		
 		public TopDocs  search(String regexp,int n,String... fieldNames) throws IOException{
-			IndexSearcher indexSearcher=this.createIndexSearcher();
+			IndexSearcher indexSearcher=this.createRamIndexSearcher();
 			BooleanQuery booleanQuery=new BooleanQuery();
 			for(String fieldName : fieldNames){
 				Term term=new Term(fieldName, regexp);
@@ -92,12 +108,12 @@ public class RamFsDirectory extends RAMDirectory {
 	   public void addFileDocuments(File dir,boolean justRoot) throws IOException{
 		   
 		   if(dir.isFile()){
-			   ramIndexWriter.addDocument(new TextFileDocument(dir));
+			   ramIndexWriter.addDocument(new FileDocument(dir));
 		   }else if(dir.isDirectory()){
 			   File[] files=justRoot?dir.listRoots():dir.listFiles();
 			   for(File file:files ){
 				   try{
-				   ramIndexWriter.addDocument(new TextFileDocument(file));
+				   ramIndexWriter.addDocument(new FileDocument(file));
 				   }catch(IOException iox){iox.printStackTrace();}
 			   }
 		   }
@@ -108,20 +124,20 @@ public class RamFsDirectory extends RAMDirectory {
 		
 		public void ramToFs() throws Exception{
 			
-			this.fsIndexWriter.addIndexes(this);
+			this.fsIndexWriter.addIndexes(ramDirectory);
 			fsIndexWriter.commit();
 			
 		}
 		
 
 		public void close(){
-			try{
-				this.ramIndexWriter.close();
-				this.fsIndexWriter.close();
-				this.fsDirectory.close();
-			}catch(Exception ex){
-				
-			}
+			try{this.ramIndexWriter.close();}catch(Exception ex){}
+			try{	this.ramDirectory.close();}catch(Exception ex){}
+			try{this.fsIndexWriter.close();}catch(Exception ex){}
+			try{	this.fsDirectory.close();}catch(Exception ex){}
+
 		}
-	 
+		
+		
+
 }
