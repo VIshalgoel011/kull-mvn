@@ -8,11 +8,9 @@ package com.kull.web.struts.weixin;
 import cn.songxinqiang.weixin4j.request.RequestTextMessage;
 import cn.songxinqiang.weixin4j.response.ResponseBaseMessage;
 import cn.songxinqiang.weixin4j.response.ResponseTextMessage;
-import cn.songxinqiang.weixin4j.response.model.Image;
 import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.text.Text;
 
 /**
  *
