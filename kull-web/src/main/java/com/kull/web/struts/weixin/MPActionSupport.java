@@ -124,20 +124,24 @@ public abstract class MPActionSupport extends AwareActionSupport {
        
     }
 
-    protected abstract ResponseBaseMessage _handleImage(RequestImageMessage msg);
+    protected abstract ResponseBaseMessage _handleImage(RequestImageMessage msg) throws Exception;
 
-    protected abstract ResponseBaseMessage _handleText(RequestTextMessage msg);
+    
 
-    protected abstract ResponseBaseMessage _handleVoice(RequestVoiceMessage msg);
+    protected abstract ResponseBaseMessage _handleVoice(RequestVoiceMessage msg) throws Exception;
 
-    protected abstract ResponseBaseMessage _handleLink(RequestLinkMessage msg);
+    
 
-    protected abstract ResponseBaseMessage _handleVideo(RequestVideoMessage msg);
+    protected abstract ResponseBaseMessage _handleVideo(RequestVideoMessage msg) throws Exception;
 
-    protected abstract ResponseBaseMessage _handleLocation(RequestLocationMessage msg);
+    protected abstract ResponseBaseMessage _handleLocation(RequestLocationMessage msg) throws Exception;
 
-    protected abstract ResponseBaseMessage _handleEvent(EventBaseMessage event);
+    protected abstract ResponseBaseMessage _handleEvent(EventBaseMessage event) throws Exception;
 
+    protected abstract ResponseBaseMessage _handleLink(RequestLinkMessage msg) throws Exception;
+    
+    protected abstract ResponseBaseMessage _handleText(RequestTextMessage msg) throws Exception;
+    
     
     
     private class _WeixinMessageUtil extends WeixinMessageUtil{

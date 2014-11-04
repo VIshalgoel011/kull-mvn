@@ -26,15 +26,15 @@ public abstract class CliMPActionSupport extends MPActionSupport{
     
     protected String handler_name,text_pattern,text_param,image_url;
 
-    protected abstract void init(String cmd);
+    protected abstract void _main(String[] args);
     
     
     
     @Override
-    protected ResponseBaseMessage _handleText(RequestTextMessage req) {
+    protected ResponseBaseMessage _handleText(RequestTextMessage req) throws Exception{
         String[] args=req.getContent().split(" ");
-        String cmd=args[0];
-        init(cmd);
+        
+        _main(args);
         
         switch(type){
             case text:{
@@ -44,14 +44,12 @@ public abstract class CliMPActionSupport extends MPActionSupport{
             }
             case  handler:{
                MessageHandler handler;
-            try {
+       
                 handler = (MessageHandler)Class.forName(handler_name).newInstance();
                 return handler.exec(req);
-            } catch (Exception ex) {
-                Logger.getLogger(CliMPActionSupport.class.getName()).log(Level.SEVERE, null, ex);
+           
             }
-            }
-            break;
+            
             
             default: break;
         }

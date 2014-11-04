@@ -14,7 +14,6 @@ import cn.songxinqiang.weixin4j.request.RequestVoiceMessage;
 import cn.songxinqiang.weixin4j.response.ResponseBaseMessage;
 import com.kull.common.model.KullCommonDBML;
 import com.kull.web.struts.weixin.CliMPActionSupport;
-import com.kull.web.struts.weixin.MPActionSupport;
 
 /**
  *
@@ -29,43 +28,56 @@ public class MP_LSFAction extends CliMPActionSupport{
     
     
     @Override
-    protected void init(String cmd) {
-        KullCommonDBML.mp_driver driver=null;
+    protected void _main(String[] args) {
+        String cmd=args[0];
+        KullCommonDBML.mp_driver driver=new KullCommonDBML().new mp_driver();
+
         this.type=Type.valueOf(driver.getType());
         this.handler_name=driver.getHandler_name();
         this.image_url=driver.getImage_url();
         this.text_param=driver.getText_param();
         this.text_pattern=driver.getText_pattern();
+        
+        if("text".equals(cmd)){
+            this.type=Type.text;
+             this.text_param="sdfs,sferwqw";
+             this.text_pattern="test mesage {0} {1}";
+        }else if("handler".equals(cmd)){
+            this.type=Type.handler;
+        }
+        
     }
 
     @Override
-    protected ResponseBaseMessage _handleImage(RequestImageMessage msg) {
+    protected ResponseBaseMessage _handleImage(RequestImageMessage msg) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected ResponseBaseMessage _handleVoice(RequestVoiceMessage msg) {
+    protected ResponseBaseMessage _handleVoice(RequestVoiceMessage msg) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected ResponseBaseMessage _handleLink(RequestLinkMessage msg) {
+    protected ResponseBaseMessage _handleVideo(RequestVideoMessage msg) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected ResponseBaseMessage _handleVideo(RequestVideoMessage msg) {
+    protected ResponseBaseMessage _handleLocation(RequestLocationMessage msg) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected ResponseBaseMessage _handleLocation(RequestLocationMessage msg) {
+    protected ResponseBaseMessage _handleEvent(EventBaseMessage event) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected ResponseBaseMessage _handleEvent(EventBaseMessage event) {
+    protected ResponseBaseMessage _handleLink(RequestLinkMessage msg) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+   
     
 }
