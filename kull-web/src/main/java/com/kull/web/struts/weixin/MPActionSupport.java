@@ -37,6 +37,8 @@ import java.util.Map;
  */
 public abstract class MPActionSupport extends AwareActionSupport {
 
+    
+    
     protected String signature, timestamp, nonce, echostr, token;
 
     public void setSignature(String signature) {
@@ -79,6 +81,7 @@ public abstract class MPActionSupport extends AwareActionSupport {
         String msgtype = "";
        
         ResponseBaseMessage res = null;
+        RequestBaseMessage req=null;
         try {
             xmlparam = wmu.parseXml(this.request.getInputStream());
             msgtype = xmlparam.get(RequestBaseMessage.MSG_FIELD_MsgType);
@@ -114,6 +117,9 @@ public abstract class MPActionSupport extends AwareActionSupport {
               error.setContent(MessageFormat.format("error:{0}", ex.getMessage()));
               res=error;
         }
+        res.setCreateTime(Long.valueOf(xmlparam.get(RequestBaseMessage.MSG_FIELD_CreateTime)));
+        res.setFromUserName(xmlparam.get(RequestBaseMessage.MSG_FIELD_ToUserName));
+        res.setToUserName(xmlparam.get(RequestBaseMessage.MSG_FIELD_FromUserName));
         this.response.getWriter().write(wmu.messageToXml(res));
        
     }
