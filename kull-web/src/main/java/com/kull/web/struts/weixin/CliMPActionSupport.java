@@ -8,6 +8,7 @@ package com.kull.web.struts.weixin;
 import cn.songxinqiang.weixin4j.request.RequestTextMessage;
 import cn.songxinqiang.weixin4j.response.ResponseBaseMessage;
 import cn.songxinqiang.weixin4j.response.ResponseTextMessage;
+import cn.songxinqiang.weixin4j.response.ResponseType;
 import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,9 +23,9 @@ public abstract class CliMPActionSupport extends MPActionSupport{
         text,handler,Image,voice
     }
     
-    protected Type type;
+    protected Type type=Type.text;
     
-    protected String handler_name,text_pattern,text_param,image_url;
+    protected String handler_name,text_pattern="",text_param="",image_url;
 
     protected abstract void _main(String[] args);
     
@@ -39,6 +40,7 @@ public abstract class CliMPActionSupport extends MPActionSupport{
         switch(type){
             case text:{
              ResponseTextMessage res=new ResponseTextMessage();
+            
              res.setContent(MessageFormat.format(text_pattern, text_param.split(",")));
              return res;
             }

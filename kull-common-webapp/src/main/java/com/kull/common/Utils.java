@@ -8,6 +8,7 @@ package com.kull.common;
 
 import com.kull.orm.Database;
 import java.sql.Connection;
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -15,6 +16,12 @@ import java.sql.Connection;
  * @author lin
  */
 public class Utils extends com.kull.web.Utils{
+    
+    
+    public static String[] modes(HttpServletRequest req){
+       String mode=req.getParameter("mode");
+       return mode==null?new String[0]:mode.split(",");
+    }
     
     public static Connection dbmeta() throws Exception{
     

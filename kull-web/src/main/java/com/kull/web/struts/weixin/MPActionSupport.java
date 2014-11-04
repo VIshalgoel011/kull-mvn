@@ -15,12 +15,18 @@ import cn.songxinqiang.weixin4j.request.RequestType;
 import cn.songxinqiang.weixin4j.request.RequestVideoMessage;
 import cn.songxinqiang.weixin4j.request.RequestVoiceMessage;
 import cn.songxinqiang.weixin4j.response.ResponseBaseMessage;
+import cn.songxinqiang.weixin4j.response.ResponseImageMessage;
+import cn.songxinqiang.weixin4j.response.ResponseMusicMessage;
 import cn.songxinqiang.weixin4j.response.ResponseNewsMessage;
 import cn.songxinqiang.weixin4j.response.ResponseTextMessage;
+import cn.songxinqiang.weixin4j.response.ResponseType;
+import cn.songxinqiang.weixin4j.response.ResponseVideoMessage;
+import cn.songxinqiang.weixin4j.response.ResponseVoiceMessage;
 import cn.songxinqiang.weixin4j.util.WeixinMessageUtil;
 import cn.songxinqiang.weixin4j.util.WeixinSignUtil;
 
 import com.kull.web.struts.AwareActionSupport;
+import com.sun.corba.se.impl.logging.UtilSystemException;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -37,6 +43,18 @@ import java.util.Map;
  */
 public abstract class MPActionSupport extends AwareActionSupport {
 
+   protected  _WeixinMessageUtil wmu = new _WeixinMessageUtil();
+    
+    public static String xmlRequestText(String context){
+           return MessageFormat.format("<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName> <CreateTime>1348831860</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{0}]]></Content><MsgId>1234567890123456</MsgId></xml>"
+                   ,context );
+        }
+        
+        public static String xmlRequestEvent(String eventkey){
+           return MessageFormat.format("<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[FromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[CLICK]]></Event><EventKey><![CDATA[{0}]]></EventKey></xml>",
+                   eventkey);
+        }
+    
     
     
     protected String signature, timestamp, nonce, echostr, token;
@@ -56,12 +74,15 @@ public abstract class MPActionSupport extends AwareActionSupport {
     public void setEchostr(String echostr) {
         this.echostr = echostr;
     }
+    
+    
 
-    public void main() throws IOException {
+    public void main() throws Exception {
         if (echostr != null) {
             _signature();
         } else {
-            _handle();
+            Map<String, String>  xmlparam = wmu.parseXml(this.request.getInputStream());
+            _handle(xmlparam);
         }
     }
 
@@ -75,15 +96,13 @@ public abstract class MPActionSupport extends AwareActionSupport {
         }
     }
 
-    protected final void _handle() throws IOException {
-        _WeixinMessageUtil wmu = new _WeixinMessageUtil();
-        Map<String, String> xmlparam = null;
+    protected final void _handle(Map<String, String> xmlparam ) throws IOException {
+        
+        
         String msgtype = "";
        
         ResponseBaseMessage res = null;
-        RequestBaseMessage req=null;
         try {
-            xmlparam = wmu.parseXml(this.request.getInputStream());
             msgtype = xmlparam.get(RequestBaseMessage.MSG_FIELD_MsgType);
             RequestType requestType = RequestType.valueOf(msgtype);
             switch (requestType) {
@@ -120,6 +139,15 @@ public abstract class MPActionSupport extends AwareActionSupport {
         res.setCreateTime(Long.valueOf(xmlparam.get(RequestBaseMessage.MSG_FIELD_CreateTime)));
         res.setFromUserName(xmlparam.get(RequestBaseMessage.MSG_FIELD_ToUserName));
         res.setToUserName(xmlparam.get(RequestBaseMessage.MSG_FIELD_FromUserName));
+        
+        if(res instanceof ResponseTextMessage) res.setMsgType(ResponseType.text);
+        else if(res instanceof ResponseNewsMessage) res.setMsgType(ResponseType.news);
+        else if(res instanceof ResponseImageMessage) res.setMsgType(ResponseType.image);
+        else if(res instanceof ResponseVoiceMessage) res.setMsgType(ResponseType.voice);
+        else if(res instanceof ResponseVideoMessage) res.setMsgType(ResponseType.video);
+        else if(res instanceof ResponseMusicMessage) res.setMsgType(ResponseType.music);
+        
+        
         this.response.getWriter().write(wmu.messageToXml(res));
        
     }
@@ -146,7 +174,7 @@ public abstract class MPActionSupport extends AwareActionSupport {
     
     private class _WeixinMessageUtil extends WeixinMessageUtil{
 
-    
+        
     
         public String  messageToXml(ResponseBaseMessage res){
             String xml="";
