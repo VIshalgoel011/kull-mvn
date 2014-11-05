@@ -35,7 +35,7 @@ import org.dom4j.io.SAXReader;
 
 import com.kull.*;
 import com.kull.able.Ormable;
-import com.kull.orm.Column;
+import com.kull.orm.ColumnType;
 import com.kull.orm.dialect.Dialect;
 
 
@@ -308,7 +308,7 @@ public  class MapperTemplate  {
 		String pattern="#'{'{3}{0},jdbcType={1}'}'";
 		String patternBytes="#'{'{3}{0},jdbcType={1}'}'";
 		String tempPattern=pattern;
-		if(LinqHelper.isIn(ct.getColumn().getJdbcType(),Column.JDBC_TYPES_BYTES)){
+		if(LinqHelper.isIn(ct.getColumn().getJdbcType(),ColumnType.JDBC_TYPES_BYTES)){
 			tempPattern=patternBytes;
 		}
 		String str=MessageFormat.format(tempPattern
@@ -379,7 +379,7 @@ public  class MapperTemplate  {
 		String tempPattern=patternResult;
 		if(ct.getDbColName().equalsIgnoreCase(this.pk)){
 			tempPattern=patternId;
-		}else if(LinqHelper.isIn(ct.getColumn().getJdbcType(),Column.JDBC_TYPES_BYTES )) {
+		}else if(LinqHelper.isIn(ct.getColumn().getJdbcType(),ColumnType.JDBC_TYPES_BYTES )) {
 		    tempPattern=patternResult4bytes;
 		}
 		str=MessageFormat.format(tempPattern,

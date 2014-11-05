@@ -18,6 +18,8 @@ import com.kull.web.Utils;
 import com.kull.web.struts.DSActionSupport;
 import com.kull.web.struts.SqlDSActionSupport;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 
 
@@ -43,11 +45,11 @@ public abstract class TreeDSActionSupport extends SqlDSActionSupport {
 		return "tree_"+this.pk;
 	}
 
-	public void nodes() throws IOException{
+	public void nodes() throws IOException, SQLException{
 		
 		Session session=new Session(connection);
 		String dsql=this.createDataSql();
-		LinkedList<Map<String,Object>> list= session.selectList(dsql);
+		List<Map<String,Object>> list= session.selectList(dsql);
 		
 	    Vector<Map<String,Object>> tree=createTreeNodes(list, this.root);
 		
@@ -63,7 +65,7 @@ public abstract class TreeDSActionSupport extends SqlDSActionSupport {
 	
 	
 	
-	protected Vector<Map<String,Object>> createTreeNodes(LinkedList<Map<String,Object>> list,String root) {
+	protected Vector<Map<String,Object>> createTreeNodes(List<Map<String,Object>> list,String root) {
 		Vector<Map<String,Object>> nodes=new Vector<Map<String,Object>>();
 		for(int i=0;i<list.size();i++){
 			Map<String,Object> map=list.get(i),mapNew=new HashMap<String,Object>();

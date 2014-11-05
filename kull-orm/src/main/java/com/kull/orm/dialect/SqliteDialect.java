@@ -5,10 +5,17 @@
  */
 package com.kull.orm.dialect;
 
+import com.kull.orm.Session;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 /**
  *
@@ -37,11 +44,27 @@ public class SqliteDialect extends Dialect{
 
     @Override
     public Set<String> showTables(Connection conn) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql="select name from sqlite_master where type='table' order by name;";
+        
+        Set<String> tables=new HashSet<>();
+        PreparedStatement ps= conn.prepareStatement(sql);
+        ResultSet rs=ps.executeQuery();
+        while(rs.next()){
+           tables.add(rs.getString(1));
+        }
+        Session.close(null, ps, rs);
+        return tables;
     }
 
     @Override
     public Set<String> showViews(Connection conn) throws SQLException{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Column> showColumns(Connection conn, String talble) throws SQLException {
+        String sql="pragma table_info ('"+talble+"')";
+        return qr.query(conn, sql, new BeanListHandler<Column>(Column.class));
+        
     }
 }

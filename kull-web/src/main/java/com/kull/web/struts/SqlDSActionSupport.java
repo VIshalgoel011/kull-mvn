@@ -19,6 +19,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONObject;
 
@@ -163,7 +164,7 @@ public abstract class SqlDSActionSupport extends DSActionSupport {
 
         JSONObject grid=new JSONObject();
         try {
-            LinkedList<Map<String, Object>> rows = session.selectList(sql), rowsNew = new LinkedList<Map<String, Object>>();
+            List<Map<String, Object>> rows = session.selectList(sql), rowsNew = new LinkedList<Map<String, Object>>();
 
             for (int i = 0; i < rows.size(); i++) {
                 rowsNew.add(rowEach(rows.get(i)));

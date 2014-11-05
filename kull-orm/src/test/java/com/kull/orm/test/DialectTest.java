@@ -54,7 +54,7 @@ public class DialectTest {
      @Test
      public void hello() throws Exception {
            MySQLDialect dialect=new MySQLDialect();
-           String context=dialect.createTableDBML(conn_ayhhlin, "com.kull.orm.DefaultDBML");
+           String context=dialect.dbmlScript(conn_ayhhlin, "com.kull.orm.DefaultDBML");
            System.err.println(context);
      }
 }

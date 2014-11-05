@@ -1,3 +1,5 @@
+package com.kull.common.test;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,6 +7,9 @@
  */
 
 import com.kull.common.Utils;
+import com.kull.orm.Database;
+import com.kull.orm.dialect.SqliteDialect;
+import com.mysql.jdbc.Driver;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,7 +27,7 @@ import org.junit.Test;
  */
 public class DBTest {
     
-    Connection connDbmeta;
+    Connection conn_ayhhlin,conn_kullcommon;
 
 
     
@@ -39,7 +44,8 @@ public class DBTest {
     
     @Before
     public void setUp() throws Exception {
-        connDbmeta=Utils.dbmeta();
+        // conn_ayhhlin= Database.createConnection(Driver.class, "hhlin", "111111", "hhlin54133.mysql.rds.aliyuncs.com", "uci");
+        conn_kullcommon=Database.createSqllteConnection("i:/kull-common.db3");
         
       
        // jdbcBean=new JdbcBean(Utils.dbmeta());
@@ -54,12 +60,9 @@ public class DBTest {
     //
      @Test
      public void dbmeta() throws SQLException, Exception {
-         String sql="select * from dbmeta_conn ";
-          //connDbmeta.createStatement().executeUpdate("create table people (name, occupation);");
-           // connDbmeta.createStatement().executeQuery(sql);
-          //JdbcBean.close(connDbmeta, null, null);
-         
-        
+          SqliteDialect dialect=new SqliteDialect();
+         String context=dialect.dbmlScript(conn_kullcommon, "com.kull.orm.KullCommonDBML");
+           System.err.println(context);
          
      }
      

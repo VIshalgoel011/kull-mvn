@@ -13,7 +13,7 @@ import org.apache.ibatis.type.JdbcType;
  *
  * @author lin
  */
-public enum Column{
+public enum ColumnType{
 		VARCHAR2(JdbcType.VARCHAR,String.class),
 		VARCHAR(JdbcType.VARCHAR,String.class),
 		CHAR(JdbcType.CHAR,String.class),
@@ -38,7 +38,7 @@ public enum Column{
 		JdbcType jdbcType;
 		Class javaType;
 		int type;
-		Column(JdbcType jdbcType,Class javaType){
+		ColumnType(JdbcType jdbcType,Class javaType){
 			this.jdbcType=jdbcType;
 			this.javaType=javaType;
 			

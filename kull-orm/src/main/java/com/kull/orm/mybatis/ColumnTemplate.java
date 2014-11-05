@@ -1,21 +1,8 @@
 package com.kull.orm.mybatis;
 
-import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.Bidi;
-import java.text.MessageFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-
-
-import org.apache.ibatis.type.JdbcType;
 
 import com.kull.StringHelper;
-import com.kull.orm.Column;
+import com.kull.orm.ColumnType;
 
 
 
@@ -40,7 +27,7 @@ public class ColumnTemplate {
 	private String javaName;
 	//private Class javaType;
 	//private JdbcType jdbcType;
-	private Column column;
+	private ColumnType column;
 	private int precision;
 	
 
@@ -53,19 +40,19 @@ public class ColumnTemplate {
 		//this.javaType=toJavaType(dbColType);
 		//this.jdbcType=toJdbcType(dbColType);
 		try {
-			//JdbcType enumJdbcType=this.getJdbcType(Column.valueOf(dbColType), perc);
+			//JdbcType enumJdbcType=this.getJdbcType(ColumnType.valueOf(dbColType), perc);
 			//Class clsJavaType=this.getJavaClass(enumJdbcType);
 			//this.jdbcType=enumJdbcType;
 			//this.javaType=clsJavaType;
-			this.column=Column.valueOf(dbColType.toUpperCase());
-			if(column==Column.NUMBER){
+			this.column=ColumnType.valueOf(dbColType.toUpperCase());
+			if(column==ColumnType.NUMBER){
 				if(perc<=PREC_INTEGER){
-					this.column=Column.INTEGER;
+					this.column=ColumnType.INTEGER;
 				}else if(perc<=PREC_FLOAT){
-					this.column=Column.FLOAT;
+					this.column=ColumnType.FLOAT;
 				}
 				else {
-					this.column=Column.DOUBLE;
+					this.column=ColumnType.DOUBLE;
 				}
 			}
 		} catch (Exception e) {
@@ -89,7 +76,7 @@ public class ColumnTemplate {
 
 	
 
-	public Column getColumn() {
+	public ColumnType getColumn() {
 		return column;
 	}
 

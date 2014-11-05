@@ -13,11 +13,13 @@ import com.kull.orm.dialect.MssqlDialect;
 import com.kull.orm.dialect.MySQLDialect;
 import com.kull.orm.dialect.OracleDialect;
 import com.kull.orm.dialect.PostgreSQLDialect;
+import com.kull.orm.dialect.SqliteDialect;
 import com.kull.orm.dialect.SybaseDialect;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.text.MessageFormat;
+import org.hibernate.dialect.SQLiteDialect;
 
 /**
  *
@@ -34,6 +36,7 @@ public enum Database{
 		h2(new H2Dialect(),"",""),
 		sybase(new SybaseDialect(),"",""),
 		postgresql(new PostgreSQLDialect(),"","" ),
+                sqlite(new SqliteDialect(),"",""),
 		unknow;
 		
                 	public final static String DRIVER_MYSQL="com.mysql.jdbc.Driver";
@@ -123,6 +126,8 @@ public enum Database{
 			database=Database.mysql;
 		}else if(driverName.contains(Database.postgresql.name())){
 			database=Database.postgresql;
+		}else if(driverName.contains(Database.sqlite.name())){
+			database=Database.sqlite;
 		}
 		else{
 			throw new Exception(MessageFormat.format("don't surport the driver:{0}",connection.getMetaData().getDriverName()));

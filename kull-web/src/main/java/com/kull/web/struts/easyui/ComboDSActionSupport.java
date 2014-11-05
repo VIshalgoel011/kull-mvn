@@ -15,6 +15,7 @@ import com.kull.web.Utils;
 import com.kull.web.struts.DSActionSupport;
 import com.kull.web.struts.SqlDSActionSupport;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import java.text.MessageFormat;
 import java.util.LinkedList;
@@ -56,12 +57,12 @@ public abstract class ComboDSActionSupport extends SqlDSActionSupport{
 		return MessageFormat.format("{0} asc", this.ordernoField);
 	}
 
-	public void rows() throws IOException{
+	public void rows() throws IOException, SQLException{
 		
 		Session session=new Session(connection);
 		
 		String sql=createDataSql();
-		LinkedList<Map<String,Object>> list=session.selectList(sql);
+		List<Map<String,Object>> list=session.selectList(sql);
 		Session.close(connection, null, null);
 	        Utils.writeJson(this.response,list);
 

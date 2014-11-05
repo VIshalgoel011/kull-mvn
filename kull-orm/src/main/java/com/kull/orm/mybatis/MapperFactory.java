@@ -48,7 +48,7 @@ public class MapperFactory {
 		this.dialect=dialect;
 		try {
 			database=Database.refDatabase(connection);
-			this.dialect=Dialect.createDialect(database);
+			//this.dialect=Dialect.createDialect(database);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,7 +90,7 @@ public class MapperFactory {
 		
                 }
                 
-		try {
+		
 			
 			String pattern="select * from {0} where 1=2";
 			String querySql=MessageFormat.format(pattern, table);
@@ -128,10 +128,7 @@ public class MapperFactory {
 		    mapper.setModelName(modelClass);
 		    mapper.setNamespace(nameSpace);
 		    return mapper;
-		}  catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{return mapper;}
+		
 	}
 	
 	

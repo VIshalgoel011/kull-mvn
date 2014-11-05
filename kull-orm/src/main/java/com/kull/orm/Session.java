@@ -32,6 +32,8 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 /**
  *
@@ -397,69 +399,22 @@ public class Session {
         return list;
     }
 
-    public LinkedList<Map<String, Object>> selectList(String sql, Object... params) {
-        PreparedStatement ps = null;
-        LinkedList<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
-        ResultSet rs = null;
-
-        try {
-
-            ps = this.conn.prepareStatement(sql);
-            for (int i = 0; i < params.length; i++) {
-                ps.setObject(i + 1, params[i]);
-            }
-            rs = ps.executeQuery();
-            ResultSetMetaData resultSetMetaData = rs.getMetaData();
-            int colCount = resultSetMetaData.getColumnCount();
-            while (rs.next()) {
-                Map<String, Object> map = new HashMap<String, Object>();
-                for (int i = 1; i <= colCount; i++) {
-                    String label = resultSetMetaData.getColumnLabel(i);
-                    map.put(label, rs.getObject(i));
-
-                }
-                list.add(map);
-            }
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-        } finally {
-            close(null, ps, rs);
-        }
-        return list;
+    public List<Map<String, Object>> selectList(String sql, Object... params) throws SQLException {
+          return queryRunner.query(this.conn,sql,new MapListHandler());
     }
 
     public int executeUpdate(String sql, Object... params) throws SQLException {
-        PreparedStatement ps = null;
-        int eff = 0;
-
-        ps = this.conn.prepareStatement(sql);
-        for (int i = 0; i < params.length; i++) {
-            ps.setObject(i + 1, params[i]);
-        }
-        eff = ps.executeUpdate();
-        close(null, ps, null);
-        return eff;
+        
+        return queryRunner.update(this.conn, sql,params);
     }
 
-    public <T> int selectInt(String sql, Object... params) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int eff = 0;
-
-        ps = this.conn.prepareStatement(sql);
-        for (int i = 0; i < params.length; i++) {
-            ps.setObject(i + 1, params[i]);
-        }
-        rs = ps.executeQuery();
-        if (rs.next()) {
-            eff = rs.getInt(1);
-        }
-        close(null, ps, rs);
-
-        return eff;
+    public  int selectInt(String sql, Object... params) throws SQLException {
+        return selectScalar(sql, params);
+    }
+    
+      public  <T> T selectScalar(String sql, Object... params) throws SQLException {
+        T t= (T)queryRunner.query(this.conn,sql, new ScalarHandler());
+        return t;
     }
 
     /**
@@ -484,34 +439,5 @@ public class Session {
         }
     }
 
-    /**
-     *
-     * @param table
-     * @return 实体类正文，包含属性定义和getset方法
-     * @throws SQLException
-     */
-    public String tableRefClassConext(String table) throws SQLException {
-        String sql = MessageFormat.format("select * from {0}", table);
-        StringBuffer sbrPro = new StringBuffer(""), sbrGetSet = new StringBuffer("");
-        String proPattern = "\t protected {0} {1} ;", setterPattern = "\t public void set{0}({1} {3})'{' this.{2}={3}; '}'", getterPattern = "\t public {1} get{0}()'{' return this.{2}; '}'";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet resultSet = ps.executeQuery();
-        ResultSetMetaData rsmd = resultSet.getMetaData();
-        int colCount = resultSet.getMetaData().getColumnCount();
-        for (int i = 1; i <= colCount; i++) {
-            String colName = resultSet.getMetaData().getColumnName(i);
-            int colType = resultSet.getMetaData().getColumnType(i);
-
-            String fName = colName.substring(0, 1).toUpperCase() + colName.substring(1);
-            Class proType = COLTYPE_REF_CLASS.get(colType);
-
-            sbrPro.append(MessageFormat.format(proPattern, proType.getSimpleName(), colName)).append("\n");
-            sbrGetSet.append(MessageFormat.format(getterPattern, fName, proType.getSimpleName(), colName)).append("\n");
-            sbrGetSet.append(MessageFormat.format(setterPattern, fName, proType.getSimpleName(), colName, colName)).append("\n");
-
-        }
-
-        sbrPro.append("\n\n").append(sbrGetSet);
-        return sbrPro.toString();
-    }
+   
 }
