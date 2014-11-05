@@ -507,4 +507,21 @@ public class ObjectHelper {
         return field.getName().equals("this$0");
     }
 
+    
+    public static <T> T newInstance(Class<T> cls) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+         T t=null;
+         String clsname=cls.getName();
+         int i= clsname.lastIndexOf("$");
+         if(i>-1){
+             Constructor constr= cls.getConstructors()[0];
+             String pname=clsname.substring(0,i);
+             Object p=Class.forName(pname).newInstance();
+             t= (T)constr.newInstance(p);
+         }else{
+            t= (T)Class.forName(clsname).newInstance();
+         }
+         return t;
+    }
+    
+    
 }
