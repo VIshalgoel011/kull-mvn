@@ -62,7 +62,7 @@ public class MP_LSFAction extends CliMPActionSupport {
     @Override
     protected void _main(String[] args) {
         String cmd = args[0];
-        KullCommonDBML.mp_driver driver = new KullCommonDBML().new mp_driver();
+       
 
 //        this.type = Type.valueOf(driver.getType());
 //        this.handler_name = driver.getHandler_name();
