@@ -58,10 +58,35 @@
             <artifactId>commons-codec</artifactId>
             <version>1.8</version>
         </dependency>
-   
+     
   </dependencies>
   
-
+  <build>
+      
+      <plugins>
+          
+          <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jvmArgs>
+            <jvmArg>-Xms64m</jvmArg>
+            <jvmArg>-Xmx1024m</jvmArg>
+          </jvmArgs>
+        </configuration>
+      </plugin>
+      </plugins>
+      
+  </build>
+  
   
   <repositories>
     <repository>
