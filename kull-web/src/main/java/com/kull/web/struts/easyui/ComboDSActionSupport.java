@@ -62,7 +62,7 @@ public abstract class ComboDSActionSupport extends SqlDSActionSupport{
 		Session session=new Session(connection);
 		
 		String sql=createDataSql();
-		List<Map<String,Object>> list=session.selectList(sql);
+		List<Map<String,Object>> list=session.query(sql);
 		Session.close(connection, null, null);
 	        Utils.writeJson(this.response,list);
 
@@ -78,7 +78,7 @@ public abstract class ComboDSActionSupport extends SqlDSActionSupport{
 		Session session=new Session(connection);
         StringBuffer html=new StringBuffer("");
         String sql="select * from "+this.viewName();
-        List<Map<String,Object>> list=session.selectList(sql);
+        List<Map<String,Object>> list=session.query(sql);
         String url=request.getRequestURI().substring(request.getContextPath().length());
         
 		StringBuffer combobox_url=new StringBuffer(""),combobox_data=new StringBuffer("")

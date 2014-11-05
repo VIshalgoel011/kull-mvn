@@ -28,7 +28,7 @@ public abstract class SqlMDActionSupport<M> extends MDActionSupport<M>{
 
     @Override
     protected M readByPk(String pk) throws Exception{
-          return   session.load(newModel(), pk); 
+          return   session.load(classM(), pk); 
         
     }
 

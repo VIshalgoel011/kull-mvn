@@ -164,7 +164,7 @@ public abstract class SqlDSActionSupport extends DSActionSupport {
 
         JSONObject grid=new JSONObject();
         try {
-            List<Map<String, Object>> rows = session.selectList(sql), rowsNew = new LinkedList<Map<String, Object>>();
+            List<Map<String, Object>> rows = session.query(sql), rowsNew = new LinkedList<Map<String, Object>>();
 
             for (int i = 0; i < rows.size(); i++) {
                 rowsNew.add(rowEach(rows.get(i)));

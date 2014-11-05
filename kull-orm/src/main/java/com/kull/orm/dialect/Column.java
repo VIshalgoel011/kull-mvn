@@ -36,7 +36,9 @@ public class Column {
         TYPES_REF_JCLS.put(Types.NUMERIC, Double.class);
         TYPES_REF_JCLS.put(Types.DECIMAL, Double.class);
         TYPES_REF_JCLS.put(Types.CHAR, String.class);
+        TYPES_REF_JCLS.put(Types.NCHAR, String.class);
         TYPES_REF_JCLS.put(Types.VARCHAR, String.class);
+        TYPES_REF_JCLS.put(Types.NVARCHAR, String.class);
         TYPES_REF_JCLS.put(Types.LONGVARCHAR, String.class);
         TYPES_REF_JCLS.put(Types.DATE, Date.class);
         TYPES_REF_JCLS.put(Types.TIME, Time.class);

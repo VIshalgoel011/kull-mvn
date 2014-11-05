@@ -49,7 +49,7 @@ public abstract class TreeDSActionSupport extends SqlDSActionSupport {
 		
 		Session session=new Session(connection);
 		String dsql=this.createDataSql();
-		List<Map<String,Object>> list= session.selectList(dsql);
+		List<Map<String,Object>> list= session.query(dsql);
 		
 	    Vector<Map<String,Object>> tree=createTreeNodes(list, this.root);
 		

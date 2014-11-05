@@ -5,17 +5,24 @@
  */
 package com.kull.orm.dialect;
 
+import com.kull.LinqHelper;
+import com.kull.able.Foreachable;
 import com.kull.orm.Session;
+import com.kull.orm.Utils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
 /**
  *
@@ -23,6 +30,10 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
  */
 public class SqliteDialect extends Dialect{
 
+    
+    
+    
+    
  public String getLimitString(String sql, int offset,String offsetPlaceholder, int limit, String limitPlaceholder) {
         if (offset > 0) {   
         	return sql + " limit "+offsetPlaceholder+","+limitPlaceholder; 
@@ -44,7 +55,7 @@ public class SqliteDialect extends Dialect{
 
     @Override
     public Set<String> showTables(Connection conn) throws SQLException {
-        String sql="select name from sqlite_master where type='table' order by name;";
+        String sql="select name from sqlite_master where type='table' and name not in ('sqlite_sequence')  order by name;";
         
         Set<String> tables=new HashSet<>();
         PreparedStatement ps= conn.prepareStatement(sql);
@@ -64,7 +75,41 @@ public class SqliteDialect extends Dialect{
     @Override
     public List<Column> showColumns(Connection conn, String talble) throws SQLException {
         String sql="pragma table_info ('"+talble+"')";
-        return qr.query(conn, sql, new BeanListHandler<Column>(Column.class));
         
+        List<Column> cols= new ArrayList<>();
+        List<Map<String,Object>> list=qr.query(conn,sql, new MapListHandler());
+        
+        for (Map<String, Object> map : list) {
+            Column col=new Column();
+            String colname=map.get("name").toString()
+            , typeName=map.get("type").toString();
+            int pk = (int)map.get("pk"),type;
+            
+            if("datetime".equals(typeName)){
+               typeName="date";
+            }else if("int".equals(typeName)){
+               typeName=Integer.class.getSimpleName();
+            }
+            
+            try {
+             int i=typeName.indexOf("(");
+             if(i>-1){
+                 type=Utils.refJdbcTypesBy(typeName.substring(0,i));
+             }else{
+                 type=Utils.refJdbcTypesBy(typeName);
+             }
+             
+            } catch (Exception ex) {
+                throw new SQLException(ex);
+            } 
+            
+            col.setName(colname);
+            col.setPk(pk);
+            col.setType(type);
+            col.setTypeName(typeName);
+            cols.add(col);
+        }
+        
+        return cols;
     }
 }

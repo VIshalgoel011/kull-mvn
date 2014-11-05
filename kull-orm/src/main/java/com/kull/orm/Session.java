@@ -9,6 +9,8 @@ import com.kull.LinqHelper;
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
 import com.kull.orm.annotation.OrmTable;
+import com.kull.orm.dbutils.InOutBeanHandler;
+import com.kull.orm.dbutils.InOutBeanListHandler;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,6 +27,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -51,50 +54,43 @@ public class Session {
 
     private static Map<String, String> SQL_CACHE = new HashMap<String, String>();
 
-    public <T> T load(Class<T> cls, Object pk) throws SQLException, NullPointerException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    public <T> T load(Class<T> cls, Object pk) throws SQLException, NullPointerException, InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException {
         OrmTable table = cls.getAnnotation(OrmTable.class);
         return (T) load(cls, table.pk(), pk);
     }
     
-    public <T> T load(T t, Object pk) throws SQLException, NullPointerException, NoSuchFieldException {
-        OrmTable table = t.getClass().getAnnotation(OrmTable.class);
-        return (T) load(t, table.pk(), pk);
-    }
+   
 
-    private <T> T load(T t, String column, Object pk) throws SQLException, NullPointerException, NoSuchFieldException {
-        if (ObjectHelper.isAnyEmpty(t, column, pk)) {
-            throw new NullPointerException("t,column, pk can't be null");
-        }
-        OrmTable table = t.getClass().getAnnotation(OrmTable.class);
-        String sql = MessageFormat.format("select * from {0} where {1}= ?", table.name(), column);
-        Field pkField = t.getClass().getDeclaredField(table.pk());
-	PreparedStatement  preparedStatement=conn.prepareStatement(sql);
-		if(pkField.getType().equals(String.class)){
-			preparedStatement.setString(1, pk.toString());
-		}else if(pkField.getType().equals(Integer.class)){
-			preparedStatement.setInt(1, Integer.parseInt(pk.toString()));
-		}
-	ResultSet  resultSet=preparedStatement.executeQuery();
-		   
-	    if(resultSet.next()){
-	    	t=evalObject(t, resultSet);
-	    }else{
-                  String errormsg="can't select a model wiht sql= "+sql+ " , pk ="+pk;
-                    throw new SQLException(errormsg);
-            }
-		
-         close(null,preparedStatement,resultSet);
-        return t;
-    }
+//    private <T> T load(Class<T> cls, String column, Object pk) throws SQLException, NullPointerException, NoSuchFieldException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+//        T t=ObjectHelper.newInstance(cls);
+//        
+//        OrmTable table = t.getClass().getAnnotation(OrmTable.class);
+//        String sql = MessageFormat.format("select * from {0} where {1}= ?", table.name(), column);
+//        Field pkField = t.getClass().getDeclaredField(table.pk());
+//	PreparedStatement  preparedStatement=conn.prepareStatement(sql);
+//		if(pkField.getType().equals(String.class)){
+//			preparedStatement.setString(1, pk.toString());
+//		}else if(pkField.getType().equals(Integer.class)){
+//			preparedStatement.setInt(1, Integer.parseInt(pk.toString()));
+//		}
+//	ResultSet  resultSet=preparedStatement.executeQuery();
+//		   
+//	    if(resultSet.next()){
+//	    	t=toBean(t, resultSet);
+//	    }else{
+//                  String errormsg="can't select a model wiht sql= "+sql+ " , pk ="+pk;
+//                    throw new SQLException(errormsg);
+//            }
+//		
+//         close(null,preparedStatement,resultSet);
+//        return t;
+//    }
     
     private <T> T load(Class<T> cls, String column, Object pk) throws SQLException, NullPointerException, NoSuchFieldException {
-        if (ObjectHelper.isAnyEmpty(cls, column, pk)) {
-            throw new NullPointerException("t,column, pk can't be null");
-        }
         OrmTable table = cls.getAnnotation(OrmTable.class);
         String sql = MessageFormat.format("select * from {0} where {1}= ?", table.name(), column);
         
-	ResultSetHandler<T> ht=new BeanHandler<T>(cls);
+	ResultSetHandler<T> ht=new InOutBeanHandler<T>(cls);
         return queryRunner.query(this.conn, sql,ht,pk);
     }
 
@@ -261,151 +257,38 @@ public class Session {
         return success;
     }
 
-    /**
-     *
-     * @param cls
-     * @param resultSet
-     * @return 将resutlSet映射到泛型集合中
-     * @throws Exception
-     */
-    public static <T> List<T> evalList(Class<T> cls, ResultSet resultSet) throws Exception {
-        List<T> list = new ArrayList<T>();
-        while (resultSet.next()) {
-            list.add(evalObject(cls, resultSet));
-        }
-        return list;
-    }
+    
 
-    /**
-     *
-     * @param cls
-     * @param resultSet
-     * @return 将resutlSet的第一条记录创建成新对象并返回
-     * @throws Exception
-     */
-    public static <T> T evalObject(Class<T> cls, ResultSet resultSet) throws Exception {
-        T t = cls.newInstance();
-        return evalObject(t, resultSet);
-    }
+   
 
-    public static final Map<Integer, Class> COLTYPE_REF_CLASS = new HashMap<Integer, Class>();
+    
 
-    static {
-        COLTYPE_REF_CLASS.put(Types.VARCHAR, String.class);
-        COLTYPE_REF_CLASS.put(Types.CHAR, String.class);
-        COLTYPE_REF_CLASS.put(Types.NVARCHAR, String.class);
-        COLTYPE_REF_CLASS.put(Types.LONGNVARCHAR, String.class);
-        COLTYPE_REF_CLASS.put(Types.LONGVARCHAR, String.class);
-        COLTYPE_REF_CLASS.put(Types.DOUBLE, Double.class);
-        COLTYPE_REF_CLASS.put(Types.FLOAT, Float.class);
-        COLTYPE_REF_CLASS.put(Types.INTEGER, Integer.class);
-        COLTYPE_REF_CLASS.put(Types.SMALLINT, Integer.class);
-        COLTYPE_REF_CLASS.put(Types.TINYINT, Integer.class);
-        COLTYPE_REF_CLASS.put(Types.BIGINT, Integer.class);
-        COLTYPE_REF_CLASS.put(Types.DATE, Date.class);
-        COLTYPE_REF_CLASS.put(Types.TIME, Time.class);
-        COLTYPE_REF_CLASS.put(Types.TIMESTAMP, Timestamp.class);
-        COLTYPE_REF_CLASS.put(Types.NUMERIC, Number.class);
-        COLTYPE_REF_CLASS.put(Types.ARRAY, String[].class);
-    }
+   
 
-    /**
-     *
-     * @param t
-     * @param resultSet
-     * @return 将resutlSet的第一条记录映射如新对象中并返回
-     * @throws Exception
-     */
-    public static <T> T evalObject(T t, ResultSet resultSet) {
-        if (t == null) {
-            return t;
-        }
-        int colCount = 0;
-        try {
-            colCount = resultSet.getMetaData().getColumnCount();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        Method m = null;
-        for (int i = 1; i <= colCount; i++) {
-
-            try {
-                String colName = resultSet.getMetaData().getColumnName(i);
-                int colType = resultSet.getMetaData().getColumnType(i);
-                String setMethodName = "set" + colName.substring(0, 1).toUpperCase() + colName.substring(1);
-                Class cls = COLTYPE_REF_CLASS.get(colType);
-                m = t.getClass().getDeclaredMethod(setMethodName, cls);
-                m.invoke(t, resultSet.getObject(i));
-                /*
-                 if(LinqHelper.isIn(colType, Types.VARCHAR,Types.CHAR,Types.NVARCHAR)){
-                 m=t.getClass().getDeclaredMethod(setMethodName,String.class);
-                 m.invoke(t,resultSet.getString(colName));
-                 }else  if(colType==Column.INT.name()
-                 ){
-                 m=t.getClass().getDeclaredMethod(setMethodName,Integer.class);
-                 m.invoke(t,resultSet.getInt(colName));
-                 }else if(colType==Column.FLOAT.name()){
-                 m=t.getClass().getDeclaredMethod(setMethodName,Float.class);
-                 m.invoke(t,resultSet.getFloat(colName));
-                 }else if(colType==Column.DOUBLE.name()||colType==Column.DECIMAL.name()){
-                 m=t.getClass().getDeclaredMethod(setMethodName,Double.class); 
-                 m.invoke(t,resultSet.getDouble(colName));
-                 }else if(colType==Column.DATETIME.name()){
-                 m=t.getClass().getDeclaredMethod(setMethodName,Date.class);
-                 m.invoke(t,resultSet.getDate(colName));
-                 }*/
-            } catch (Exception ex) {
-                continue;
-            }
-        }
-        return t;
-    }
-
-    public <T> List<T> list(Class<T> cls, String sql, Object... params) throws SQLException {
-        List<T> list = null;
+    public <T> List<T> query(Class<T> cls, String sql, Object... params) throws SQLException {
+        List<T> list = new ArrayList<>();
 
         OrmTable table = cls.getAnnotation(OrmTable.class);
         if (table != null) {
             sql = MessageFormat.format(sql, table.name(), table.pk());
         }
-        ResultSetHandler<List<T>> th = new BeanListHandler<T>(cls);
-        list = queryRunner.query(this.conn, sql, th, params);
+        list = queryRunner.query(this.conn, sql, new InOutBeanListHandler<>(cls), params);
         return list;
     }
 
-    public <T> List<T> select(Class<T> cls, String sql, Object... params) {
-        PreparedStatement ps = null;
-        List<T> list = null;
-        ResultSet rs = null;
-        OrmTable table = cls.getAnnotation(OrmTable.class);
-        try {
-            if (table != null) {
-                sql = MessageFormat.format(sql, table.name(), table.pk());
-            }
-            ps = this.conn.prepareStatement(sql);
-            for (int i = 0; i < params.length; i++) {
-                ps.setObject(i + 1, params[i]);
-            }
-            rs = ps.executeQuery();
-            list = evalList(cls, rs);
 
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally {
-            close(null, ps, rs);
-        }
-        return list;
+
+    public List<Map<String, Object>> query(String sql, Object... params) throws SQLException {
+          return queryRunner.query(this.conn,sql,new MapListHandler(),params);
     }
 
-    public List<Map<String, Object>> selectList(String sql, Object... params) throws SQLException {
-          return queryRunner.query(this.conn,sql,new MapListHandler());
-    }
-
-    public int executeUpdate(String sql, Object... params) throws SQLException {
+    public int update(String sql, Object... params) throws SQLException {
         
         return queryRunner.update(this.conn, sql,params);
+    }
+    
+     public int[] batch(String sql, Object[][] params) throws SQLException {
+        return queryRunner.batch(this.conn, sql,params);
     }
 
     public  int selectInt(String sql, Object... params) throws SQLException {

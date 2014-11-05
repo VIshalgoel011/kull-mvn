@@ -5,12 +5,9 @@ import com.kull.StringHelper;
 import com.kull.able.Ormable;
 import com.kull.orm.Database;
 import com.kull.orm.annotation.OrmTable;
-import com.kull.orm.mybatis.MapperFactory;
-import com.kull.orm.mybatis.MapperTemplate;
 
 import com.kull.able.Resultable;
 import com.kull.orm.Session;
-import static com.kull.orm.Session.COLTYPE_REF_CLASS;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +18,6 @@ import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.dbutils.QueryRunner;
@@ -87,7 +83,7 @@ public abstract class Dialect {
             context.append("import " + importCls.getName() + ";").append(StringHelper.ln());
         }
 
-        context.append(" public class ").append(sname).append(" {  \n");
+        context.append("\n\n public class ").append(sname).append(" {  \n");
 
         for (String table : showTables(conn)) {
             List<Column> cols=showColumns(conn, table);
