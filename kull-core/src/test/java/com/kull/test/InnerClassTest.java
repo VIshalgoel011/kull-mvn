@@ -6,6 +6,7 @@
 package com.kull.test;
 
 import com.kull.ObjectHelper;
+import com.kull.test.InnerClassTest.Inner.Inner0.Inner1.Inner2;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import org.junit.After;
@@ -21,7 +22,19 @@ import static org.junit.Assert.*;
  */
 public class InnerClassTest {
     
-    public class Inner{}
+    
+    
+    public class Inner{
+    
+        public class Inner0{
+        
+             public class Inner1{
+               
+                  public class Inner2{}
+             }
+        }
+        
+    }
     
     public InnerClassTest() {
     }
@@ -50,7 +63,7 @@ public class InnerClassTest {
      @Test
      public void newInstance() throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
          
-         Inner inner=ObjectHelper.newInstance(Inner.class);
+         Inner2 inner=ObjectHelper.newInstance(Inner2.class);
          InnerClassTest outter=ObjectHelper.newInstance(InnerClassTest.class);
          assertNotNull(inner);
          assertNotNull(outter);

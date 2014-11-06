@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ObjectHelper {
 
@@ -466,20 +468,7 @@ public class ObjectHelper {
         }
     }
 
-    @Deprecated
-    public synchronized static String GeneralPK() throws NullPointerException, InterruptedException {
-        String pk = "";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        Random r = new Random();
-        int randomInt = r.nextInt(10000);
-		//String code=String.valueOf(randomInt);
-        //while(code.length()<4){
-        //	code="0"+code;
-        //}
-        pk = sdf.format(new Date());
-        Thread.sleep(1);
-        return pk;
-    }
+   
 
     public static Type fieldType(Object obj, String pattern) throws Exception {
         // TODO Auto-generated method stub
@@ -509,18 +498,24 @@ public class ObjectHelper {
         return field.getName().equals("this$0");
     }
 
-    
-    public static <T> T newInstance(Class<T> cls) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    //无限级内部类实例化
+    public static <T> T newInstance(Class<T> cls) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
          T t=null;
          String clsname=cls.getName();
          int i= clsname.lastIndexOf("$");
          if(i>-1){
              Constructor constr= cls.getConstructors()[0];
              String pname=clsname.substring(0,i);
-             Object p=Class.forName(pname).newInstance();
+             Class pcls=null;
+             try {
+                 pcls = Class.forName(pname);
+             } catch (ClassNotFoundException ex) {
+                 Logger.getLogger(ObjectHelper.class.getName()).log(Level.SEVERE, null, ex);
+             }
+             Object p=newInstance(pcls);
              t= (T)constr.newInstance(p);
          }else{
-            t= (T)Class.forName(clsname).newInstance();
+            t= (T)cls.newInstance();
          }
          return t;
     }
