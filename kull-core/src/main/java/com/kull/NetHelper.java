@@ -18,7 +18,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,6 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
@@ -34,12 +32,11 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 
 
 
 import com.kull.able.Resultable;
+import org.apache.commons.io.IOUtils;
 
 
 
@@ -51,45 +48,29 @@ import com.kull.able.Resultable;
 
 public class NetHelper {
 
+    
+       private static InputStream get(String url,NameValuePair... nvs) throws MalformedURLException, IOException{
+           url+=url.contains("?")?"&":"?";
+           for (NameValuePair nv : nvs) {
+               url+=nv.getName()+"="+nv.getValue();
+           }
+           return new URL(url).openStream();
+       }
+       
+        public static String getString(String url,NameValuePair... nvs) throws MalformedURLException, IOException{
+           InputStream in=get(url, nvs);
+           String str= IOUtils.toString(in);
+           IOUtils.closeQuietly(in);
+           return str;
+       }
 	
-	public static Resultable doGet(String url){
-		
-        return doGet(url,new HashMap<String, Object>());
-		
-	}
 	
-	public static Resultable doGet(String url,Map<String, Object> params){
-		HttpGet get=new HttpGet(url);
-		HttpParams httpParams=new BasicHttpParams();
-        for(Iterator<String> it=params.keySet().iterator();it.hasNext();){
-        	String key=it.next();
-        	Object value=params;
-        	httpParams.setParameter(key, value);
-        }
-        return doGet(get);
 		
-	}
+ 
+        
+        
 	
-	public static Resultable doGet(HttpGet get){
-		DefaultHttpClient httpclient=new DefaultHttpClient();
-		String context="";
-		HttpResponse response=null;
-		InputStream is=null;
-		Resultable resultModel=new Resultable();
-		try {
-		    response = httpclient.execute(get);
-			is = response.getEntity().getContent();
-			context=streamToString(is);
-			httpclient.clearRequestInterceptors();
-            httpclient.clearResponseInterceptors();
-			is.close();
-			resultModel.setCode(Resultable.CODE_SUCCESS);
-			resultModel.setMsg(context);
-		} catch (Exception e) {
-		    resultModel=	Resultable.create(e);
-		}
-		return resultModel;
-	}
+	
 	
 	public static Resultable doPost(HttpPost post){
 		DefaultHttpClient httpclient=new DefaultHttpClient();

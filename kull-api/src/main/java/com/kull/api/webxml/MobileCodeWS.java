@@ -57,7 +57,7 @@ public class MobileCodeWS extends BaseWebXmlService  {
 					String[] s1=str.split(" ");
 					e.provinceName=s1[0];
 					e.cityName=s1[1];
-					e.total=ObjectHelper.parse(s1[2],0);
+					e.total=ObjectHelper.valueOf(s1[2],0);
 			
 				 list.add(e);
     			 }catch(Exception ex){
@@ -110,13 +110,13 @@ public class MobileCodeWS extends BaseWebXmlService  {
     	private Integer total;
     	
 		
-		public void parse(String str) {
+		public void valueOf(String str) {
 			// TODO Auto-generated method stub
 			str=str.trim();
 			String[] s1=str.split(" ");
 			this.provinceName=s1[0];
 			this.cityName=s1[1];
-			this.total=ObjectHelper.parse(s1[2],0);
+			this.total=ObjectHelper.valueOf(s1[2],0);
 		}
 
 		public String getProvinceName() {
@@ -157,7 +157,7 @@ public class MobileCodeWS extends BaseWebXmlService  {
 		}
 	
 		
-		public void parse(String str) {
+		public void valueOf(String str) {
 			// TODO Auto-generated method stub
 			str=str.trim();
 			String[] s1=str.split("：");

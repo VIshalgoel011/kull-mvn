@@ -104,15 +104,15 @@ public class JQuery implements Scriptable {
 	}
 	
 	public static String id(String id){
-		return MessageFormat.format("$(\"#{0}\")", ObjectHelper.<String>parse(id,""));
+		return MessageFormat.format("$(\"#{0}\")", ObjectHelper.<String>valueOf(id,""));
 	}
 	
 	public static String cls(String id){
-		return MessageFormat.format("$(\".{0}\")", ObjectHelper.<String>parse(id,""));
+		return MessageFormat.format("$(\".{0}\")", ObjectHelper.<String>valueOf(id,""));
 	}
 	
 	public static String regexp(String regexp){
-		return MessageFormat.format("$(\"{0}\")", ObjectHelper.<String>parse(regexp,""));
+		return MessageFormat.format("$(\"{0}\")", ObjectHelper.<String>valueOf(regexp,""));
 	}
 	
 	

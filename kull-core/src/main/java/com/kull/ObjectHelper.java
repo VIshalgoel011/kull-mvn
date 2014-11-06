@@ -11,6 +11,7 @@ import java.text.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.beanutils.PropertyUtils;
 
 public class ObjectHelper {
 
@@ -31,7 +32,7 @@ public class ObjectHelper {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T parse(String value, T defaultValue) {
+    public static <T> T valueOf(String value, T defaultValue) {
 
         T t = defaultValue;
 
@@ -72,7 +73,7 @@ public class ObjectHelper {
         return t;
     }
 
-    public static <T> T parse(String value, T defaultValue, Class<T> cls) {
+    public static <T> T valueOf(String value, T defaultValue, Class<T> cls) {
         T t = defaultValue;
         if (value == null) {
             return t;
@@ -390,62 +391,12 @@ public class ObjectHelper {
         return getters;
     }
 
-    public static <T> Object attr(Object obj, String pattern, T value) throws Exception {
-        // TODO Auto-generated method stub
-        if (obj instanceof Map) {
-            ((Map) obj).put(pattern, value);
-            return obj;
-        }
-        boolean isOk = false;
-        Class[] lAllClass = getAllClass(obj.getClass());
-        String lTempName = "set" + StringHelper.format(pattern, StringHelper.Format.upcaseFirstChar);
-        for (Class c : lAllClass) {
-            try {
-                Field f = c.getDeclaredField(pattern);
-                Type t = f.getType();
-                Method lMth = c.getDeclaredMethod(lTempName, f.getType());
-                if (value instanceof String && !t.equals(String.class)) {
-                    lMth.invoke(obj, ObjectHelper.parse(value.toString(), null, f.getType()));
-                } else {
-                    lMth.invoke(obj, value);
-                }
-                if (lMth != null) {
-                    isOk = true;
-                    break;
-                }
-            } catch (Exception ex) {
-            }
-        }
-        if (!isOk) {
-            throw new Exception(MessageFormat.format("This Model have not \"{0}\" setter({1})", pattern, obj.getClass().getName()));
-        }
-        return obj;
+    public static  void attr(Object obj, String pattern, Object value) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException  {
+        PropertyUtils.setProperty(obj, pattern, value);
     }
 
-    public static <T> T attr(Object obj, String pattern) throws Exception {
-        // TODO Auto-generated method stub
-        if (obj instanceof Map) {
-            return (T) ((Map) obj).get(pattern);
-        }
-        boolean isOk = false;
-        Class[] lAllClass = getAllClass(obj.getClass());
-        String lTempName = "get" + StringHelper.format(pattern, StringHelper.Format.upcaseFirstChar);
-        T lObjFieldValue = null;
-        for (Class c : lAllClass) {
-            try {
-                Method lMth = c.getDeclaredMethod(lTempName, null);
-                if (lMth == null) {
-                    continue;
-                }
-                lObjFieldValue = (T) lMth.invoke(obj, null);
-                isOk = true;
-            } catch (Exception ex) {
-            }
-        }
-        if (!isOk) {
-            throw new Exception(MessageFormat.format("This Model have not \"{0}\" 's getter", pattern));
-        }
-        return lObjFieldValue;
+    public static <T> T attr(Object obj, String pattern) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException  {
+        return (T)PropertyUtils.getProperty(obj, pattern);
     }
 
     public static <T> void cp(T source, T target) throws Exception {

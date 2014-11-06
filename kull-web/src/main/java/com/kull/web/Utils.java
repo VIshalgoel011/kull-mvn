@@ -190,7 +190,7 @@ public  class Utils {
 				 if(!isRewrite){
 					 continue;
 				 }
-				 t= (T) ObjectHelper.attr(t,name,value);
+				 ObjectHelper.attr(t,name,value);
 				 }catch(Exception ex){}
 			 }
 	

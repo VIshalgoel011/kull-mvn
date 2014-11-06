@@ -80,7 +80,7 @@ public abstract class Dialect {
         context
                 .append("package " + packg + ";").append(StringHelper.ln(2));
         for (Class importCls : importClss) {
-            context.append("import " + importCls.getName() + ";").append(StringHelper.ln());
+            context.append("import " + importCls.getName() + ";").append(StringHelper.ln(1));
         }
 
         context.append("\n\n public class ").append(sname).append(" {  \n");

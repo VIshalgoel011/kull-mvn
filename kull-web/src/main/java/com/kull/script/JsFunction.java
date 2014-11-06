@@ -40,7 +40,7 @@ public class JsFunction implements Scriptable {
 				}
 			}
 		}
-		this.funName=ObjectHelper.parse(funName,"");
+		this.funName=ObjectHelper.valueOf(funName,"");
 	}
 	
 	public String toScirpt() {

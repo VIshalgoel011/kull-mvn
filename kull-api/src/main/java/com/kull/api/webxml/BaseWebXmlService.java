@@ -72,7 +72,7 @@ public abstract  class BaseWebXmlService {
          );
          System.err.println(url);
 		 HttpGet get=new HttpGet(url);
-		 String context=NetHelper.doGet(get).getMsg();
+		 String context=NetHelper.getString(url);
 		 try{
 		 doc= DocumentHelper.parseText(context);
 		 }catch(Exception ex){

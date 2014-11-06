@@ -44,10 +44,10 @@ public class Messager  implements Scriptable {
 		String lStrReturn="";
 		String lStrRege="$.messager.alert({0},{1},{2},{3});";
 		lStrReturn=MessageFormat.format(lStrRege,
-	            ObjectHelper.<String>parse(this.title,"\"\""),	 //0
-	            ObjectHelper.<String>parse(this.msg, "\"\""),   //1
-	            ObjectHelper.<String>parse(this.icon,"\"\""),    //2
-	            ObjectHelper.<String>parse(this.fn, new JsFunction(new String[]{"ok"}).toScirpt()) //3
+	            ObjectHelper.<String>valueOf(this.title,"\"\""),	 //0
+	            ObjectHelper.<String>valueOf(this.msg, "\"\""),   //1
+	            ObjectHelper.<String>valueOf(this.icon,"\"\""),    //2
+	            ObjectHelper.<String>valueOf(this.fn, new JsFunction(new String[]{"ok"}).toScirpt()) //3
 		);
 		return lStrReturn;
 	}
@@ -57,9 +57,9 @@ public class Messager  implements Scriptable {
 		String lStrReturn="";
 		String lStrRege="$.messager.confirm({0},{1},{2});";
 		lStrReturn=MessageFormat.format(lStrRege,
-	    ObjectHelper.<String>parse(this.title,"\"\""),	 //0
-	    ObjectHelper.<String>parse(this.msg, "\"\""),   //1
-	    ObjectHelper.<String>parse(this.fn, new JsFunction(new String[]{"ok"}).toScirpt())  //2
+	    ObjectHelper.<String>valueOf(this.title,"\"\""),	 //0
+	    ObjectHelper.<String>valueOf(this.msg, "\"\""),   //1
+	    ObjectHelper.<String>valueOf(this.fn, new JsFunction(new String[]{"ok"}).toScirpt())  //2
 		);
 		return lStrReturn;
 	}
@@ -69,9 +69,9 @@ public class Messager  implements Scriptable {
 		String lStrReturn="";
 		String lStrRege="$.messager.prompt({0},{1},{2})";
 		lStrReturn=MessageFormat.format(lStrRege,
-			    ObjectHelper.<String>parse(this.title,"\"\""),	 //0
-			    ObjectHelper.<String>parse(this.msg, "\"\""),   //1
-			    ObjectHelper.<String>parse(this.fn, new JsFunction(new String[]{"ok"}).toScirpt())  //2
+			    ObjectHelper.<String>valueOf(this.title,"\"\""),	 //0
+			    ObjectHelper.<String>valueOf(this.msg, "\"\""),   //1
+			    ObjectHelper.<String>valueOf(this.fn, new JsFunction(new String[]{"ok"}).toScirpt())  //2
 				);
 		return lStrReturn;
 	}

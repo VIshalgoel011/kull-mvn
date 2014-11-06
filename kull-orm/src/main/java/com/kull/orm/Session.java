@@ -8,6 +8,7 @@ package com.kull.orm;
 import com.kull.LinqHelper;
 import com.kull.ObjectHelper;
 import com.kull.StringHelper;
+import com.kull.cache.MapCacheAccess;
 import com.kull.orm.annotation.OrmTable;
 import com.kull.orm.dbutils.InOutBeanHandler;
 import com.kull.orm.dbutils.InOutBeanListHandler;
@@ -15,28 +16,20 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.sql.Types;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
-import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.apache.jcs.access.exception.CacheException;
 
 /**
  *
@@ -50,9 +43,17 @@ public class Session {
     public Session(Connection conn) {
         this.conn = conn;
         queryRunner = new QueryRunner();
+        try {
+            SQL_CACHE= new MapCacheAccess(Session.class.getName()+":sql");
+        } catch (CacheException ex) {}
     }
 
-    private static Map<String, String> SQL_CACHE = new HashMap<String, String>();
+    //private static Map<String, String> SQL_CACHE = new HashMap<String, String>();
+    
+    private   MapCacheAccess<String,String> SQL_CACHE=null;
+    
+    
+   
 
     public <T> T load(Class<T> cls, Object pk) throws SQLException, NullPointerException, InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException {
         OrmTable table = cls.getAnnotation(OrmTable.class);
@@ -132,8 +133,12 @@ public class Session {
             cols = StringHelper.trim(cols, ",");
             vals = StringHelper.trim(vals, ",");
             sql = MessageFormat.format(sqlPattern, table.name(), cols, vals);
-            SQL_CACHE.put(sqlCacheKey, sql);
-            //System.out.println(sql);
+            try {
+                SQL_CACHE.put(sqlCacheKey, sql);
+                //System.out.println(sql);
+            } catch (CacheException ex) {
+                throw new SQLException(ex);
+            }
         }
         int insertsize = insertFields.size();
         Object[][] params = new Object[objs.length][insertsize];
@@ -169,7 +174,11 @@ public class Session {
             sql = SQL_CACHE.get(sqlCacheKey);
         } else {
             sql = MessageFormat.format(sqlPattern, table.name(), table.pk());
-            SQL_CACHE.put(sqlCacheKey, sql);
+            try {
+                SQL_CACHE.put(sqlCacheKey, sql);
+            } catch (CacheException ex) {
+               throw new SQLException(ex);
+            }
         }
         int dlength = objs.length;
         Object[][] params = new Object[dlength][1];
@@ -227,7 +236,11 @@ public class Session {
             }
             key = StringHelper.trim(key, ",");
             sql = MessageFormat.format(sqlPattern, table.name(), key, table.pk());
-            SQL_CACHE.put(sqlCacheKey, sql);
+            try {
+                SQL_CACHE.put(sqlCacheKey, sql);
+            } catch (CacheException ex) {
+              throw new SQLException(ex);
+            }
         }
         int updatesize = updateFields.size();
         Object[][] params = new Object[objs.length][updatesize + 1];

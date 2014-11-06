@@ -113,7 +113,7 @@ public class TrainTimeWebService extends BaseWebXmlService {
 		    trainTime.LastStation=node.selectSingleNode("FirstStation").getText().trim();
 		    trainTime.ArriveTime=DateTimeHelper.parse(node.selectSingleNode("ArriveTime").getText().trim(), 	REGEXP_TIME);
 		    trainTime.StartTime=DateTimeHelper.parse(node.selectSingleNode("StartTime").getText().trim(), REGEXP_TIME);
-            trainTime.KM=ObjectHelper.parse(node.selectSingleNode("KM").getText().trim(), 0);
+            trainTime.KM=ObjectHelper.valueOf(node.selectSingleNode("KM").getText().trim(), 0);
 		    trainTime.TrainCode=node.selectSingleNode("TrainCode").getText().trim();
 		    trainTime.UseDate=DateTimeHelper.parse(node.selectSingleNode("UseDate").getText().trim(), REGEXP_TIME_SHORT);
 		    trainTimes.add(trainTime);
