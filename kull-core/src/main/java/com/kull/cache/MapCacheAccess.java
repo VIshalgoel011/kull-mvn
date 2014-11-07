@@ -5,17 +5,11 @@
  */
 package com.kull.cache;
 
-import com.sun.imageio.plugins.jpeg.JPEG;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.jcs.JCS;
 import org.apache.jcs.access.behavior.ICacheAccess;
 import org.apache.jcs.access.exception.CacheException;
 import org.apache.jcs.engine.behavior.ICompositeCacheAttributes;
 import org.apache.jcs.engine.behavior.IElementAttributes;
-import org.apache.jcs.engine.control.CompositeCache;
 
 /**
  *

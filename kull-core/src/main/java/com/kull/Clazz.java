@@ -1,5 +1,6 @@
 package com.kull;
 
+import com.kull.datetime.DateFormatter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.math.BigDecimal;
@@ -15,20 +16,19 @@ import org.apache.commons.beanutils.PropertyUtils;
 
 public class Clazz {
 
-    public static <T> Set<T> evalProperties(Collection collection, String name) {
-        Set<T> propertis = new HashSet<T>();
-        for (Object obj : collection) {
-            T t = null;
-            try {
-                t = attr(obj, name);
-                propertis.add(t);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+    public static <T> T valueOf(Class<T> cls, Object val, T defaultVal) {
+        T t = defaultVal;
+        try {
+            t = valueOf(cls, val);
+        } catch (Exception ex) {
 
         }
-        return propertis;
+        return t;
+    }
+
+    public static <T> T valueOf(Class<T> cls, Object val) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Method method = cls.getMethod("valueOf", cls);
+        return (T) method.invoke(cls, val);
     }
 
     @SuppressWarnings("unchecked")
@@ -55,7 +55,7 @@ public class Clazz {
             } else if (t instanceof Long) {
                 t = (T) Long.valueOf(value);
             } else if (t instanceof Date) {
-                t = (T) DateTimez.parse(value);
+                // t = (T) Calendarz.parse(value);
             } else if (t instanceof Timestamp) {
                 t = (T) Timestamp.valueOf(value);
             } else if (t instanceof Boolean) {
@@ -75,8 +75,7 @@ public class Clazz {
 
     public static <T> T valueOf(String value, T defaultValue, Class<T> cls) {
         T t = defaultValue;
-        
-        
+
         if (value == null) {
             return t;
         }
@@ -96,7 +95,7 @@ public class Clazz {
             } else if (Long.class.equals(cls)) {
                 t = (T) Long.valueOf(value.toString());
             } else if (Date.class.equals(cls)) {
-                t = (T) DateTimez.parse(value);
+                t = (T) DateFormatter.parsez(value);
             } else if (Timestamp.class.equals(cls)) {
                 t = (T) Timestamp.valueOf(value);
             } else if (Boolean.class.equals(cls)) {
@@ -118,7 +117,10 @@ public class Clazz {
     public static boolean isAnyEmpty(Object... os) {
         boolean isanyempty = false;
         for (Object o : os) {
-            if(isEmpty(o)){isanyempty=true ;break;}
+            if (isEmpty(o)) {
+                isanyempty = true;
+                break;
+            }
         }
         return isanyempty;
     }
@@ -127,7 +129,7 @@ public class Clazz {
     public static boolean isEmpty(Object o) {
         if (o == null) {
             return true;
-        }else if (o instanceof String) {
+        } else if (o instanceof String) {
             return Stringz.isBlank((String) o);
         } else if (o instanceof Collection) {
             return ((Collection) o).isEmpty();
@@ -135,7 +137,7 @@ public class Clazz {
             return Array.getLength(o) == 0;
         } else if (o instanceof Map) {
             return ((Map) o).isEmpty();
-        } 
+        }
 
         return false;
     }
@@ -191,7 +193,7 @@ public class Clazz {
 
     }
 
-    public static <T> List<T> toList(T... ts) {
+    public static <T> List<T> list(T... ts) {
         List<T> list = new ArrayList<T>();
         for (T t : ts) {
             list.add(t);
@@ -199,51 +201,16 @@ public class Clazz {
         return list;
     }
 
-    public static <T> Set<T> toSet(T... ts) {
-        return new HashSet<T>(toList(ts));
-    }
-
-    public static Map<String, Object> toMap(Object obj) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        if (obj == null) {
-            return map;
-        } else if (obj instanceof Map) {
-            try {
-                map = (Map<String, Object>) obj;
-            } catch (Exception e) {
-                return map;
-            }
-            return map;
-        }
-        Class[] lAllClass = getAllClass(obj.getClass());
-        for (Class c : lAllClass) {
-
-            Field[] lArrField = c.getDeclaredFields();
-
-            for (int i = 0; i < lArrField.length; i++) {
-                String lStrFieldName = lArrField[i].getName();
-                try {
-                    Object lObjFieldValue = attr(obj, lStrFieldName);
-                    if (lObjFieldValue == null) {
-                        continue;
-                    }
-                    map.put(lStrFieldName, lObjFieldValue);
-                } catch (Exception ex) {
-                }
-            }
-        }
-
-        return map;
-    }
-
-    public static boolean isEquals(Object obj1, Object obj2) {
+    public static <T> boolean isEquals(T obj1, T obj2) {
         if (obj1 != null && obj2 != null) {
             return obj1.equals(obj2);
+        } else if (obj1 == null && obj2 == null) {
+            return true;
         }
-        return obj1 == null && obj2 == null;
+        return false;
     }
 
-    public static <T> boolean isNotEquals(Object obj1, Object obj2) {
+    public static <T> boolean isNotEquals(T obj1, T obj2) {
         return !isEquals(obj1, obj2);
     }
 
@@ -307,14 +274,8 @@ public class Clazz {
         }
     }
 
-    private static Map<Class, Class[]> CACHE_CLASSS = new HashMap<Class, Class[]>();
-    private static Map<Class, Field[]> CACHE_FIELDS = new HashMap<Class, Field[]>();
-    private static Map<Class, Map<String, Method>> CACHE_SETTERS = new HashMap<Class, Map<String, Method>>(), CACHE_GETTERS = new HashMap<Class, Map<String, Method>>();
-
     public static Class[] getAllClass(Class c) {
-        if (CACHE_CLASSS.containsKey(c)) {
-            return CACHE_CLASSS.get(c);
-        }
+
         List<Class> lClassReturn = new ArrayList<Class>();
         lClassReturn.add(c);
         if (!c.getSuperclass().equals(Object.class)) {
@@ -324,14 +285,12 @@ public class Clazz {
             }
         }
         Class[] cs = lClassReturn.toArray(new Class[lClassReturn.size()]);
-        CACHE_CLASSS.put(c, cs);
+
         return cs;
     }
 
     public static Field[] allDeclaredFieldsBy(Class c) {
-        if (CACHE_FIELDS.containsKey(c)) {
-            return CACHE_FIELDS.get(c);
-        }
+
         List<Field> fields = new ArrayList<Field>();
         for (Class cls : Clazz.getAllClass(c)) {
             for (Field field : cls.getDeclaredFields()) {
@@ -342,7 +301,7 @@ public class Clazz {
             }
         }
         Field[] fs = fields.toArray(new Field[fields.size()]);
-        CACHE_FIELDS.put(c, fs);
+
         return fs;
     }
 
@@ -367,40 +326,44 @@ public class Clazz {
         return gettersBy(c).get(field.getName());
     }
 
+    public static Method setterBy(Class c, String fieldName) throws NoSuchMethodException, SecurityException {
+
+        return settersBy(c).get(fieldName);
+    }
+
+    public static Method getterBy(Class c, String fieldName) throws NoSuchMethodException, SecurityException {
+
+        return gettersBy(c).get(fieldName);
+    }
+
     public static Map<String, Method> settersBy(Class c) throws NoSuchMethodException, SecurityException {
-        if (CACHE_SETTERS.containsKey(c)) {
-            return CACHE_SETTERS.get(c);
-        }
+
         Map<String, Method> setters = new HashMap<String, Method>();
         for (Field field : Clazz.allDeclaredFieldsBy(c)) {
             String settername = "set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
             setters.put(field.getName(), c.getMethod(settername, field.getType()));
         }
-        CACHE_SETTERS.put(c, setters);
+
         return setters;
     }
 
     public static Map<String, Method> gettersBy(Class c) throws NoSuchMethodException, SecurityException {
-        if (CACHE_GETTERS.containsKey(c)) {
-            return CACHE_GETTERS.get(c);
-        }
+
         Map<String, Method> getters = new HashMap<String, Method>();
         for (Field field : Clazz.allDeclaredFieldsBy(c)) {
             String settername = "get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
             getters.put(field.getName(), c.getMethod(settername));
         }
-        CACHE_GETTERS.put(c, getters);
+
         return getters;
     }
 
-   
-    
-    public static  void attr(Object obj, String pattern, Object value) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException  {
+    public static void attr(Object obj, String pattern, Object value) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         PropertyUtils.setProperty(obj, pattern, value);
     }
 
-    public static <T> T attr(Object obj, String pattern) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException  {
-        return (T)PropertyUtils.getProperty(obj, pattern);
+    public static Object attr(Object obj, String pattern) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        return PropertyUtils.getProperty(obj, pattern);
     }
 
     public static <T> void cp(T source, T target) throws Exception {
@@ -422,8 +385,6 @@ public class Clazz {
             setter.invoke(target, val);
         }
     }
-
-   
 
     public static Type fieldType(Object obj, String pattern) throws Exception {
         // TODO Auto-generated method stub
@@ -454,28 +415,86 @@ public class Clazz {
     }
 
     //无限级内部类实例化
-    public static <T> T newInstance(Class<T> cls) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-         T t=null;
-         String clsname=cls.getName();
-         int i= clsname.lastIndexOf("$");
-         if(i>-1){
-             Constructor constr= cls.getConstructors()[0];
-             String pname=clsname.substring(0,i);
-             Class pcls=null;
-             try {
-                 pcls = Class.forName(pname);
-             } catch (ClassNotFoundException ex) {
-                 Logger.getLogger(Clazz.class.getName()).log(Level.SEVERE, null, ex);
-             }
-             Object p=newInstance(pcls);
-             t= (T)constr.newInstance(p);
-         }else{
-            t= (T)cls.newInstance();
-         }
-         return t;
+    public static <T> T newInstance(Class<T> cls) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        T t = null;
+        String clsname = cls.getName();
+        int i = clsname.lastIndexOf("$");
+        if (i > -1) {
+            Constructor constr = cls.getConstructors()[0];
+            String pname = clsname.substring(0, i);
+            Class pcls = null;
+            try {
+                pcls = Class.forName(pname);
+            } catch (ClassNotFoundException ex) {
+                throw new IllegalArgumentException(ex);
+            }
+            t = (T) constr.newInstance(newInstance(pcls));
+        } else {
+            t = (T) cls.newInstance();
+        }
+        return t;
     }
-    
+
+    public static void refEnv(Class cls) {
+        refEnv(cls, cls.getName()+".");
+    }
+
+    public static void refEnv(Class cls, String prefix) {
+        Field[] fields = cls.getDeclaredFields();
+        
+        for (Field field : fields) {
+            String fileallname = prefix + field.getName();
+            String envname = fileallname.replace(".", "_");
+        
+            String envval = System.getenv(envname.toUpperCase());
+            if(envval==null)continue;
+            try {
+                 if (instanceOfArray(field,String.class)) {
+                        field.set(cls, envval.split(","));
+                }else if(isNumber(field)){
+                       field.set(cls, (Number)valueOf(envval, null));
+                } else {
+
+                    field.set(cls, envval);
+
+                }
+            } catch (Exception ex) {
+
+            }
+
+        }
+    }
+
+    public static <T> Set<T> newSet(T... vals) {
+        Set<T> tset = new HashSet<T>();
+        for (T val : vals) {
+            tset.add(val);
+        }
+        return tset;
+    }
 
     
-    
+
+    public static boolean instanceOf(Field field,Class cls) {
+        return cls.getName().equals(field.getType().getName());
+    }
+
+    public static boolean instanceOfArray(Field field,Class cls) {
+        return ("[L"+cls.getName()+";").equals(field.getType().getName());
+    }
+
+    public static boolean isNumber(Field field) {
+        return Clazz.isIn(field.getType().getName()
+                ,Double.class.getName()
+                ,double.class.getName()
+                ,int.class.getName()
+                ,Integer.class.getName()
+                ,Float.class.getName()
+                ,float.class.getName()
+                ,long.class.getName()
+                ,Long.class.getName()
+                
+                );
+    }
+
 }

@@ -2,7 +2,7 @@ package com.kull.api.webxml;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import com.kull.Calendarz;
 import java.util.Date;
 import java.util.List;
 
@@ -11,8 +11,10 @@ import org.dom4j.Node;
 
 
 
-import com.kull.DateTimez;
+
 import com.kull.Stringz;
+import com.kull.datetime.DateFormatter;
+import java.util.Calendar;
 
 
 
@@ -71,7 +73,7 @@ public class WeatherWebService extends BaseWebXmlService{
      	node=nodes.get(index++);
     	weather.cityPic=node.getText();
     	node=nodes.get(index++);
-    	weather.date=DateTimez.parse(node.getText().trim());
+    	weather.date=DateFormatter.parsez(node.getText().trim());
     	//node=nodes.get(index++);
     	StringBuffer context=new StringBuffer("");
     	//String[] texts=node.getText().split("/");
@@ -87,8 +89,8 @@ public class WeatherWebService extends BaseWebXmlService{
     		node=nodes.get(weaterIndex+1);
     	   	texts=node.getText().split(" ");
     	   	int yyyy=Calendar.getInstance().get(Calendar.YEAR);
-    	   	Date date=DateTimez.parse(texts[0],"MM月dd日");
-    	   	futrueWeather.date=DateTimez.attr(date, Calendar.YEAR, yyyy);
+    	   	Date date=DateFormatter.parsez(texts[0],"MM月dd日");
+    	   	futrueWeather.date=Calendarz.attr(date, Calendar.YEAR, yyyy);
     	   	futrueWeather.weathContext=texts[1];
     	   	node=nodes.get(weaterIndex+2);
     	   	futrueWeather.windContext=node.getText();

@@ -40,6 +40,7 @@ import com.kull.orm.dialect.Dialect;
 
 
 import com.kull.able.Resultable;
+import com.kull.datetime.DateFormatter;
 
 
 
@@ -753,7 +754,7 @@ public  class MapperTemplate  {
     			,this.getEnum()  //11
     			,this.dialect.getClass().getName()  //12
     			,this.getQueryColsContext()  //13
-    			,DateTimez.Formatter.DATE_FORMAT_DB.format()  //14
+    			,DateFormatter.YMD.getPattern()  //14
     			,this.getDbCols("") //15
     	);
 		return lStrMapper;
@@ -1051,7 +1052,7 @@ public  class MapperTemplate  {
     			,this.getEnum()  //11
     			,this.dialect.getClass().getName()  //12
     			,this.getQueryColsContext()  //13
-    			,DateTimez.Formatter.DATE_FORMAT_DB.format()
+    			,DateFormatter.YMD.getPattern()
     	        ,this.getDbCols("") //15
     			);
 		return lStrMapper;

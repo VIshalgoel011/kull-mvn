@@ -69,9 +69,9 @@ public class MapperFactory {
 		}
 		tablePrefix=tablePrefix==null?"":tablePrefix;
 		if(database==Database.oracle&& !"".equals(tableConfig.oracleSeqIdRegexp())){
-			mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Clazz.toSet(tableConfig.excludeColumns()),tableConfig.oracleSeqIdRegexp()));
+			mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Clazz.newSet(tableConfig.excludeColumns()),tableConfig.oracleSeqIdRegexp()));
 		  }else{
-				mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Clazz.toSet(tableConfig.excludeColumns())));
+				mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Clazz.newSet(tableConfig.excludeColumns())));
 		  }
 		}
 		return mapperTemplates ;
