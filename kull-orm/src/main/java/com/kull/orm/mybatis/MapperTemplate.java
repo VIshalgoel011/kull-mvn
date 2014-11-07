@@ -34,7 +34,7 @@ import org.dom4j.io.SAXReader;
 
 
 import com.kull.*;
-import com.kull.able.Ormable;
+import com.kull.orm.able.Ormable;
 import com.kull.orm.ColumnType;
 import com.kull.orm.dialect.Dialect;
 
@@ -170,9 +170,9 @@ public  class MapperTemplate  {
 		//return NAME_MODEL+".getClass().getDeclaredFields().'{'?#this.getName() eq ''"+prefix+"{0}'' '}'.size() gt 0";
 		//return  NAME_MODEL+".getClass().getDeclaredFields().'{'?#this.getName() eq ''"+prefix+"{0}'' '}'.size() eq 1";
         //return "1=2 or ";
-		if(LinqHelper.isIn(prefix,"isnull","isnotnull")){
+		if(Linq.isIn(prefix,"isnull","isnotnull")){
 		  return "1 eq 1 and "+NAME_CONDITIDON+"[''"+prefix+"{0}''] neq null and "+NAME_CONDITIDON+"[''"+prefix+"{0}''] eq true";	
-		}else if(LinqHelper.isIn(prefix,"isin","isnotin")){
+		}else if(Linq.isIn(prefix,"isin","isnotin")){
 			  return "1 eq 1 and "+NAME_CONDITIDON+"[''"+prefix+"{0}''] neq null and  "+NAME_CONDITIDON+"[''"+prefix+"{0}''] neq null and "+NAME_CONDITIDON+"[''"+prefix+"{0}''].size>0";	
 			}
 		else{
@@ -304,11 +304,11 @@ public  class MapperTemplate  {
 	}
 	
 	public String getPol(ColumnTemplate ct,String prefix){
-		prefix=ObjectHelper.<String>valueOf(prefix,"");
+		prefix=Clazz.<String>valueOf(prefix,"");
 		String pattern="#'{'{3}{0},jdbcType={1}'}'";
 		String patternBytes="#'{'{3}{0},jdbcType={1}'}'";
 		String tempPattern=pattern;
-		if(LinqHelper.isIn(ct.getColumn().getJdbcType(),ColumnType.JDBC_TYPES_BYTES)){
+		if(Linq.isIn(ct.getColumn().getJdbcType(),ColumnType.JDBC_TYPES_BYTES)){
 			tempPattern=patternBytes;
 		}
 		String str=MessageFormat.format(tempPattern
@@ -321,7 +321,7 @@ public  class MapperTemplate  {
 	}
 	
 	public String getInsertCol(ColumnTemplate ct){
-		if(idGener!=null && ObjectHelper.isEquals(ct.getDbColName(), pkColumn.getDbColName()))
+		if(idGener!=null && Clazz.isEquals(ct.getDbColName(), pkColumn.getDbColName()))
 		{return idGener;}		
 		return this.getPol(ct,NAME_MODEL+".");
 		
@@ -379,7 +379,7 @@ public  class MapperTemplate  {
 		String tempPattern=patternResult;
 		if(ct.getDbColName().equalsIgnoreCase(this.pk)){
 			tempPattern=patternId;
-		}else if(LinqHelper.isIn(ct.getColumn().getJdbcType(),ColumnType.JDBC_TYPES_BYTES )) {
+		}else if(Linq.isIn(ct.getColumn().getJdbcType(),ColumnType.JDBC_TYPES_BYTES )) {
 		    tempPattern=patternResult4bytes;
 		}
 		str=MessageFormat.format(tempPattern,
@@ -476,7 +476,7 @@ public  class MapperTemplate  {
 	    Map<String,List<String>> mapQueryCols=new HashMap<String, List<String>>();
         
 		for(ColumnTemplate ct : cols){
-			if(LinqHelper.isIn(ct.getColumn().getJavaType(),byte.class,Byte.class))continue;
+			if(Linq.isIn(ct.getColumn().getJavaType(),byte.class,Byte.class))continue;
 
 			String listKeyName=Boolean.class.getSimpleName();
 			if(!mapQueryCols.containsKey(listKeyName)){
@@ -498,17 +498,17 @@ public  class MapperTemplate  {
 			}
 			mapQueryCols.get(listKeyName).add(MessageFormat.format("neq{0}",ct.getJavaName() ));
 			mapQueryCols.get(listKeyName).add(MessageFormat.format("eq{0}",ct.getJavaName() ));
-			if( LinqHelper.isIn(ct.getColumn().getJavaType(), String.class,Character.class)){
+			if( Linq.isIn(ct.getColumn().getJavaType(), String.class,Character.class)){
 				mapQueryCols.get(listKeyName).add(MessageFormat.format("like{0}",ct.getJavaName() ));
 				mapQueryCols.get(listKeyName).add(MessageFormat.format("notlike{0}",ct.getJavaName() ));
 	            
-			}else if(LinqHelper.isIn(ct.getColumn().getJavaType(),Integer.class,Float.class,Double.class,BigDecimal.class,Number.class))
+			}else if(Linq.isIn(ct.getColumn().getJavaType(),Integer.class,Float.class,Double.class,BigDecimal.class,Number.class))
 	        {
 				mapQueryCols.get(listKeyName).add(MessageFormat.format("min{0}",ct.getJavaName() ));
 				mapQueryCols.get(listKeyName).add(MessageFormat.format("max{0}",ct.getJavaName() ));
 
 	        }
-			else if(LinqHelper.isIn(ct.getColumn().getJavaType(), Date.class,Timestamp.class)){
+			else if(Linq.isIn(ct.getColumn().getJavaType(), Date.class,Timestamp.class)){
 				mapQueryCols.get(listKeyName).add(MessageFormat.format("min{0}",ct.getJavaName() ));
 				mapQueryCols.get(listKeyName).add(MessageFormat.format("max{0}",ct.getJavaName() ));
 
@@ -553,18 +553,18 @@ public  class MapperTemplate  {
 				colsContext.append(colName).append(",");
 				if(++index>3){
 					index=0;
-					colsContext.append(StringHelper.ln(1)).append(StringHelper.tab(4));
+					colsContext.append(Stringz.ln(1)).append(Stringz.tab(4));
 				}
-				getsetContext.append(getsetContext(key, colName)).append(StringHelper.ln(2));
+				getsetContext.append(getsetContext(key, colName)).append(Stringz.ln(2));
 			}
 			String context=MessageFormat.format("protected {0} {1};",
 				key
 				,colsContext.substring(0, colsContext.lastIndexOf(","))
 					);
-			sbrReturn.append(context).append(StringHelper.ln(2));
+			sbrReturn.append(context).append(Stringz.ln(2));
 			//.append(getsetContext.toString()).append(StringHelper.ln(2));
 		}
-		sbrReturn.append(getsetContext.toString()).append(StringHelper.ln(2));
+		sbrReturn.append(getsetContext.toString()).append(Stringz.ln(2));
 		return sbrReturn.toString();
   }
 	
@@ -590,39 +590,39 @@ public  class MapperTemplate  {
 	public String getCondition(ColumnTemplate ct){
 		StringBuffer sbr=new StringBuffer("");
 		sbr
-        .append(this.eqPattern).append(StringHelper.ln(1))
-        .append(this.eqPattern2).append(StringHelper.ln(1))
-        .append(this.neqPattern).append(StringHelper.ln(1))
-		.append(this.isnullPattern).append(StringHelper.ln(1))
-		.append(this.isnotnullPattern).append(StringHelper.ln(1))
-        .append(this.isinPattern).append(StringHelper.ln(1))
-		.append(this.isnotinPattern).append(StringHelper.ln(1))
-		.append(this.minPattern).append(StringHelper.ln(1))
-		.append(this.maxPattern).append(StringHelper.ln(1))
+        .append(this.eqPattern).append(Stringz.ln(1))
+        .append(this.eqPattern2).append(Stringz.ln(1))
+        .append(this.neqPattern).append(Stringz.ln(1))
+		.append(this.isnullPattern).append(Stringz.ln(1))
+		.append(this.isnotnullPattern).append(Stringz.ln(1))
+        .append(this.isinPattern).append(Stringz.ln(1))
+		.append(this.isnotinPattern).append(Stringz.ln(1))
+		.append(this.minPattern).append(Stringz.ln(1))
+		.append(this.maxPattern).append(Stringz.ln(1))
 		;
-		if( LinqHelper.isIn(ct.getColumn().getJavaType(), String.class,Character.class)){
+		if( Linq.isIn(ct.getColumn().getJavaType(), String.class,Character.class)){
             sbr
            // .append(this.eqPattern).append(StringHelper.ln(1))
           //  .append(this.eqPattern2).append(StringHelper.ln(1))
            // .append(this.neqPattern).append(StringHelper.ln(1))
-		    .append(this.likeStrPattern).append(StringHelper.ln(1))
-		    .append(this.notlikePattern).append(StringHelper.ln(1))
-		    .append(this.isinPattern).append(StringHelper.ln(1))
-		    .append(this.isnotinPattern).append(StringHelper.ln(1))
+		    .append(this.likeStrPattern).append(Stringz.ln(1))
+		    .append(this.notlikePattern).append(Stringz.ln(1))
+		    .append(this.isinPattern).append(Stringz.ln(1))
+		    .append(this.isnotinPattern).append(Stringz.ln(1))
             ;
             
-		}else if(LinqHelper.isIn(ct.getColumn().getJavaType(),Integer.class,Float.class,Double.class,BigDecimal.class,Number.class))
+		}else if(Linq.isIn(ct.getColumn().getJavaType(),Integer.class,Float.class,Double.class,BigDecimal.class,Number.class))
         {
             sbr
-            .append(this.isinPattern).append(StringHelper.ln(1))
-    		.append(this.isnotinPattern).append(StringHelper.ln(1))
+            .append(this.isinPattern).append(Stringz.ln(1))
+    		.append(this.isnotinPattern).append(Stringz.ln(1))
           // .append(this.eqPattern).append(StringHelper.ln(1))
          //   .append(this.neqPattern).append(StringHelper.ln(1))
 		 //   .append(this.minPattern).append(StringHelper.ln(1))
 		  //  .append(this.maxPattern).append(StringHelper.ln(1))
             ;
         }
-		else if(LinqHelper.isIn(ct.getColumn().getJavaType(), Date.class,Timestamp.class)){
+		else if(Linq.isIn(ct.getColumn().getJavaType(), Date.class,Timestamp.class)){
 		//	sbr
 		//	.append(this.eqDatePattern).append(StringHelper.ln(1))
 		//	.append(this.neqDatePattern).append(StringHelper.ln(1))
@@ -637,7 +637,7 @@ public  class MapperTemplate  {
 				,ct.getColumn().getJavaType().getSimpleName()  //3
 				,this.dialect.dateRegexp  //4
 	    );
-		if(LinqHelper.isIn(ct.getColumn().getJavaType(), Date.class,Timestamp.class)){
+		if(Linq.isIn(ct.getColumn().getJavaType(), Date.class,Timestamp.class)){
 			context+=this.isinDate(ct)+"\n"+this.isnotinDate(ct)+"\n";
 		}
 		return context;
@@ -651,7 +651,7 @@ public  class MapperTemplate  {
 		//String datePattern="<if test=\"model.{0} neq null\">and to_char(m.{1},{4})= to_char(#'{'model.{0},jdbcType={2} javaType={3} '}',{4}) </if> ";
 		for(int i=0;i<colSize;i++){
 			ColumnTemplate tempCol=cols.get(i);
-			if(LinqHelper.isIn(tempCol.getColumn().getJavaType(),byte.class,Byte.class))continue;
+			if(Linq.isIn(tempCol.getColumn().getJavaType(),byte.class,Byte.class))continue;
 			String tempStr=this.getCondition(tempCol);
 			lSbrReturn.append(tempStr).append("\n");
 			
@@ -682,32 +682,32 @@ public  class MapperTemplate  {
     	StringBuffer pattern=new StringBuffer("");
     	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     	pattern
-    	.append(XML_UTF8).append(StringHelper.ln(1))
-        .append("<!--").append(StringHelper.ln(1))
-    	.append(StringHelper.tab(1)).append("Create Date:").append(sdf.format(new Date())).append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("MapperTemplate:{12}").append(StringHelper.ln(1))
+    	.append(XML_UTF8).append(Stringz.ln(1))
+        .append("<!--").append(Stringz.ln(1))
+    	.append(Stringz.tab(1)).append("Create Date:").append(sdf.format(new Date())).append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("MapperTemplate:{12}").append(Stringz.ln(1))
        // .append(StringHelper.tab(1)).append("Model:{8} ").append(StringHelper.ln(3))
        // .append(" public static enum F '{' \n  {11}  \n '}' ").append(StringHelper.ln(2))
        // .append("{10} ").append(StringHelper.ln(2))
        // .append(" public  class SimpleQueryModel extends {8} '{' \n {13} \n '}' ").append(StringHelper.ln(1))
-        .append("--> ").append(StringHelper.ln(2))
-        .append(DOCTYPE_MYBATIS3).append(StringHelper.ln(1))
-    	.append("<mapper namespace=\"{0}\">").append(StringHelper.ln(2))
-    	.append("<cache flushInterval=\"30000\" readOnly=\"true\"></cache>").append(StringHelper.ln(3))
+        .append("--> ").append(Stringz.ln(2))
+        .append(DOCTYPE_MYBATIS3).append(Stringz.ln(1))
+    	.append("<mapper namespace=\"{0}\">").append(Stringz.ln(2))
+    	.append("<cache flushInterval=\"30000\" readOnly=\"true\"></cache>").append(Stringz.ln(3))
     	//.append("<sql id=\""+SqlId.table+"\">{1}</sql>").append(StringHelper.ln(2))
     	//.append("<sql id=\""+SqlId.pk+"\">{2}</sql>").append(StringHelper.ln(2))
     	//.append("<sql id=\""+SqlId.columns+"\">\n{3} \n</sql>").append(StringHelper.ln(2))
     	//.append("<sql id=\""+SQL_ID_INSERT_COLS+"\">\n{4}\n</sql>").append(StringHelper.ln(2))
     	//.append("<sql id=\""+SQL_ID_UPDATE_COLS+"\">\n{5}\n</sql>").append(StringHelper.ln(2))
     
-       	.append("<!--  ,[name],.....   -->").append(StringHelper.ln(2))
-    	.append("<sql id=\""+SqlId.joinCols+"\"></sql>").append(StringHelper.ln(2)) 	
-    	.append("<!--  join table on xx=xx.....  别名"+NAME_MAIN_TABLE+" 已被主表使用 ,  -->").append(StringHelper.ln(2))
-    	.append("<sql id=\""+SqlId.join+"\"></sql>").append(StringHelper.ln(2))
-   	    .append("<resultMap type=\"{8}\" id=\""+TAG_ID_RESULT_VIEW+"\" extends=\""+TAG_ID_RESULT_MAP+"\" ></resultMap>").append(StringHelper.ln(3))
+       	.append("<!--  ,[name],.....   -->").append(Stringz.ln(2))
+    	.append("<sql id=\""+SqlId.joinCols+"\"></sql>").append(Stringz.ln(2)) 	
+    	.append("<!--  join table on xx=xx.....  别名"+NAME_MAIN_TABLE+" 已被主表使用 ,  -->").append(Stringz.ln(2))
+    	.append("<sql id=\""+SqlId.join+"\"></sql>").append(Stringz.ln(2))
+   	    .append("<resultMap type=\"{8}\" id=\""+TAG_ID_RESULT_VIEW+"\" extends=\""+TAG_ID_RESULT_MAP+"\" ></resultMap>").append(Stringz.ln(3))
     
    	    
-   	    .append("<sql id=\""+SqlId.selectViewCondition+"\">\n\t "+TAG_INCLUDE(SqlId.selectCondition.name())+"  \n</sql>").append(StringHelper.ln(3))
+   	    .append("<sql id=\""+SqlId.selectViewCondition+"\">\n\t "+TAG_INCLUDE(SqlId.selectCondition.name())+"  \n</sql>").append(Stringz.ln(3))
         
         
         
@@ -715,7 +715,7 @@ public  class MapperTemplate  {
     	//.append("<resultMap type=\"{8}\" id=\""+TAG_ID_RESULT_MAP+"\">\n {6}\n </resultMap>").append(StringHelper.ln(3))
         //.append("<sql id=\""+SqlId.selectCondition+"\">\n{7}\n</sql>").append(StringHelper.ln(3))
    
-      .append(StringHelper.ln(3))
+      .append(Stringz.ln(3))
        
         
         .append("</mapper>")
@@ -753,7 +753,7 @@ public  class MapperTemplate  {
     			,this.getEnum()  //11
     			,this.dialect.getClass().getName()  //12
     			,this.getQueryColsContext()  //13
-    			,DateTimeHelper.Formatter.DATE_FORMAT_DB.format()  //14
+    			,DateTimez.Formatter.DATE_FORMAT_DB.format()  //14
     			,this.getDbCols("") //15
     	);
 		return lStrMapper;
@@ -765,70 +765,70 @@ public  class MapperTemplate  {
     	StringBuffer pattern=new StringBuffer("");
     	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     	pattern
-    	.append(XML_UTF8).append(StringHelper.ln(1))
-        .append("<!--").append(StringHelper.ln(1))
-    	.append(StringHelper.tab(1)).append("Create Date:").append(sdf.format(new Date())).append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("MapperTemplate:{12}").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("Model:{8} ").append(StringHelper.ln(3))
+    	.append(XML_UTF8).append(Stringz.ln(1))
+        .append("<!--").append(Stringz.ln(1))
+    	.append(Stringz.tab(1)).append("Create Date:").append(sdf.format(new Date())).append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("MapperTemplate:{12}").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("Model:{8} ").append(Stringz.ln(3))
        // .append(" public static enum F '{' \n  {11}  \n '}' ").append(StringHelper.ln(2))
        // .append("{10} ").append(StringHelper.ln(2))
        // .append(" public  class SimpleQueryModel extends {8} '{' \n {13} \n '}' ").append(StringHelper.ln(1))
-        .append("--> ").append(StringHelper.ln(2))
-    	.append(DOCTYPE_MYBATIS3).append(StringHelper.ln(1))
-    	.append("<mapper namespace=\"{0}\">").append(StringHelper.ln(2))
+        .append("--> ").append(Stringz.ln(2))
+    	.append(DOCTYPE_MYBATIS3).append(Stringz.ln(1))
+    	.append("<mapper namespace=\"{0}\">").append(Stringz.ln(2))
     	//.append("<cache flushInterval=\"30000\" readOnly=\"true\"></cache>").append(StringHelper.ln(3))
-    	.append("<sql id=\""+SqlId.table+"\">{1}</sql>").append(StringHelper.ln(2))
-    	.append("<sql id=\""+SqlId.pk+"\">{2}</sql>").append(StringHelper.ln(2))
+    	.append("<sql id=\""+SqlId.table+"\">{1}</sql>").append(Stringz.ln(2))
+    	.append("<sql id=\""+SqlId.pk+"\">{2}</sql>").append(Stringz.ln(2))
     	//.append("<sql id=\""+SqlId.columns+"\">\n{3} \n</sql>").append(StringHelper.ln(2))
-    	.append("<sql id=\""+SqlId.columns+"\">\n{3}\n</sql>").append(StringHelper.ln(1))
+    	.append("<sql id=\""+SqlId.columns+"\">\n{3}\n</sql>").append(Stringz.ln(1))
 
-    	.append("<sql id=\""+SqlId.queryCols+"\">").append(StringHelper.ln(1))
+    	.append("<sql id=\""+SqlId.queryCols+"\">").append(Stringz.ln(1))
     	//.append(StringHelper.tab(1)).append("<trim prefixOverrides=\",\"  suffixOverrides=\",\">").append(StringHelper.ln(1))
-    	.append(StringHelper.tab(2)).append("<choose>").append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append("<when test=\""+NAME_DYNAMIC+" eq null or "+NAME_DYNAMIC+"[''"+DynamicQueryBound.Propertys.colums+"''] eq null or "+NAME_DYNAMIC+"[''"+DynamicQueryBound.Propertys.colums+"''].size lt 1 \" >").append(StringHelper.ln(1))
-        .append(StringHelper.tab(4)).append(TAG_INCLUDE(SqlId.columns)).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append("</when>").append(StringHelper.ln(1))
-    	.append(StringHelper.tab(3)).append("<otherwise>").append(StringHelper.ln(1))
-        .append(StringHelper.tab(4)).append("<foreach collection=\""+NAME_DYNAMIC+"."+DynamicQueryBound.Propertys.colums+"\" item=\"col\" separator=\",\"  >").append(StringHelper.ln(1))
-        .append(StringHelper.tab(5)).append(" "+NAME_MAIN_TABLE+".$'{'col.column'}' ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(4)).append("</foreach>").append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append("</otherwise>").append(StringHelper.ln(1))
+    	.append(Stringz.tab(2)).append("<choose>").append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append("<when test=\""+NAME_DYNAMIC+" eq null or "+NAME_DYNAMIC+"[''"+DynamicQueryBound.Propertys.colums+"''] eq null or "+NAME_DYNAMIC+"[''"+DynamicQueryBound.Propertys.colums+"''].size lt 1 \" >").append(Stringz.ln(1))
+        .append(Stringz.tab(4)).append(TAG_INCLUDE(SqlId.columns)).append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append("</when>").append(Stringz.ln(1))
+    	.append(Stringz.tab(3)).append("<otherwise>").append(Stringz.ln(1))
+        .append(Stringz.tab(4)).append("<foreach collection=\""+NAME_DYNAMIC+"."+DynamicQueryBound.Propertys.colums+"\" item=\"col\" separator=\",\"  >").append(Stringz.ln(1))
+        .append(Stringz.tab(5)).append(" "+NAME_MAIN_TABLE+".$'{'col.column'}' ").append(Stringz.ln(1))
+        .append(Stringz.tab(4)).append("</foreach>").append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append("</otherwise>").append(Stringz.ln(1))
         //.append(StringHelper.tab(3)).append("<otherwise>").append(StringHelper.ln(1))
     	//.append(StringHelper.tab(4)).append("{3}").append(StringHelper.ln(1))
     	//.append(StringHelper.tab(3)).append("</otherwise>").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append("</choose>").append(StringHelper.ln(1))
+        .append(Stringz.tab(2)).append("</choose>").append(Stringz.ln(1))
     	//.append(StringHelper.tab(1)).append("</trim>").append(StringHelper.ln(1))
     	.append("</sql>")
-    	.append(StringHelper.ln(3))
+    	.append(Stringz.ln(3))
     	//.append("<sql id=\""+SQL_ID_INSERT_COLS+"\">\n{4}\n</sql>").append(StringHelper.ln(2))
     	//.append("<sql id=\""+SQL_ID_UPDATE_COLS+"\">\n{5}\n</sql>").append(StringHelper.ln(2))
     
-    	.append("<sql id=\""+SqlId.orderby+"\">").append(StringHelper.ln(1))
+    	.append("<sql id=\""+SqlId.orderby+"\">").append(Stringz.ln(1))
     	//.append(StringHelper.tab(1)).append("<trim  suffixOverrides=\",\">").append(StringHelper.ln(1))
-    	.append(StringHelper.tab(2)).append("<choose>").append(StringHelper.ln(1))
-    	.append(StringHelper.tab(3)).append("<when test=\""+NAME_DYNAMIC+" eq null or  "+NAME_DYNAMIC+"[''"+DynamicQueryBound.Propertys.orderbyBounds+"''] eq null or "+NAME_DYNAMIC+"[''"+DynamicQueryBound.Propertys.orderbyBounds+"''].size lt 1 \">").append(StringHelper.ln(1))
-    	.append(StringHelper.tab(4)).append("order by  <include refid=\""+SqlId.pk+"\" /> DESC").append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append("</when>").append(StringHelper.ln(1))
-    	.append(StringHelper.tab(3)).append("<otherwise >").append(StringHelper.ln(1))
-        .append(StringHelper.tab(4)).append("<foreach collection=\""+NAME_DYNAMIC+"."+DynamicQueryBound.Propertys.orderbyBounds+"\" item=\"ob\" open=\" order by \" separator=\",\" >").append(StringHelper.ln(1))
-        .append(StringHelper.tab(5)).append(" "+NAME_MAIN_TABLE+".$'{'ob."+OrderbyBound.F.column+"'}' $'{'ob."+OrderbyBound.F.order+"'}' ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(4)).append("</foreach>").append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append("</otherwise>").append(StringHelper.ln(1))
+    	.append(Stringz.tab(2)).append("<choose>").append(Stringz.ln(1))
+    	.append(Stringz.tab(3)).append("<when test=\""+NAME_DYNAMIC+" eq null or  "+NAME_DYNAMIC+"[''"+DynamicQueryBound.Propertys.orderbyBounds+"''] eq null or "+NAME_DYNAMIC+"[''"+DynamicQueryBound.Propertys.orderbyBounds+"''].size lt 1 \">").append(Stringz.ln(1))
+    	.append(Stringz.tab(4)).append("order by  <include refid=\""+SqlId.pk+"\" /> DESC").append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append("</when>").append(Stringz.ln(1))
+    	.append(Stringz.tab(3)).append("<otherwise >").append(Stringz.ln(1))
+        .append(Stringz.tab(4)).append("<foreach collection=\""+NAME_DYNAMIC+"."+DynamicQueryBound.Propertys.orderbyBounds+"\" item=\"ob\" open=\" order by \" separator=\",\" >").append(Stringz.ln(1))
+        .append(Stringz.tab(5)).append(" "+NAME_MAIN_TABLE+".$'{'ob."+OrderbyBound.F.column+"'}' $'{'ob."+OrderbyBound.F.order+"'}' ").append(Stringz.ln(1))
+        .append(Stringz.tab(4)).append("</foreach>").append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append("</otherwise>").append(Stringz.ln(1))
         //.append(StringHelper.tab(3)).append("<otherwise>").append(StringHelper.ln(1))
     	//.append(StringHelper.tab(4)).append("order by  <include refid=\""+SqlId.pk+"\" /> DESC").append(StringHelper.ln(1))
     	//.append(StringHelper.tab(3)).append("</otherwise>").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append("</choose>").append(StringHelper.ln(1))
+        .append(Stringz.tab(2)).append("</choose>").append(Stringz.ln(1))
     	//.append(StringHelper.tab(1)).append("</trim>").append(StringHelper.ln(1))
-    	.append("</sql>").append(StringHelper.ln(3))
+    	.append("</sql>").append(Stringz.ln(3))
     	
     	//.append("<sql id=\""+SqlId.joinCols+"\"></sql>").append(StringHelper.ln(2))
     	//.append("<sql id=\""+SqlId.join+"\"></sql>").append(StringHelper.ln(0))
     	//.append("<!-- 别名m已被主表使用  -->").append(StringHelper.ln(2))
-    	.append("<resultMap type=\"{8}\" id=\""+TAG_ID_RESULT_MAP+"\">\n {6}\n </resultMap>").append(StringHelper.ln(3))
-        .append("<sql id=\""+SqlId.selectCondition+"\">\n{7}\n</sql>").append(StringHelper.ln(3))
+    	.append("<resultMap type=\"{8}\" id=\""+TAG_ID_RESULT_MAP+"\">\n {6}\n </resultMap>").append(Stringz.ln(3))
+        .append("<sql id=\""+SqlId.selectCondition+"\">\n{7}\n</sql>").append(Stringz.ln(3))
    
-         .append("<select id=\""+TAG_ID_SELECT+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_MAP+"\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+"  from "+TAG_INCLUDE(SqlId.table)+"  "+NAME_MAIN_TABLE+"   ").append(StringHelper.ln(1))
+         .append("<select id=\""+TAG_ID_SELECT+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_MAP+"\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+"  from "+TAG_INCLUDE(SqlId.table)+"  "+NAME_MAIN_TABLE+"   ").append(Stringz.ln(1))
         //.append(StringHelper.tab(2)).append(TAG_CHOOSE_START).append(StringHelper.ln(1))
         //.append(StringHelper.tab(3)).append(TAG_WHEN_START(NAME_CONDITIDON +" neq null")).append(StringHelper.ln(1))
         //.append(StringHelper.tab(4)).append(TAG_WHERE_START+TAG_INCLUDE(SqlId.queryCols)+TAG_WHERE_END).append(StringHelper.ln(1))
@@ -837,48 +837,48 @@ public  class MapperTemplate  {
         //.append(StringHelper.tab(3)).append(TAG_WHERE_START+" 1=2 "+TAG_WHERE_END).append(StringHelper.ln(1))
         //.append(StringHelper.tab(3)).append(TAG_OTHERWISE_END).append(StringHelper.ln(1))
         //.append(StringHelper.tab(2)).append(TAG_CHOOSE_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append(Stringz.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_END).append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-        .append("<select id=\""+TAG_ID_SELECT_GROUPBY+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_MAP+"\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+"  from "+TAG_INCLUDE(SqlId.table)+"  "+NAME_MAIN_TABLE+" group by("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}')   ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("<select id=\""+TAG_ID_SELECT_GROUPBY+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_MAP+"\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+"  from "+TAG_INCLUDE(SqlId.table)+"  "+NAME_MAIN_TABLE+" group by("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}')   ").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-        .append("<select id=\""+TAG_ID_SELECT_DISTINCT+"\" resultType=\"object\" >").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select distinct("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}')  from "+TAG_INCLUDE(SqlId.table.name())+"  "+NAME_MAIN_TABLE+"  ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("<select id=\""+TAG_ID_SELECT_DISTINCT+"\" resultType=\"object\" >").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select distinct("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}')  from "+TAG_INCLUDE(SqlId.table.name())+"  "+NAME_MAIN_TABLE+"  ").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-        .append("<select id=\""+TAG_ID_SELECT_UNION+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_MAP+"\">").append(StringHelper.ln(1))
-        .append("  ").append("select  "+NAME_MAIN_TABLE+".* from (").append(StringHelper.ln(1))
+        .append("<select id=\""+TAG_ID_SELECT_UNION+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_MAP+"\">").append(Stringz.ln(1))
+        .append("  ").append("select  "+NAME_MAIN_TABLE+".* from (").append(Stringz.ln(1))
         //.append(StringHelper.tab(1)).append(TAG_TRIM_UNION_START).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append("<foreach collection=\""+NAME_CONDITIDONS+"\" item=\""+NAME_CONDITIDON+"\" separator=\" union \" >").append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append(TAG_IF_START(NAME_CONDITIDON+" neq null")).append(StringHelper.ln(1))
-        .append(StringHelper.tab(4)).append(" select "+TAG_INCLUDE(SqlId.queryCols)+" from "+TAG_INCLUDE(SqlId.table)+"  "+NAME_MAIN_TABLE+" ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(5)).append(TAG_TRIM_CONDITIOM_START).append(StringHelper.ln(1))
-        .append(StringHelper.tab(6)).append(TAG_INCLUDE(SqlId.selectCondition)).append(StringHelper.ln(1))
-        .append(StringHelper.tab(5)).append(TAG_TRIM_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append(TAG_IF_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_FOREACH_END).append(StringHelper.ln(1))
+        .append(Stringz.tab(2)).append("<foreach collection=\""+NAME_CONDITIDONS+"\" item=\""+NAME_CONDITIDON+"\" separator=\" union \" >").append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append(TAG_IF_START(NAME_CONDITIDON+" neq null")).append(Stringz.ln(1))
+        .append(Stringz.tab(4)).append(" select "+TAG_INCLUDE(SqlId.queryCols)+" from "+TAG_INCLUDE(SqlId.table)+"  "+NAME_MAIN_TABLE+" ").append(Stringz.ln(1))
+        .append(Stringz.tab(5)).append(TAG_TRIM_CONDITIOM_START).append(Stringz.ln(1))
+        .append(Stringz.tab(6)).append(TAG_INCLUDE(SqlId.selectCondition)).append(Stringz.ln(1))
+        .append(Stringz.tab(5)).append(TAG_TRIM_END).append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append(TAG_IF_END).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_FOREACH_END).append(Stringz.ln(1))
         //.append(StringHelper.tab(1)).append(TAG_TRIM_END).append(StringHelper.ln(1))
-        .append("   ) "+NAME_MAIN_TABLE+" ").append(StringHelper.ln(1))
-        .append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("   ) "+NAME_MAIN_TABLE+" ").append(Stringz.ln(1))
+        .append(TAG_INCLUDE(SqlId.orderby)).append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
                 
-        .append("<select id=\""+TAG_ID_SELECT_EQ_PK+"\"  resultMap=\""+TAG_ID_RESULT_MAP+"\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+" from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+"  where "+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+" = #'{'"+NAME_PK+"'}'").append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("<select id=\""+TAG_ID_SELECT_EQ_PK+"\"  resultMap=\""+TAG_ID_RESULT_MAP+"\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+" from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+"  where "+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+" = #'{'"+NAME_PK+"'}'").append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-        .append("<select id=\""+IMapper.Methods.selectInPk+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_MAP+"\" >").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+" from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+"  where "+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+" in (").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append("<foreach item=\""+NAME_PK+"\" collection=\""+NAME_PKS+"\"  separator=\",\" > #'{'"+NAME_PK+"'}' </foreach>").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append(")").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("<select id=\""+IMapper.Methods.selectInPk+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_MAP+"\" >").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+" from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+"  where "+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+" in (").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append("<foreach item=\""+NAME_PK+"\" collection=\""+NAME_PKS+"\"  separator=\",\" > #'{'"+NAME_PK+"'}' </foreach>").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append(")").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
       //  .append("<select id=\"selectNotInPk\" resultType=\"ArrayList\" resultMap=\"resultMap\" >").append(StringHelper.ln(1))
       //  .append(StringHelper.tab(1)).append("select m.* from <include refid=\"table\" /> m  where m.<include refid=\"pk\" /> not in").append(StringHelper.ln(1))
@@ -886,138 +886,138 @@ public  class MapperTemplate  {
       //  .append(StringHelper.tab(1)).append(TAG_INCLUDE(SQL_ID_SELECT_ORDERBY)).append(StringHelper.ln(1))
       //  .append(TAG_SELECT_END).append(StringHelper.ln(2))
         
-        .append("<select  id=\""+TAG_ID_SELECT_ALL+"\"  resultType=\"List\"  resultMap=\""+TAG_ID_RESULT_MAP+"\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+" from  "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+"  ").append(StringHelper.ln(1))        
-        .append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("<select  id=\""+TAG_ID_SELECT_ALL+"\"  resultType=\"List\"  resultMap=\""+TAG_ID_RESULT_MAP+"\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+" from  "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+"  ").append(Stringz.ln(1))        
+        .append(Stringz.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-        .append("<select id=\""+TAG_ID_COUNT_ALL+"\" resultType=\"int\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select count("+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+") from "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+" ").append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("<select id=\""+TAG_ID_COUNT_ALL+"\" resultType=\"int\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select count("+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+") from "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+" ").append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-        .append("<select id=\""+TAG_ID_COUNT+"\" resultType=\"int\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select count("+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+") from "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+" ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_IF_START(NAME_CONDITIDON+ " neq null")).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_END).append(StringHelper.ln(1))
-         .append(StringHelper.tab(2)).append(TAG_IF_END).append(StringHelper.ln(1))
+        .append("<select id=\""+TAG_ID_COUNT+"\" resultType=\"int\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select count("+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+") from "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+" ").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_IF_START(NAME_CONDITIDON+ " neq null")).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_END).append(Stringz.ln(1))
+         .append(Stringz.tab(2)).append(TAG_IF_END).append(Stringz.ln(1))
         //.append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-         .append("<select id=\""+TAG_ID_AVG+"\" resultType=\"int\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select avg("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}') from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+" ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_IF_START(NAME_CONDITIDON+ " neq null")).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_IF_END).append(StringHelper.ln(1))
+         .append("<select id=\""+TAG_ID_AVG+"\" resultType=\"int\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select avg("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}') from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+" ").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_IF_START(NAME_CONDITIDON+ " neq null")).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_END).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_IF_END).append(Stringz.ln(1))
         //.append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-        .append("<select id=\""+TAG_ID_SUM+"\" resultType=\"int\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select sum("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}') from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+" ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_IF_START(NAME_CONDITIDON+ " neq null")).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_IF_END).append(StringHelper.ln(1))
+        .append("<select id=\""+TAG_ID_SUM+"\" resultType=\"int\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select sum("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}') from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+" ").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_IF_START(NAME_CONDITIDON+ " neq null")).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_END).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_IF_END).append(Stringz.ln(1))
         //.append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-        .append("<select id=\""+TAG_ID_MIN+"\" resultType=\"int\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select min("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}') from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+" ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_IF_START(NAME_CONDITIDON+ " neq null")).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_IF_END).append(StringHelper.ln(1))
+        .append("<select id=\""+TAG_ID_MIN+"\" resultType=\"int\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select min("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}') from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+" ").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_IF_START(NAME_CONDITIDON+ " neq null")).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_END).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_IF_END).append(Stringz.ln(1))
         //.append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-        .append("<select id=\""+TAG_ID_MAX+"\" resultType=\"int\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select max("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}') from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+" ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_IF_START("model neq null")).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_IF_END).append(StringHelper.ln(1))
+        .append("<select id=\""+TAG_ID_MAX+"\" resultType=\"int\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select max("+NAME_MAIN_TABLE+".$'{'"+NAME_COLUMN+"'}') from "+TAG_INCLUDE(SqlId.table.name())+" "+NAME_MAIN_TABLE+" ").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_IF_START("model neq null")).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append(TAG_INCLUDE(SqlId.selectCondition)).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_END).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_IF_END).append(Stringz.ln(1))
         //.append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-        .append("<insert id=\""+TAG_ID_INSERT+"\" flushCache=\"true\" >").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("insert into "+TAG_INCLUDE(SqlId.table)+"  ( "+getDbCols("")+" ) values  ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("<foreach collection=\""+NAME_MODELS+"\" separator=\",\" item=\""+NAME_MODEL+"\">")
-        .append(StringHelper.tab(1)).append("(").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_COMMA_START).append(StringHelper.ln(1))
+        .append("<insert id=\""+TAG_ID_INSERT+"\" flushCache=\"true\" >").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("insert into "+TAG_INCLUDE(SqlId.table)+"  ( "+getDbCols("")+" ) values  ").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("<foreach collection=\""+NAME_MODELS+"\" separator=\",\" item=\""+NAME_MODEL+"\">")
+        .append(Stringz.tab(1)).append("(").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_COMMA_START).append(Stringz.ln(1))
         //.append(StringHelper.tab(3)).append(TAG_INCLUDE(SQL_ID_INSERT_COLS)).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append("{4}").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append(")").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append(TAG_FOREACH_END).append(StringHelper.ln(1))
-        .append(TAG_INSERT_END).append(StringHelper.ln(2))
+        .append(Stringz.tab(3)).append("{4}").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_END).append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append(")").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append(TAG_FOREACH_END).append(Stringz.ln(1))
+        .append(TAG_INSERT_END).append(Stringz.ln(2))
         
-        .append("<update id=\""+TAG_ID_UPDATE+"\" flushCache=\"true\" >").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("update "+TAG_INCLUDE(SqlId.table)+"  set ").append(StringHelper.ln(1))        
-        .append(StringHelper.tab(2)).append(TAG_TRIM_COMMA_START).append(StringHelper.ln(1))
+        .append("<update id=\""+TAG_ID_UPDATE+"\" flushCache=\"true\" >").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("update "+TAG_INCLUDE(SqlId.table)+"  set ").append(Stringz.ln(1))        
+        .append(Stringz.tab(2)).append(TAG_TRIM_COMMA_START).append(Stringz.ln(1))
         //.append(StringHelper.tab(3)).append(TAG_INCLUDE(SQL_ID_UPDATE_COLS)).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append("{5}").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("where "+TAG_INCLUDE(SqlId.pk)+"=#'{'"+NAME_MODEL+".{9}'}'").append(StringHelper.ln(1))
-        .append(TAG_UPDATE_END).append(StringHelper.ln(2))
+        .append(Stringz.tab(3)).append("{5}").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_END).append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("where "+TAG_INCLUDE(SqlId.pk)+"=#'{'"+NAME_MODEL+".{9}'}'").append(Stringz.ln(1))
+        .append(TAG_UPDATE_END).append(Stringz.ln(2))
         
-        .append("<delete id=\""+TAG_ID_DELETE_EQ_PK+"\" flushCache=\"true\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("delete from "+TAG_INCLUDE(SqlId.table)+"  where "+TAG_INCLUDE(SqlId.pk)+" =#'{'"+NAME_PK+"'}'").append(StringHelper.ln(1))
-        .append(TAG_DELETE_END).append(StringHelper.ln(2))
+        .append("<delete id=\""+TAG_ID_DELETE_EQ_PK+"\" flushCache=\"true\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("delete from "+TAG_INCLUDE(SqlId.table)+"  where "+TAG_INCLUDE(SqlId.pk)+" =#'{'"+NAME_PK+"'}'").append(Stringz.ln(1))
+        .append(TAG_DELETE_END).append(Stringz.ln(2))
         
-        .append("<delete id=\""+TAG_ID_DELETE_IN_PK+"\" flushCache=\"true\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("delete from "+TAG_INCLUDE(SqlId.table)+" where "+TAG_INCLUDE(SqlId.pk)+" in (").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append("<foreach item=\""+NAME_PK+"\" collection=\""+NAME_PKS+"\"  separator=\",\" >#'{'"+NAME_PK+"'}'</foreach> ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append(")").append(StringHelper.ln(1))
-        .append(TAG_DELETE_END).append(StringHelper.ln(2))
+        .append("<delete id=\""+TAG_ID_DELETE_IN_PK+"\" flushCache=\"true\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("delete from "+TAG_INCLUDE(SqlId.table)+" where "+TAG_INCLUDE(SqlId.pk)+" in (").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append("<foreach item=\""+NAME_PK+"\" collection=\""+NAME_PKS+"\"  separator=\",\" >#'{'"+NAME_PK+"'}'</foreach> ").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append(")").append(Stringz.ln(1))
+        .append(TAG_DELETE_END).append(Stringz.ln(2))
         
        // .append("<delete id=\"deleteNotInPk\" flushCache=\"true\">").append(StringHelper.ln(1))
        // .append(StringHelper.tab(1)).append("delete from <include refid=\"table\"/> where <include refid=\"pk\" /> not in").append(StringHelper.ln(1))
        // .append(StringHelper.tab(2)).append("<foreach item=\"pk\" collection=\"list\" open=\"(\" separator=\",\" close=\")\">#'{'pk'}'</foreach>").append(StringHelper.ln(1))
        // .append(TAG_DELETE_END).append(StringHelper.ln(4))      
         
-        .append("<select id=\""+TAG_ID_SELECT_VIEW+"\" resultType=\"ArrayList\" resultMap=\""+TAG_ID_RESULT_VIEW+"\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select <include refid=\""+SqlId.columns+"\"/>  <include refid=\""+SqlId.joinCols+"\"/> from <include refid=\""+SqlId.table+"\" /> "+NAME_MAIN_TABLE+" "+TAG_INCLUDE(SqlId.join)+" ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append(TAG_INCLUDE(SqlId.selectViewCondition)).append(StringHelper.ln(1))        
-        .append(StringHelper.tab(2)).append(TAG_TRIM_END)
-        .append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("<select id=\""+TAG_ID_SELECT_VIEW+"\" resultType=\"ArrayList\" resultMap=\""+TAG_ID_RESULT_VIEW+"\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select <include refid=\""+SqlId.columns+"\"/>  <include refid=\""+SqlId.joinCols+"\"/> from <include refid=\""+SqlId.table+"\" /> "+NAME_MAIN_TABLE+" "+TAG_INCLUDE(SqlId.join)+" ").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_TRIM_CONDITIOM_START).append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append(TAG_INCLUDE(SqlId.selectViewCondition)).append(Stringz.ln(1))        
+        .append(Stringz.tab(2)).append(TAG_TRIM_END)
+        .append(Stringz.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
-        .append("<select id=\""+TAG_ID_SELECT_VIEW_UNION+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_VIEW+"\">").append(StringHelper.ln(1))
-        .append("  ").append("select "+NAME_MAIN_TABLE+".* from (").append(StringHelper.ln(1))
+        .append("<select id=\""+TAG_ID_SELECT_VIEW_UNION+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_VIEW+"\">").append(Stringz.ln(1))
+        .append("  ").append("select "+NAME_MAIN_TABLE+".* from (").append(Stringz.ln(1))
         //.append(StringHelper.tab(1)).append(TAG_TRIM_UNION_START).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append("<foreach collection=\""+NAME_CONDITIDONS+"\" item=\""+NAME_CONDITIDON+"\" separator=\" union \">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append(TAG_IF_START(NAME_CONDITIDON+" neq null")).append(StringHelper.ln(1))
-        .append(StringHelper.tab(4)).append(" select "+TAG_INCLUDE(SqlId.queryCols)+" "+TAG_INCLUDE(SqlId.joinCols)+" from "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+"  "+TAG_INCLUDE(SqlId.join)+" ").append(StringHelper.ln(1))
-        .append(StringHelper.tab(5)).append(TAG_TRIM_CONDITIOM_START).append(StringHelper.ln(1))
-        .append(StringHelper.tab(6)).append(TAG_INCLUDE(SqlId.selectViewCondition)).append(StringHelper.ln(1))       
-        .append(StringHelper.tab(5)).append(TAG_TRIM_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(3)).append(TAG_IF_END).append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append(TAG_FOREACH_END).append(StringHelper.ln(1))
+        .append(Stringz.tab(2)).append("<foreach collection=\""+NAME_CONDITIDONS+"\" item=\""+NAME_CONDITIDON+"\" separator=\" union \">").append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append(TAG_IF_START(NAME_CONDITIDON+" neq null")).append(Stringz.ln(1))
+        .append(Stringz.tab(4)).append(" select "+TAG_INCLUDE(SqlId.queryCols)+" "+TAG_INCLUDE(SqlId.joinCols)+" from "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+"  "+TAG_INCLUDE(SqlId.join)+" ").append(Stringz.ln(1))
+        .append(Stringz.tab(5)).append(TAG_TRIM_CONDITIOM_START).append(Stringz.ln(1))
+        .append(Stringz.tab(6)).append(TAG_INCLUDE(SqlId.selectViewCondition)).append(Stringz.ln(1))       
+        .append(Stringz.tab(5)).append(TAG_TRIM_END).append(Stringz.ln(1))
+        .append(Stringz.tab(3)).append(TAG_IF_END).append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append(TAG_FOREACH_END).append(Stringz.ln(1))
         //.append(StringHelper.tab(1)).append(TAG_TRIM_END).append(StringHelper.ln(1))        
-        .append("  ) "+NAME_MAIN_TABLE+" ").append(StringHelper.ln(2))
-        .append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("  ) "+NAME_MAIN_TABLE+" ").append(Stringz.ln(2))
+        .append(TAG_INCLUDE(SqlId.orderby)).append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
 
-        .append("<select id=\""+TAG_ID_SELECT_VIEW_EQ_PK+"\"  resultMap=\""+TAG_ID_RESULT_VIEW+"\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+" "+TAG_INCLUDE(SqlId.joinCols)+"  from "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+" "+TAG_INCLUDE(SqlId.join)+" where "+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+" = #'{"+NAME_PK+"}'").append(StringHelper.ln(1))
-        .append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("<select id=\""+TAG_ID_SELECT_VIEW_EQ_PK+"\"  resultMap=\""+TAG_ID_RESULT_VIEW+"\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+" "+TAG_INCLUDE(SqlId.joinCols)+"  from "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+" "+TAG_INCLUDE(SqlId.join)+" where "+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+" = #'{"+NAME_PK+"}'").append(Stringz.ln(1))
+        .append(TAG_INCLUDE(SqlId.orderby)).append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
             
-        .append("<select id=\""+IMapper.Methods.selectViewInPk+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_VIEW+"\" >").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+" "+TAG_INCLUDE(SqlId.joinCols)+" from "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+" "+TAG_INCLUDE(SqlId.join)+" where "+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+" in (").append(StringHelper.ln(1))
-        .append(StringHelper.tab(2)).append("<foreach item=\""+NAME_PK+"\" collection=\""+NAME_PKS+"\"  separator=\",\" > #'{'"+NAME_PK+"'}' </foreach>").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append(")").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("<select id=\""+IMapper.Methods.selectViewInPk+"\" resultType=\"List\" resultMap=\""+TAG_ID_RESULT_VIEW+"\" >").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select "+TAG_INCLUDE(SqlId.queryCols)+" "+TAG_INCLUDE(SqlId.joinCols)+" from "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+" "+TAG_INCLUDE(SqlId.join)+" where "+NAME_MAIN_TABLE+"."+TAG_INCLUDE(SqlId.pk)+" in (").append(Stringz.ln(1))
+        .append(Stringz.tab(2)).append("<foreach item=\""+NAME_PK+"\" collection=\""+NAME_PKS+"\"  separator=\",\" > #'{'"+NAME_PK+"'}' </foreach>").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append(")").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
         
         /*
         .append("<select id=\"selectViewNotInPk\" resultType=\"ArrayList\" resultMap=\"viewMap\" >").append(StringHelper.ln(1))
@@ -1027,10 +1027,10 @@ public  class MapperTemplate  {
         .append(TAG_SELECT_END).append(StringHelper.ln(2))
         */
         
-        .append("<select  id=\""+TAG_ID_SELECT_VIEW_ALL+"\"  resultType=\"List\"  resultMap=\""+TAG_ID_RESULT_VIEW+"\">").append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("select  "+TAG_INCLUDE(SqlId.queryCols)+" "+TAG_INCLUDE(SqlId.joinCols)+" from  "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+" "+TAG_INCLUDE(SqlId.join)+"").append(StringHelper.ln(1))        
-        .append(StringHelper.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(StringHelper.ln(1))
-        .append(TAG_SELECT_END).append(StringHelper.ln(2))
+        .append("<select  id=\""+TAG_ID_SELECT_VIEW_ALL+"\"  resultType=\"List\"  resultMap=\""+TAG_ID_RESULT_VIEW+"\">").append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("select  "+TAG_INCLUDE(SqlId.queryCols)+" "+TAG_INCLUDE(SqlId.joinCols)+" from  "+TAG_INCLUDE(SqlId.table)+" "+NAME_MAIN_TABLE+" "+TAG_INCLUDE(SqlId.join)+"").append(Stringz.ln(1))        
+        .append(Stringz.tab(1)).append(TAG_INCLUDE(SqlId.orderby)).append(Stringz.ln(1))
+        .append(TAG_SELECT_END).append(Stringz.ln(2))
 
         
         .append("</mapper>");
@@ -1051,7 +1051,7 @@ public  class MapperTemplate  {
     			,this.getEnum()  //11
     			,this.dialect.getClass().getName()  //12
     			,this.getQueryColsContext()  //13
-    			,DateTimeHelper.Formatter.DATE_FORMAT_DB.format()
+    			,DateTimez.Formatter.DATE_FORMAT_DB.format()
     	        ,this.getDbCols("") //15
     			);
 		return lStrMapper;
@@ -1065,11 +1065,11 @@ public  class MapperTemplate  {
     	StringBuffer strComment=new StringBuffer("");
     	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     	strComment
-    	.append(StringHelper.tab(1)).append("Create Date:").append(sdf.format(new Date())).append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("MapperTemplate:").append(this.dialect.getClass().getName()).append(StringHelper.ln(1))
-        .append(StringHelper.tab(1)).append("Model:").append(this.modelClass.getName()).append(StringHelper.ln(2))
-    	.append(" public static enum F { \n  "+this.getEnum()+"  \n } ").append(StringHelper.ln(2))
-        .append(this.getJavaColsContext()).append(StringHelper.ln(1))
+    	.append(Stringz.tab(1)).append("Create Date:").append(sdf.format(new Date())).append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("MapperTemplate:").append(this.dialect.getClass().getName()).append(Stringz.ln(1))
+        .append(Stringz.tab(1)).append("Model:").append(this.modelClass.getName()).append(Stringz.ln(2))
+    	.append(" public static enum F { \n  "+this.getEnum()+"  \n } ").append(Stringz.ln(2))
+        .append(this.getJavaColsContext()).append(Stringz.ln(1))
         ;
         document.addComment(strComment.toString());
     	DocumentType documentType=new DOMDocumentType();
@@ -1141,18 +1141,18 @@ public  class MapperTemplate  {
     	
         
         context
-    	.append(StringHelper.ln(3))
+    	.append(Stringz.ln(3))
         .append("@OrmTable(name=\""+classSimpleName+"\",pk=\""+pk+"\" )").append("\n")
-    	.append("public  class "+baseModelPrefix+classSimpleName+" {").append(StringHelper.ln(2))
+    	.append("public  class "+baseModelPrefix+classSimpleName+" {").append(Stringz.ln(2))
    	//.append(StringHelper.tab(1)).append("public enum F { \n \t"+this.getEnum()+" \n\t }").append(StringHelper.ln(2))
 
-   	.append(this.getJavaColsContext()).append(StringHelper.ln(3))
+   	.append(this.getJavaColsContext()).append(Stringz.ln(3))
     	;
                 
         for (ColumnTemplate columnTemplate : this.cols) {
     		
     		context
-    		.append(getsetContext(columnTemplate)).append(StringHelper.ln(2))
+    		.append(getsetContext(columnTemplate)).append(Stringz.ln(2))
 			;
 		}
            	context
@@ -1167,11 +1167,11 @@ public  class MapperTemplate  {
     	
         boolean isSuccess=false;
     	StringBuffer context=new StringBuffer();
-        Class[] importClss={List.class,Date.class,Timestamp.class,Ormable.class,Resultable.class,Set.class,ObjectHelper.class};
+        Class[] importClss={List.class,Date.class,Timestamp.class,Ormable.class,Resultable.class,Set.class,Clazz.class};
     	context
-    	.append("package "+this.modelClass.getPackage().getName()+";").append(StringHelper.ln(2));
+    	.append("package "+this.modelClass.getPackage().getName()+";").append(Stringz.ln(2));
     	for(Class importCls : importClss){
-    		context.append("import "+importCls.getName()+";").append(StringHelper.ln(1))
+    		context.append("import "+importCls.getName()+";").append(Stringz.ln(1))
         	;
     	}        
         context.append(contextBaseModel(this.modelClass.getSimpleName()));
@@ -1195,7 +1195,7 @@ public  class MapperTemplate  {
  			isSuccess=true;
  		 }
  		javaFile.createNewFile();
-		osw=new OutputStreamWriter(new FileOutputStream(javaFile),StringHelper.UrlCoding.utf8.name());
+		osw=new OutputStreamWriter(new FileOutputStream(javaFile),Stringz.UrlCoding.utf8.name());
 		bw=new BufferedWriter(osw);
 		bw.write(context.toString());
 		bw.flush();
@@ -1213,14 +1213,14 @@ public  class MapperTemplate  {
     }
     
     public boolean generalMapplerXML(String srcPath,String subPath){
-    	String refPath= IOHelper.pathFormat(namespace);
+    	String refPath= IOz.pathFormat(namespace);
     	return this.generalMapplerXML(srcPath, refPath,subPath);
     }
     
     
    public boolean generalMapplerXML(String srcPath,String refPath,String subPath){
 	   boolean isSuccess=false;
-	   subPath=ObjectHelper.<String>valueOf(subPath,"");
+	   subPath=Clazz.<String>valueOf(subPath,"");
 	   //String path= FileUtil.toPath(namespace);
 	   //String xmlPath=srcPath+refPath+".xml";
 	   String path=MessageFormat.format("{0}{1}/{2}.{3}",
@@ -1256,7 +1256,7 @@ public  class MapperTemplate  {
 			isSuccess=true;
 		}
 		xmlFile.createNewFile();
-		osw=new OutputStreamWriter(new FileOutputStream(xmlFile),StringHelper.UrlCoding.utf8.name());
+		osw=new OutputStreamWriter(new FileOutputStream(xmlFile),Stringz.UrlCoding.utf8.name());
 		bw=new BufferedWriter(osw);
 		bw.write(strMapper);
 		bw.flush();
@@ -1268,7 +1268,7 @@ public  class MapperTemplate  {
 		String strExtraMapper=this.getExtraMapperContext();
 		if(!xmlExtraFile.exists()){
 			xmlExtraFile.createNewFile();
-			osw=new OutputStreamWriter(new FileOutputStream(xmlExtraFile),StringHelper.UrlCoding.utf8.name());
+			osw=new OutputStreamWriter(new FileOutputStream(xmlExtraFile),Stringz.UrlCoding.utf8.name());
 			bw=new BufferedWriter(osw);
 			bw.write(strExtraMapper);
 			bw.flush();
@@ -1283,7 +1283,7 @@ public  class MapperTemplate  {
             xmlExtraFile.renameTo(bakExtraFile);
 			xmlExtraFile.delete();
 			xmlExtraFile.createNewFile();
-			osw=new OutputStreamWriter(new FileOutputStream(xmlExtraFile),StringHelper.UrlCoding.utf8.name());
+			osw=new OutputStreamWriter(new FileOutputStream(xmlExtraFile),Stringz.UrlCoding.utf8.name());
 			bw=new BufferedWriter(osw);
 			bw.write(strExtraMapper);
 			bw.flush();
@@ -1323,10 +1323,10 @@ public  class MapperTemplate  {
 	    	getterPattern="public byte[] get{0}()'{' return this.{2}; '}'";
 	    }
        return MessageFormat.format(getterPattern,
-     		  StringHelper.format(proName, StringHelper.Format.upcaseFirstChar)
+     		  Stringz.format(proName, Stringz.Format.upcaseFirstChar)
 			  ,typeName
 			  ,proName
-			  ,StringHelper.format(proName, StringHelper.Format.lowcaseFirstChar)
+			  ,Stringz.format(proName, Stringz.Format.lowcaseFirstChar)
 			
        );
   }
@@ -1342,17 +1342,17 @@ public  class MapperTemplate  {
 	    	setterPattern="public void set{0}(byte[] {3})'{' this.{2}={3}; '}'";
 	    }
       return MessageFormat.format(setterPattern,
-    		  StringHelper.format(proName, StringHelper.Format.upcaseFirstChar)
+    		  Stringz.format(proName, Stringz.Format.upcaseFirstChar)
 			  ,typeName
 			  ,proName
-			  ,StringHelper.format(proName, StringHelper.Format.lowcaseFirstChar)
+			  ,Stringz.format(proName, Stringz.Format.lowcaseFirstChar)
 			
       );
  }
    
    private String getsetContext(String typeName,String proName){
 	   
-	   return getterContext(typeName,proName)+StringHelper.ln(1)+setterContext(typeName,proName);
+	   return getterContext(typeName,proName)+Stringz.ln(1)+setterContext(typeName,proName);
    }
 	
    private String getsetContext(ColumnTemplate columnTemplate){
@@ -1363,22 +1363,22 @@ public  class MapperTemplate  {
    private String implementIModelContext(){
 	   StringBuffer contextPattern=new StringBuffer("");
 
-	   contextPattern.append(StringHelper.tab(1)).append("public Object getPk()'{' return {0};'}'").append(StringHelper.ln(2))
-	   .append(StringHelper.tab(1)).append("public void setPk(Object pk) throws Exception '{' {0}={1};'}'").append(StringHelper.ln(2))
-	   .append(StringHelper.tab(1)).append("public void genPk() throws Exception '{'{3} '}'").append(StringHelper.ln(2))
-	   .append(StringHelper.tab(1)).append("public {2} validate()'{' return new {2}(); '}'").append(StringHelper.ln(2))
-	   .append(StringHelper.tab(1)).append("public "+Enum.class.getSimpleName()+"[] enumFields()'{' return "+baseModelPrefix+this.modelClass.getSimpleName()+".F.values(); '}'").append(StringHelper.ln(2))
+	   contextPattern.append(Stringz.tab(1)).append("public Object getPk()'{' return {0};'}'").append(Stringz.ln(2))
+	   .append(Stringz.tab(1)).append("public void setPk(Object pk) throws Exception '{' {0}={1};'}'").append(Stringz.ln(2))
+	   .append(Stringz.tab(1)).append("public void genPk() throws Exception '{'{3} '}'").append(Stringz.ln(2))
+	   .append(Stringz.tab(1)).append("public {2} validate()'{' return new {2}(); '}'").append(Stringz.ln(2))
+	   .append(Stringz.tab(1)).append("public "+Enum.class.getSimpleName()+"[] enumFields()'{' return "+baseModelPrefix+this.modelClass.getSimpleName()+".F.values(); '}'").append(Stringz.ln(2))
 	   ;
 	   String setContext="pk.toString()";
-	   if(LinqHelper.isIn(this.pkColumn.getColumn().getJavaType(), Integer.class)){
+	   if(Linq.isIn(this.pkColumn.getColumn().getJavaType(), Integer.class)){
 		   setContext= Integer.class.getSimpleName()+".parseInt(pk.toString())";         
-	   }else if(LinqHelper.isIn(this.pkColumn.getColumn().getJavaType(), Long.class)){
+	   }else if(Linq.isIn(this.pkColumn.getColumn().getJavaType(), Long.class)){
 		   setContext= Long.class.getSimpleName()+".parseLong(pk.toString())"; 
 	   }
 	   String genPkContext="";
-	   if(LinqHelper.isIn(this.pkColumn.getColumn().getJavaType(), String.class)){
-		   genPkContext= this.pkColumn.getJavaName()+"="+ObjectHelper.class.getSimpleName()+".GeneralPK();";         
-	   }else if(LinqHelper.isIn(this.pkColumn.getColumn().getJavaType(), Long.class)){
+	   if(Linq.isIn(this.pkColumn.getColumn().getJavaType(), String.class)){
+		   genPkContext= this.pkColumn.getJavaName()+"="+Clazz.class.getSimpleName()+".GeneralPK();";         
+	   }else if(Linq.isIn(this.pkColumn.getColumn().getJavaType(), Long.class)){
 		   genPkContext= this.pkColumn.getJavaName()+"=new Date().getTime();";    
 	   } 
        return MessageFormat.format(contextPattern.toString(), 

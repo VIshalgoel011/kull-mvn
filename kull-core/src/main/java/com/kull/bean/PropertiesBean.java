@@ -19,7 +19,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import com.kull.StringHelper;
+import com.kull.Stringz;
 
 
 
@@ -254,7 +254,7 @@ public final class PropertiesBean {
 		if(v == null) {
 			return new String[0];
 		}else {
-			return StringHelper.splitToArray(v, ", \t\n\r\f");
+			return Stringz.splitToArray(v, ", \t\n\r\f");
 		    //return org.springframework.util.StringHelpers.tokenizeToStringArray(v, ", \t\n\r\f");
 		}
 	}

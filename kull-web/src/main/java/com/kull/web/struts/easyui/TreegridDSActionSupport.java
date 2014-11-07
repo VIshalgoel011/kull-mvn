@@ -8,7 +8,7 @@ import java.text.MessageFormat;
 import java.util.Map;
 
 
-import com.kull.StringHelper;
+import com.kull.Stringz;
 import com.kull.orm.Session;
 import com.kull.script.Html;
 import com.kull.web.struts.DSActionSupport;
@@ -64,7 +64,7 @@ public abstract class TreegridDSActionSupport extends SqlDSActionSupport {
 		;
 		html
 		.append("<html><body>")
-		.append(Html.fieldset("easyui-treegrid", "<pre>"+StringHelper.htmlWapper(treegrid.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-treegrid", "<pre>"+Stringz.htmlWapper(treegrid.toString())+"</pre>"))
 		.append("</body></html>");
 		this.response.getWriter().write(html.toString());
 		Session.close(connection, ps, null);

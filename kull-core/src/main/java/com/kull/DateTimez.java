@@ -13,7 +13,7 @@ import java.util.Set;
 
 
 
-public class DateTimeHelper {
+public class DateTimez {
 
 	
     public enum MilSecond{
@@ -170,7 +170,7 @@ public class DateTimeHelper {
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends java.util.Date> T parse(String dateString,String dateFormat,Class<T> targetResultType) throws Exception {
-		if(StringHelper.isBlank(dateString))
+		if(Stringz.isBlank(dateString))
 			return null;
 		DateFormat df = new SimpleDateFormat(dateFormat);
 		long time = df.parse(dateString).getTime();

@@ -9,7 +9,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
-import com.kull.DateTimeHelper;
+import com.kull.DateTimez;
 
 
 
@@ -29,7 +29,7 @@ public class DomesticAirline extends BaseWebXmlService {
 	public List<AirlinesTime> getDomesticAirlinesTime(String startCity,String lastCity,Date theDate,String userID) throws Exception{
 		theDate=theDate==null?new Date():theDate;
 		List<AirlinesTime> airlinesTimes=new ArrayList<DomesticAirline.AirlinesTime>();
-		String parma=MessageFormat.format("startCity={0}&lastCity={1}&theDate={2}&userID={3}", startCity,lastCity,DateTimeHelper.format(theDate, "yyyy-MM-dd"),userID);
+		String parma=MessageFormat.format("startCity={0}&lastCity={1}&theDate={2}&userID={3}", startCity,lastCity,DateTimez.format(theDate, "yyyy-MM-dd"),userID);
 		Document doc=this.doGetEndPoint(Endpoint.getDomesticAirlinesTime.name(),parma);
 		//Element el=(Element) doc.getRootElement().elements().get(1);
 		//List<Node> nodes=el.element("Airlines").elements(AirlinesTime.class.getSimpleName());
@@ -40,10 +40,10 @@ public class DomesticAirline extends BaseWebXmlService {
 			airlinesTime.AirlineCode=node.selectSingleNode("AirlineCode").getText().trim();
 			airlinesTime.AirlineStop=Integer.parseInt(node.selectSingleNode("AirlineStop").getText().trim());
 			airlinesTime.ArriveDrome=node.selectSingleNode("ArriveDrome").getText().trim();
-			airlinesTime.ArriveTime=DateTimeHelper.parse(node.selectSingleNode("ArriveTime").getText().trim(),REGEXP_TIME_SHORT);
+			airlinesTime.ArriveTime=DateTimez.parse(node.selectSingleNode("ArriveTime").getText().trim(),REGEXP_TIME_SHORT);
 			airlinesTime.Mode=node.selectSingleNode("Mode").getText().trim();
 			airlinesTime.StartDrome=node.selectSingleNode("StartDrome").getText().trim();
-			airlinesTime.StartTime=DateTimeHelper.parse(node.selectSingleNode("StartTime").getText().trim(),REGEXP_TIME_SHORT);
+			airlinesTime.StartTime=DateTimez.parse(node.selectSingleNode("StartTime").getText().trim(),REGEXP_TIME_SHORT);
             airlinesTime.Week=node.selectSingleNode("Week").getText().trim();
 			airlinesTimes.add(airlinesTime);
 		}

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-public class StringHelper {
+public class Stringz {
 
     public static enum Format {
 

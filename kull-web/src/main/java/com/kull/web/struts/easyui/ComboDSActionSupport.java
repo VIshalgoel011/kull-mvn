@@ -5,7 +5,7 @@
  */
 package com.kull.web.struts.easyui;
 
-import com.kull.StringHelper;
+import com.kull.Stringz;
 import com.kull.orm.Session;
 
 import com.kull.script.Html;
@@ -71,7 +71,7 @@ public abstract class ComboDSActionSupport extends SqlDSActionSupport{
 	
 	@Override
 	public void help() throws Exception{
-        if(StringHelper.isBlank(this.pk)){
+        if(Stringz.isBlank(this.pk)){
         	this.response.getWriter().write("缺少pk参数");
         	return;
         }
@@ -92,28 +92,28 @@ public abstract class ComboDSActionSupport extends SqlDSActionSupport{
         opts.put(EasyUiPlugin.ComboBox.Properties.MULTIPLE, false);
         opts.put(EasyUiPlugin.ComboBox.Properties.URL, cburl,true);
        
-		combobox_url.append("html:\n\n <input  name=\""+this.pk+"\" class=\""+EasyUiPlugin.ComboBox.CLASS+"\" style=\"\" data-options=\""+StringHelper.trim(opts.toScirpt(),"{","}")+"\" /> \n\n")
+		combobox_url.append("html:\n\n <input  name=\""+this.pk+"\" class=\""+EasyUiPlugin.ComboBox.CLASS+"\" style=\"\" data-options=\""+Stringz.trim(opts.toScirpt(),"{","}")+"\" /> \n\n")
 		.append("editor:\n\n {type:\"combobox\",options:"+opts.toScirpt()+"}");
 		
 		opts.remove(EasyUiPlugin.ComboBox.Properties.URL);
 		opts.put(EasyUiPlugin.ComboBox.Properties.DATA, Utils.toJson(list));
-		combobox_data.append("<input  name=\""+this.pk+"\" class=\""+EasyUiPlugin.ComboBox.CLASS+"\" style=\"\" data-options=\""+StringHelper.trim(opts.toScirpt(),"{","}")+"\" /> \n\n")
+		combobox_data.append("<input  name=\""+this.pk+"\" class=\""+EasyUiPlugin.ComboBox.CLASS+"\" style=\"\" data-options=\""+Stringz.trim(opts.toScirpt(),"{","}")+"\" /> \n\n")
 		.append("editor:\n\n {type:\"combobox\",options:"+opts.toScirpt()+"}");
 		
 		opts.remove(EasyUiPlugin.ComboBox.Properties.DATA);
-		combogrid_url.append("<input  name=\""+this.pk+"\" class=\""+EasyUiPlugin.ComboGrid.CLASS+"\" style=\"\" data-options=\""+StringHelper.trim(opts.toScirpt(),"{","}")+"\" /> \n\n")
+		combogrid_url.append("<input  name=\""+this.pk+"\" class=\""+EasyUiPlugin.ComboGrid.CLASS+"\" style=\"\" data-options=\""+Stringz.trim(opts.toScirpt(),"{","}")+"\" /> \n\n")
 		.append("editor:\n\n {type:\"combogrid\",options:"+opts.toScirpt()+"}");
 		
 		opts.remove(EasyUiPlugin.ComboBox.Properties.URL);
 		opts.put(EasyUiPlugin.ComboBox.Properties.DATA, Utils.toJson(list));
-		combogrid_data.append("<input  name=\""+this.pk+"\" class=\""+EasyUiPlugin.ComboGrid.CLASS+"\" style=\"\" data-options=\""+StringHelper.trim(opts.toScirpt(),"{","}")+"\" /> \n\n")
+		combogrid_data.append("<input  name=\""+this.pk+"\" class=\""+EasyUiPlugin.ComboGrid.CLASS+"\" style=\"\" data-options=\""+Stringz.trim(opts.toScirpt(),"{","}")+"\" /> \n\n")
 		.append("editor:\n\n {type:\"combogrid\",options:"+opts.toScirpt()+"}");
 		html
 		.append("<html><body>")
-		.append(Html.fieldset("easyui-combobox  url", "<pre>"+StringHelper.htmlWapper(combobox_url.toString())+"</pre>"))
-		.append(Html.fieldset("easyui-combobox  data", "<pre>"+StringHelper.htmlWapper(combobox_data.toString())+"</pre>"))
-		.append(Html.fieldset("easyui-combogrid  url", "<pre>"+StringHelper.htmlWapper(combogrid_url.toString())+"</pre>"))
-		.append(Html.fieldset("easyui-combogrid  data", "<pre>"+StringHelper.htmlWapper(combogrid_data.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-combobox  url", "<pre>"+Stringz.htmlWapper(combobox_url.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-combobox  data", "<pre>"+Stringz.htmlWapper(combobox_data.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-combogrid  url", "<pre>"+Stringz.htmlWapper(combogrid_url.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-combogrid  data", "<pre>"+Stringz.htmlWapper(combogrid_data.toString())+"</pre>"))
 		//.append(fieldset("easyui-treegrid", "<pre>"+StringHelper.htmlWapper(treegrid.toString())+"</pre>"))
 		.append("</body></html>");
 		this.response.getWriter().write(html.toString());

@@ -15,7 +15,7 @@ import cn.songxinqiang.weixin4j.request.RequestType;
 import cn.songxinqiang.weixin4j.request.RequestVideoMessage;
 import cn.songxinqiang.weixin4j.request.RequestVoiceMessage;
 import cn.songxinqiang.weixin4j.response.ResponseBaseMessage;
-import com.kull.ObjectHelper;
+import com.kull.Clazz;
 import com.kull.common.model.KullCommonDBML;
 import com.kull.common.Utils;
 import com.kull.web.struts.weixin.CliMPActionSupport;
@@ -42,8 +42,8 @@ public class MP_LSFAction extends CliMPActionSupport {
     public void main() throws Exception {
         
         String[] modes = Utils.modes(this.request);
-        if (ObjectHelper.isIn("debug", modes)) {
-            if(ObjectHelper.isIn("text", modes)){
+        if (Clazz.isIn("debug", modes)) {
+            if(Clazz.isIn("text", modes)){
                  
                Map<String, String>  xmlparam = new HashMap<String,String>();
                xmlparam.put(RequestBaseMessage.MSG_FIELD_CreateTime,String.valueOf(new Date().getTime()));

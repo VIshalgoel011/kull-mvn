@@ -12,7 +12,7 @@ import java.util.Vector;
 
 
 
-import com.kull.ObjectHelper;
+import com.kull.Clazz;
 import com.kull.orm.Session;
 import com.kull.web.Utils;
 import com.kull.web.struts.DSActionSupport;
@@ -69,7 +69,7 @@ public abstract class TreeDSActionSupport extends SqlDSActionSupport {
 		Vector<Map<String,Object>> nodes=new Vector<Map<String,Object>>();
 		for(int i=0;i<list.size();i++){
 			Map<String,Object> map=list.get(i),mapNew=new HashMap<String,Object>();
-			if(ObjectHelper.isNotEquals(root, map.get(_parentIdField.toLowerCase())))continue;
+			if(Clazz.isNotEquals(root, map.get(_parentIdField.toLowerCase())))continue;
 			mapNew.put(_parentIdField, map.get(_parentIdField.toLowerCase()));
 			mapNew.put(idField, map.get(idField.toLowerCase()));
 			mapNew.put(textField, map.get(textField.toLowerCase()));

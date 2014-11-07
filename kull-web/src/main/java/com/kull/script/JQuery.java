@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.kull.ObjectHelper;
+import com.kull.Clazz;
 import com.kull.able.Scriptable;
 
 
@@ -104,15 +104,15 @@ public class JQuery implements Scriptable {
 	}
 	
 	public static String id(String id){
-		return MessageFormat.format("$(\"#{0}\")", ObjectHelper.<String>valueOf(id,""));
+		return MessageFormat.format("$(\"#{0}\")", Clazz.<String>valueOf(id,""));
 	}
 	
 	public static String cls(String id){
-		return MessageFormat.format("$(\".{0}\")", ObjectHelper.<String>valueOf(id,""));
+		return MessageFormat.format("$(\".{0}\")", Clazz.<String>valueOf(id,""));
 	}
 	
 	public static String regexp(String regexp){
-		return MessageFormat.format("$(\"{0}\")", ObjectHelper.<String>valueOf(regexp,""));
+		return MessageFormat.format("$(\"{0}\")", Clazz.<String>valueOf(regexp,""));
 	}
 	
 	

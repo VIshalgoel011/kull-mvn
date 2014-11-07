@@ -5,9 +5,9 @@
  */
 package com.kull.web.struts;
 
-import com.kull.LinqHelper;
-import com.kull.ObjectHelper;
-import com.kull.StringHelper;
+import com.kull.Linq;
+import com.kull.Clazz;
+import com.kull.Stringz;
 import com.kull.able.Resultable;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public abstract class SqlDSMActionSupport<M> extends SqlDSActionSupport {
             {
                 
                     M m0 = newM(),m1 = toM(jarr.getJSONObject(i));
-                    ObjectHelper.cp(m1,m0);
+                    Clazz.cp(m1,m0);
                     submits.add(m0);
                 
             }
@@ -92,7 +92,7 @@ public abstract class SqlDSMActionSupport<M> extends SqlDSActionSupport {
                     }
                     else
                     {
-                        ObjectHelper.cp(target, source);
+                        Clazz.cp(target, source);
                         if (!onUpdate( source,  re, sources, submits))
                             throw new Exception(re.getMsg());
                         _update(target);
@@ -107,9 +107,9 @@ public abstract class SqlDSMActionSupport<M> extends SqlDSActionSupport {
                     if (isNew)
                     {
                         M nm=newM() ;
-                        ObjectHelper.attr( submit, pk, null);
+                        Clazz.attr( submit, pk, null);
                         //ObjectHelper.attr( nm, submit);
-                        ObjectHelper.cp(submit, nm);
+                        Clazz.cp(submit, nm);
                         if (!onCreate( nm, re,sources,submits))
                             throw new Exception(re.getMsg());
                         _create(nm);
@@ -138,18 +138,18 @@ public abstract class SqlDSMActionSupport<M> extends SqlDSActionSupport {
     
     protected  M selectBy(M condition, List<M> list) throws Exception
     {
-            return LinqHelper.selectByPK(pkname,ObjectHelper.attr(condition, pk), list);
+            return Linq.selectByPK(pkname,Clazz.attr(condition, pk), list);
     }
     
    protected  int indexOf(M m, List<M> list) throws Exception
     {
-            return LinqHelper.indexOfByPk(pkname,ObjectHelper.attr(m,pk), list);
+            return Linq.indexOfByPk(pkname,Clazz.attr(m,pk), list);
    }
     
       
    protected  boolean isNew(M m) throws Exception
         {
-            Object pkval = ObjectHelper.attr(m, pkname);
+            Object pkval = Clazz.attr(m, pkname);
             boolean isNew = isUndefined(pkval);
             if (isNew) return isNew;
             try
@@ -165,7 +165,7 @@ public abstract class SqlDSMActionSupport<M> extends SqlDSActionSupport {
         }
 
     protected static boolean isUndefined(Object pkval) {
-        return pkval==null||StringHelper.isBlank(pkval.toString());
+        return pkval==null||Stringz.isBlank(pkval.toString());
     }
    
     

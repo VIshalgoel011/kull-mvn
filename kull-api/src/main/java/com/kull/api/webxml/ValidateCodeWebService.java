@@ -5,7 +5,7 @@ import java.text.MessageFormat;
 
 import org.dom4j.Document;
 
-import com.kull.StringHelper;
+import com.kull.Stringz;
 
 
 
@@ -23,7 +23,7 @@ public class ValidateCodeWebService extends BaseWebXmlService {
 	
 
 	public URL cnValidateImage(String byString)throws Exception{
-		String url=MessageFormat.format("{0}/{1}?byString={2}",this.serviceUrl,Endpoint.cnValidateImage.name(), StringHelper.UrlCoding.utf8.encode(byString));
+		String url=MessageFormat.format("{0}/{1}?byString={2}",this.serviceUrl,Endpoint.cnValidateImage.name(), Stringz.UrlCoding.utf8.encode(byString));
 	    return new URL(url);
 	}
 	

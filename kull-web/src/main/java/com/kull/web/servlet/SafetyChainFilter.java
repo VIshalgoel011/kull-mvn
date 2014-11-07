@@ -8,7 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kull.StringHelper;
+import com.kull.Stringz;
 
 public class SafetyChainFilter extends HttpServletFilter {
 
@@ -31,10 +31,10 @@ public class SafetyChainFilter extends HttpServletFilter {
 			FilterChain fc) throws IOException, ServletException {
 		// TODO Auto-generated method stub
         String referer=req.getHeader("referer");
-        if(StringHelper.isBlank(referer)||!referer.contains(req.getServerName())){
-        	if(StringHelper.isNotBlank(errorUrl)){
+        if(Stringz.isBlank(referer)||!referer.contains(req.getServerName())){
+        	if(Stringz.isNotBlank(errorUrl)){
         		res.sendRedirect(errorUrl);
-        	}else if(StringHelper.isNotBlank(errorContext)){
+        	}else if(Stringz.isNotBlank(errorContext)){
         		res.getWriter().write(errorContext);
         	}else{
         		res.getWriter().write("error");

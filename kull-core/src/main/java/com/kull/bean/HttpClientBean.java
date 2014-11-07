@@ -23,7 +23,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
 
-import com.kull.StringHelper;
+import com.kull.Stringz;
 
 
 public class HttpClientBean  {
@@ -85,7 +85,7 @@ public class HttpClientBean  {
 		
 		for(NameValuePair nvp:nvps){
 			try {
-				String encodeVal=StringHelper.UrlCoding.utf8.encode(nvp.getValue());
+				String encodeVal=Stringz.UrlCoding.utf8.encode(nvp.getValue());
 				StringBody stringBody=new StringBody(encodeVal);
 				entity.addPart(nvp.getName(),stringBody);
 			} catch (UnsupportedEncodingException e) {

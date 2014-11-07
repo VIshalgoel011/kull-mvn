@@ -9,8 +9,8 @@ import org.dom4j.Document;
 import org.dom4j.Node;
 import org.dom4j.Element;
 
-import com.kull.DateTimeHelper;
-import com.kull.ObjectHelper;
+import com.kull.DateTimez;
+import com.kull.Clazz;
 
 
 
@@ -55,8 +55,8 @@ public class TrainTimeWebService extends BaseWebXmlService {
 		for(Node node:nodes){
 			TrainDetailInfo trainDetailInfo=this.new TrainDetailInfo();
 			trainDetailInfo.TrainStation=node.selectSingleNode("TrainStation").getText().trim();
-			trainDetailInfo.StartTime=DateTimeHelper.parse(node.selectSingleNode("StartTime").getText().trim());
-			trainDetailInfo.ArriveTime=DateTimeHelper.parse(node.selectSingleNode("ArriveTime").getText().trim());
+			trainDetailInfo.StartTime=DateTimez.parse(node.selectSingleNode("StartTime").getText().trim());
+			trainDetailInfo.ArriveTime=DateTimez.parse(node.selectSingleNode("ArriveTime").getText().trim());
             trainDetailInfo.KM=Integer.parseInt(node.selectSingleNode("KM").getText().trim());
 			trainDetailInfos.add(trainDetailInfo);
 		}
@@ -73,11 +73,11 @@ public class TrainTimeWebService extends BaseWebXmlService {
         train.FirstStation=nodes.get(index++).getText().trim();
         train.LastStation=nodes.get(index++).getText().trim();
         train.StartStation=nodes.get(index++).getText().trim();
-        train.StartTime=DateTimeHelper.parse(nodes.get(index++).getText().trim());
+        train.StartTime=DateTimez.parse(nodes.get(index++).getText().trim());
         train.ArriveStation=nodes.get(index++).getText().trim();
-        train.ArriveTime=DateTimeHelper.parse(nodes.get(index++).getText().trim());
+        train.ArriveTime=DateTimez.parse(nodes.get(index++).getText().trim());
         train.KM=Integer.parseInt(nodes.get(index++).getText().trim());
-        train.UseDate=DateTimeHelper.parse(nodes.get(index++).getText().trim());
+        train.UseDate=DateTimez.parse(nodes.get(index++).getText().trim());
         
         return train;
 	}
@@ -111,11 +111,11 @@ public class TrainTimeWebService extends BaseWebXmlService {
 		    trainTime.StartStation=node.selectSingleNode("StartStation").getText().trim();
 			trainTime.FirstStation=node.selectSingleNode("FirstStation").getText().trim();
 		    trainTime.LastStation=node.selectSingleNode("FirstStation").getText().trim();
-		    trainTime.ArriveTime=DateTimeHelper.parse(node.selectSingleNode("ArriveTime").getText().trim(), 	REGEXP_TIME);
-		    trainTime.StartTime=DateTimeHelper.parse(node.selectSingleNode("StartTime").getText().trim(), REGEXP_TIME);
-            trainTime.KM=ObjectHelper.valueOf(node.selectSingleNode("KM").getText().trim(), 0);
+		    trainTime.ArriveTime=DateTimez.parse(node.selectSingleNode("ArriveTime").getText().trim(), 	REGEXP_TIME);
+		    trainTime.StartTime=DateTimez.parse(node.selectSingleNode("StartTime").getText().trim(), REGEXP_TIME);
+            trainTime.KM=Clazz.valueOf(node.selectSingleNode("KM").getText().trim(), 0);
 		    trainTime.TrainCode=node.selectSingleNode("TrainCode").getText().trim();
-		    trainTime.UseDate=DateTimeHelper.parse(node.selectSingleNode("UseDate").getText().trim(), REGEXP_TIME_SHORT);
+		    trainTime.UseDate=DateTimez.parse(node.selectSingleNode("UseDate").getText().trim(), REGEXP_TIME_SHORT);
 		    trainTimes.add(trainTime);
 		}
 		return trainTimes;

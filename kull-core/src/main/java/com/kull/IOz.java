@@ -16,7 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-public class IOHelper {
+public class IOz {
 public static String TARGET_PATH_MAVEN="target/classes";
 
 
@@ -216,7 +216,7 @@ public static enum FileType{
 
 	
 	public static String trimPath(String filePath){
-		return StringHelper.trim(filePath, "/","\\");
+		return Stringz.trim(filePath, "/","\\");
 	}
 	
 	public static void createZip(File zip, String... sourceFiles) throws IOException {

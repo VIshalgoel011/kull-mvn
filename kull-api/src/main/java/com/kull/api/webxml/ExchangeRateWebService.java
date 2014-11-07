@@ -8,7 +8,7 @@ import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.Node;
 
-import com.kull.DateTimeHelper;
+import com.kull.DateTimez;
 
 
 
@@ -45,7 +45,7 @@ public class ExchangeRateWebService extends BaseWebXmlService {
 			exchangeRate.ClosePrice=Double.parseDouble(node.selectSingleNode("ClosePrice").getText());
 			exchangeRate.Code=node.selectSingleNode("Code").getText();
 			exchangeRate.Currency=node.selectSingleNode("Currency").getText();
-			exchangeRate.DataTime=DateTimeHelper.parse(node.selectSingleNode("DataTime").getText());
+			exchangeRate.DataTime=DateTimez.parse(node.selectSingleNode("DataTime").getText());
 		 	temp=node.selectSingleNode("DiffPercent").getText();
 			exchangeRate.DiffPercent=Double.parseDouble(temp.substring(0,temp.lastIndexOf("%")));
 			exchangeRate.HighPrice=Double.parseDouble(node.selectSingleNode("HighPrice").getText());

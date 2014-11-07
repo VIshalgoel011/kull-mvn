@@ -6,8 +6,8 @@ import java.text.MessageFormat;
 
 
 
-import com.kull.ObjectHelper;
-import com.kull.StringHelper;
+import com.kull.Clazz;
+import com.kull.Stringz;
 import com.kull.able.Scriptable;
 import com.kull.script.*;
 
@@ -44,10 +44,10 @@ public class Messager  implements Scriptable {
 		String lStrReturn="";
 		String lStrRege="$.messager.alert({0},{1},{2},{3});";
 		lStrReturn=MessageFormat.format(lStrRege,
-	            ObjectHelper.<String>valueOf(this.title,"\"\""),	 //0
-	            ObjectHelper.<String>valueOf(this.msg, "\"\""),   //1
-	            ObjectHelper.<String>valueOf(this.icon,"\"\""),    //2
-	            ObjectHelper.<String>valueOf(this.fn, new JsFunction(new String[]{"ok"}).toScirpt()) //3
+	            Clazz.<String>valueOf(this.title,"\"\""),	 //0
+	            Clazz.<String>valueOf(this.msg, "\"\""),   //1
+	            Clazz.<String>valueOf(this.icon,"\"\""),    //2
+	            Clazz.<String>valueOf(this.fn, new JsFunction(new String[]{"ok"}).toScirpt()) //3
 		);
 		return lStrReturn;
 	}
@@ -57,9 +57,9 @@ public class Messager  implements Scriptable {
 		String lStrReturn="";
 		String lStrRege="$.messager.confirm({0},{1},{2});";
 		lStrReturn=MessageFormat.format(lStrRege,
-	    ObjectHelper.<String>valueOf(this.title,"\"\""),	 //0
-	    ObjectHelper.<String>valueOf(this.msg, "\"\""),   //1
-	    ObjectHelper.<String>valueOf(this.fn, new JsFunction(new String[]{"ok"}).toScirpt())  //2
+	    Clazz.<String>valueOf(this.title,"\"\""),	 //0
+	    Clazz.<String>valueOf(this.msg, "\"\""),   //1
+	    Clazz.<String>valueOf(this.fn, new JsFunction(new String[]{"ok"}).toScirpt())  //2
 		);
 		return lStrReturn;
 	}
@@ -69,9 +69,9 @@ public class Messager  implements Scriptable {
 		String lStrReturn="";
 		String lStrRege="$.messager.prompt({0},{1},{2})";
 		lStrReturn=MessageFormat.format(lStrRege,
-			    ObjectHelper.<String>valueOf(this.title,"\"\""),	 //0
-			    ObjectHelper.<String>valueOf(this.msg, "\"\""),   //1
-			    ObjectHelper.<String>valueOf(this.fn, new JsFunction(new String[]{"ok"}).toScirpt())  //2
+			    Clazz.<String>valueOf(this.title,"\"\""),	 //0
+			    Clazz.<String>valueOf(this.msg, "\"\""),   //1
+			    Clazz.<String>valueOf(this.fn, new JsFunction(new String[]{"ok"}).toScirpt())  //2
 				);
 		return lStrReturn;
 	}
@@ -96,7 +96,7 @@ public class Messager  implements Scriptable {
 	}
 	
 	public Messager setShowType(String showType,boolean isStr) {
-		this.showType =isStr?StringHelper.quota(showType):showType;
+		this.showType =isStr?Stringz.quota(showType):showType;
 		return this;
 	}
 
@@ -110,7 +110,7 @@ public class Messager  implements Scriptable {
 	}
 	
 	public Messager setShowSpeed(String showSpeed,boolean isStr) {
-		this.showSpeed = isStr?StringHelper.quota(showSpeed):showSpeed;
+		this.showSpeed = isStr?Stringz.quota(showSpeed):showSpeed;
 		return this;
 	}
 
@@ -124,7 +124,7 @@ public class Messager  implements Scriptable {
 	}
 	
 	public Messager setWidth(String showSpeed,boolean isStr) {
-		this.width = isStr?StringHelper.quota(width):width;
+		this.width = isStr?Stringz.quota(width):width;
 		return this;
 	}
 
@@ -138,7 +138,7 @@ public class Messager  implements Scriptable {
 	}
 	
 	public Messager setHeight(String height,boolean isStr) {
-		this.height = isStr?StringHelper.quota(height):height;
+		this.height = isStr?Stringz.quota(height):height;
 		return this;
 	}
 
@@ -152,7 +152,7 @@ public class Messager  implements Scriptable {
 	}
 	
 	public Messager setMsg(String msg,boolean isStr) {
-		this.msg = isStr?StringHelper.quota(msg):msg;
+		this.msg = isStr?Stringz.quota(msg):msg;
 		return this;
 	}
 
@@ -166,7 +166,7 @@ public class Messager  implements Scriptable {
 	}
 	
 	public Messager setTitle(String title,boolean isStr) {
-		this.title = isStr?StringHelper.quota(title):title;
+		this.title = isStr?Stringz.quota(title):title;
 		return this;
 	}
 
@@ -180,7 +180,7 @@ public class Messager  implements Scriptable {
 	}
 	
 	public Messager setTimeout(String timeout,boolean isStr) {
-		this.timeout =isStr?StringHelper.quota(timeout):timeout;
+		this.timeout =isStr?Stringz.quota(timeout):timeout;
 	    return this;
 	}
 
@@ -194,7 +194,7 @@ public class Messager  implements Scriptable {
 	}
 	
 	public Messager setIcon(String icon,boolean isStr) {
-		this.icon =isStr?StringHelper.quota(icon):icon;
+		this.icon =isStr?Stringz.quota(icon):icon;
 		return this;
 	}
 

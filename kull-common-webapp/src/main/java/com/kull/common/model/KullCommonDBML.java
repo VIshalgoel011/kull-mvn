@@ -5,17 +5,17 @@
  */
 package com.kull.common.model;
 
-import com.kull.able.Ormable;
+import com.kull.orm.able.Ormable;
 import com.kull.orm.annotation.OrmTable;
 
 
 import java.util.List;
 import java.util.Date;
 import java.sql.Timestamp;
-import com.kull.able.Ormable;
+import com.kull.orm.able.Ormable;
 import com.kull.able.Resultable;
 import java.util.Set;
-import com.kull.ObjectHelper;
+import com.kull.Clazz;
 import com.kull.orm.annotation.OrmTable;
  public class KullCommonDBML {  
 

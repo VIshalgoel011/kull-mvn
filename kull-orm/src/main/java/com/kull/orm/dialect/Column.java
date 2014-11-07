@@ -5,7 +5,7 @@
  */
 package com.kull.orm.dialect;
 
-import com.kull.StringHelper;
+import com.kull.Stringz;
 import com.mysql.jdbc.jmx.LoadBalanceConnectionGroupManager;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -135,7 +135,7 @@ public class Column {
         }
 
         return MessageFormat.format(getterPattern,
-                StringHelper.format(name, StringHelper.Format.upcaseFirstChar),
+                Stringz.format(name, Stringz.Format.upcaseFirstChar),
                 jcls,
                 name
         );
@@ -149,7 +149,7 @@ public class Column {
         }
 
         return MessageFormat.format(setterPattern,
-                StringHelper.format(name, StringHelper.Format.upcaseFirstChar),
+                Stringz.format(name, Stringz.Format.upcaseFirstChar),
                 jcls,
                 name
         );

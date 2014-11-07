@@ -12,7 +12,7 @@ import org.jfree.chart.plot.RingPlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
-import com.kull.StringHelper;
+import com.kull.Stringz;
 
 
 public abstract class PieChartActionSupport extends ChartActionSupport {
@@ -30,7 +30,7 @@ public abstract class PieChartActionSupport extends ChartActionSupport {
 
 	protected PieDataset createDataset(){
 		DefaultPieDataset dataset=new DefaultPieDataset();
-		if(StringHelper.isBlank(keys,vals))return dataset;
+		if(Stringz.isBlank(keys,vals))return dataset;
 		String[] arrayKeys=keys.split(","),arrayVals=vals.split(",");
 		if(arrayKeys==null||arrayVals==null||arrayKeys.length==0||arrayKeys.length!=arrayVals.length)return dataset;
 		for(int i=0;i<arrayKeys.length;i++){

@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MachineUtil {
+public class Machinez {
 
 	public static Process Exec(String command) throws IOException{
 	    //Execable execable=new MachineUtil().new Execable(command);

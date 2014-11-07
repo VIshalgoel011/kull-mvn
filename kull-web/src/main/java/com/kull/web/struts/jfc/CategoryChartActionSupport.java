@@ -10,7 +10,7 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 
-import com.kull.StringHelper;
+import com.kull.Stringz;
 
 
 public abstract class CategoryChartActionSupport extends ChartActionSupport{
@@ -56,7 +56,7 @@ public abstract class CategoryChartActionSupport extends ChartActionSupport{
 
 	protected CategoryDataset createDataset(){
 		DefaultCategoryDataset dataset=new DefaultCategoryDataset();
-		if(StringHelper.isBlank(ccats,vcats,vals))return dataset;
+		if(Stringz.isBlank(ccats,vcats,vals))return dataset;
 		String[] arrayCcats=ccats.split(","),arrayVcats=vcats.split(","),arrayVals=vals.split(",");
 		int index=0;
 		for(int i=0;i<arrayCcats.length;i++){

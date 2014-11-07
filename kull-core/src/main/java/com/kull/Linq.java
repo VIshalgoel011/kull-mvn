@@ -15,7 +15,7 @@ import java.util.List;
 
 
 
-public  class LinqHelper {
+public  class Linq {
 
   
     
@@ -80,7 +80,7 @@ public  class LinqHelper {
     public static <E> boolean isIn(E e,Iterable<E> ... colls){
     	for(Iterable<E> coll :colls){
             for(Iterator<E> it=coll.iterator();it.hasNext();){
-            	if(ObjectHelper.isEquals(e, it.next()))return true;
+            	if(Clazz.isEquals(e, it.next()))return true;
             }
     	}
     	return false;
@@ -92,7 +92,7 @@ public  class LinqHelper {
     
     public static <E> boolean isIn(E e,E... colls){
     	for(E tempE : colls){
-            	if(ObjectHelper.isEquals(e, tempE))return true;
+            	if(Clazz.isEquals(e, tempE))return true;
         }
     	
     	return false;
@@ -134,7 +134,7 @@ public  class LinqHelper {
                 M l = list.get(i);
                 try
                 {
-                    if (ObjectHelper.isEquals(pkval.toString(),ObjectHelper.attr(l, pkName).toString()))
+                    if (Clazz.isEquals(pkval.toString(),Clazz.attr(l, pkName).toString()))
                     {
                         m = l;
                     }
@@ -154,7 +154,7 @@ public  class LinqHelper {
                 M l = list.get(i);
                 try
                 {
-                     if (ObjectHelper.isEquals(pkval.toString(),ObjectHelper.attr(l, pkName).toString()))
+                     if (Clazz.isEquals(pkval.toString(),Clazz.attr(l, pkName).toString()))
                     {
                         index = i;
                         break;

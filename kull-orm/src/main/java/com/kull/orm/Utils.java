@@ -5,7 +5,7 @@
  */
 package com.kull.orm;
 
-import com.kull.ObjectHelper;
+import com.kull.Clazz;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -45,9 +45,9 @@ public class Utils {
      * @throws Exception
      */
     public static <T> T toBean(Class<T> cls, ResultSet resultSet) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        T t=ObjectHelper.newInstance(cls);
+        T t=Clazz.newInstance(cls);
      
-        Map<String,Method> setters= ObjectHelper.settersBy(cls);
+        Map<String,Method> setters= Clazz.settersBy(cls);
         ResultSetMetaData rsmd=resultSet.getMetaData();
         int columncount= rsmd.getColumnCount();
         for (int i = 1; i <= columncount; i++) {

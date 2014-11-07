@@ -6,7 +6,7 @@
 package com.kull.web;
 
 
-import com.kull.ObjectHelper;
+import com.kull.Clazz;
 import com.kull.script.JsContext;
 import java.io.IOException;
 import java.util.HashSet;
@@ -190,7 +190,7 @@ public  class Utils {
 				 if(!isRewrite){
 					 continue;
 				 }
-				 ObjectHelper.attr(t,name,value);
+				 Clazz.attr(t,name,value);
 				 }catch(Exception ex){}
 			 }
 	

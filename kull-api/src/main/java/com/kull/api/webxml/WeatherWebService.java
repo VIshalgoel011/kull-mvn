@@ -11,8 +11,8 @@ import org.dom4j.Node;
 
 
 
-import com.kull.DateTimeHelper;
-import com.kull.StringHelper;
+import com.kull.DateTimez;
+import com.kull.Stringz;
 
 
 
@@ -38,7 +38,7 @@ public class WeatherWebService extends BaseWebXmlService{
 		for(Node node:nodes){
 			Area area=this.new Area();
 			String text=node.getText();
-			area.AreaCode=Integer.parseInt(StringHelper.subString(text, "(", ")").get(0));
+			area.AreaCode=Integer.parseInt(Stringz.subString(text, "(", ")").get(0));
 			area.Area=text.substring(0,text.indexOf("("));
 			areas.add(area);
 		}
@@ -71,7 +71,7 @@ public class WeatherWebService extends BaseWebXmlService{
      	node=nodes.get(index++);
     	weather.cityPic=node.getText();
     	node=nodes.get(index++);
-    	weather.date=DateTimeHelper.parse(node.getText().trim());
+    	weather.date=DateTimez.parse(node.getText().trim());
     	//node=nodes.get(index++);
     	StringBuffer context=new StringBuffer("");
     	//String[] texts=node.getText().split("/");
@@ -87,8 +87,8 @@ public class WeatherWebService extends BaseWebXmlService{
     		node=nodes.get(weaterIndex+1);
     	   	texts=node.getText().split(" ");
     	   	int yyyy=Calendar.getInstance().get(Calendar.YEAR);
-    	   	Date date=DateTimeHelper.parse(texts[0],"MM月dd日");
-    	   	futrueWeather.date=DateTimeHelper.attr(date, Calendar.YEAR, yyyy);
+    	   	Date date=DateTimez.parse(texts[0],"MM月dd日");
+    	   	futrueWeather.date=DateTimez.attr(date, Calendar.YEAR, yyyy);
     	   	futrueWeather.weathContext=texts[1];
     	   	node=nodes.get(weaterIndex+2);
     	   	futrueWeather.windContext=node.getText();

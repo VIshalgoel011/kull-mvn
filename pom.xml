@@ -14,7 +14,6 @@
     
     <module>kull-common-app</module>
     <module>kull-orm</module>
-    <module>kull-ir</module>
   </modules>
   
  <properties>

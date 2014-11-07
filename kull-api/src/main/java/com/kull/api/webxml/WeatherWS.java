@@ -11,7 +11,7 @@ import java.util.Map;
 import org.dom4j.Document;
 import org.dom4j.Node;
 
-import com.kull.DateTimeHelper;
+import com.kull.DateTimez;
 
 
 
@@ -95,7 +95,7 @@ public class WeatherWS extends BaseWebXmlService {
     	node=nodes.get(index++);
     	weather.cityId=Integer.valueOf(node.getText().trim());
     	node=nodes.get(index++);
-    	weather.date=DateTimeHelper.parse(node.getText().trim(), "yyyy/MM/dd hh:mm:ss");
+    	weather.date=DateTimez.parse(node.getText().trim(), "yyyy/MM/dd hh:mm:ss");
     	node=nodes.get(index++);
     	StringBuffer context=new StringBuffer("");
     	String[] texts=node.getText().substring(node.getText().indexOf('：')).split("；");

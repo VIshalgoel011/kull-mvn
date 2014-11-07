@@ -6,7 +6,7 @@ import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.Node;
 
-import com.kull.MachineUtil;
+import com.kull.Machinez;
 
 import java.io.BufferedReader;
 
@@ -28,7 +28,7 @@ public class IpAddressSearchWebService extends BaseWebXmlService {
 	}
 	
 	public IpGeo thisIpGeo() throws Exception{
-		return getCountryCityByIp(MachineUtil.DNSOnWindows());
+		return getCountryCityByIp(Machinez.DNSOnWindows());
 	}
 	
 	public IpGeo getCountryCityByIp(String theIpAddress) throws Exception{

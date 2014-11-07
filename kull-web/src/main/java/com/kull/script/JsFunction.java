@@ -3,7 +3,7 @@ package com.kull.script;
 import java.text.MessageFormat;
 
 
-import com.kull.ObjectHelper;
+import com.kull.Clazz;
 import com.kull.able.Scriptable;
 
 
@@ -40,7 +40,7 @@ public class JsFunction implements Scriptable {
 				}
 			}
 		}
-		this.funName=ObjectHelper.valueOf(funName,"");
+		this.funName=Clazz.valueOf(funName,"");
 	}
 	
 	public String toScirpt() {

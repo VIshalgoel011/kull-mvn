@@ -1,6 +1,6 @@
 package com.kull;
 
-public final class NumberHelper {
+public final class Numberz {
 
 	
 	public static <N extends Number> N max(N... numbers){

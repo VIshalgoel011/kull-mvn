@@ -12,8 +12,8 @@ import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.JdbcType;
 
-import com.kull.LinqHelper;
-import com.kull.ObjectHelper;
+import com.kull.Linq;
+import com.kull.Clazz;
 
 
 
@@ -125,13 +125,13 @@ public class DynamicQueryBound {
 	}
 	
 	public <T> int excludeBinaryFields(){
-	   return	setExcludeFields(ObjectHelper.toSet(JdbcType.BINARY,JdbcType.BIT,JdbcType.BLOB,JdbcType.CLOB ,JdbcType.LONGVARBINARY,JdbcType.VARBINARY,JdbcType.NCLOB));
+	   return	setExcludeFields(Clazz.toSet(JdbcType.BINARY,JdbcType.BIT,JdbcType.BLOB,JdbcType.CLOB ,JdbcType.LONGVARBINARY,JdbcType.VARBINARY,JdbcType.NCLOB));
 	}
 
 	public <T> int setExcludeFields(Set<T> exclude) {
 		int count=0;
 		Set<ResultMapping> tempColums;
-		if(ObjectHelper.isEmpty(colums)){
+		if(Clazz.isEmpty(colums)){
 			tempColums=new HashSet<ResultMapping>(this.resultMap.getResultMappings());
 		}else{
 			tempColums=this.colums;
@@ -180,7 +180,7 @@ public class DynamicQueryBound {
 			OrderbyBound tempOrderbyBound=it.next();
 			ResultMapping tempResultMapping=this.getReusltMapping(tempOrderbyBound.getSort());
 			if(tempResultMapping==null||
-			LinqHelper.isIn(tempResultMapping.getJdbcType(), 
+			Linq.isIn(tempResultMapping.getJdbcType(), 
 					JdbcType.LONGVARBINARY
 					,JdbcType.BINARY
 					,JdbcType.BIT
@@ -240,10 +240,10 @@ public class DynamicQueryBound {
 	
 	private int fix(){
 		int count=0;
-		if(ObjectHelper.isEmpty(this.getOrderbyBounds())
+		if(Clazz.isEmpty(this.getOrderbyBounds())
 		){
 			return 0;
-		}else if(ObjectHelper.isEmpty(this.getColums())){
+		}else if(Clazz.isEmpty(this.getColums())){
 			return 0;
 		}
 		Set<OrderbyBound> orderbys=new HashSet<OrderbyBound>();
@@ -252,7 +252,7 @@ public class DynamicQueryBound {
 			OrderbyBound orderbyBound=it.next();
 			for(Iterator<ResultMapping> it1=this.colums.iterator();it1.hasNext();){
 				ResultMapping resultMapping=it1.next();
-				if(!ObjectHelper.isEquals(orderbyBound.getSort(),resultMapping.getProperty())){continue;}
+				if(!Clazz.isEquals(orderbyBound.getSort(),resultMapping.getProperty())){continue;}
 			    orderbys.add(orderbyBound);
 			    count++;
 			}

@@ -19,7 +19,7 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 
 
-import com.kull.DateTimeHelper;
+import com.kull.DateTimez;
 import com.kull.api.DataType;
 import com.kull.bean.HttpClientBean;
 import net.sf.json.JSONObject;
@@ -637,7 +637,7 @@ public abstract class BaseDiguApi {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
-		String str=DateTimeHelper.Formatter.DATE_FORMAT_DB.format(birthday);
+		String str=DateTimez.Formatter.DATE_FORMAT_DB.format(birthday);
 		this.addParma("birthday", str);
 	}
 

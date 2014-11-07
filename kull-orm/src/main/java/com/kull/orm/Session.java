@@ -5,9 +5,9 @@
  */
 package com.kull.orm;
 
-import com.kull.LinqHelper;
-import com.kull.ObjectHelper;
-import com.kull.StringHelper;
+import com.kull.Linq;
+import com.kull.Clazz;
+import com.kull.Stringz;
 import com.kull.cache.MapCacheAccess;
 import com.kull.orm.annotation.OrmTable;
 import com.kull.orm.dbutils.InOutBeanHandler;
@@ -98,7 +98,7 @@ public class Session {
     public <T> int insert(T... objs) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
 
         int success = 0;
-        if (ObjectHelper.isEmpty(objs)) {
+        if (Clazz.isEmpty(objs)) {
             return success;
         }
 
@@ -111,7 +111,7 @@ public class Session {
 
         for (Field f : cls.getDeclaredFields()) {
             String fname = f.getName();
-            if (ObjectHelper.isThis0(f) || (LinqHelper.isIn(fname, table.excludeColumns())
+            if (Clazz.isThis0(f) || (Linq.isIn(fname, table.excludeColumns())
                     || (!table.insertPk() && fname.equalsIgnoreCase(table.pk())))) {
                 continue;
             }
@@ -130,8 +130,8 @@ public class Session {
                 vals += " ?,";
 
             }
-            cols = StringHelper.trim(cols, ",");
-            vals = StringHelper.trim(vals, ",");
+            cols = Stringz.trim(cols, ",");
+            vals = Stringz.trim(vals, ",");
             sql = MessageFormat.format(sqlPattern, table.name(), cols, vals);
             try {
                 SQL_CACHE.put(sqlCacheKey, sql);
@@ -161,7 +161,7 @@ public class Session {
     public <T> int delete(T... objs) throws IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, SQLException {
 
         int success = 0;
-        if (ObjectHelper.isEmpty(objs)) {
+        if (Clazz.isEmpty(objs)) {
             return success;
         }
         Class<T> cls = (Class<T>) objs[0].getClass();
@@ -203,7 +203,7 @@ public class Session {
     public <T> int update(Object... objs) throws NoSuchFieldException, NoSuchMethodException, SQLException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
         int success = 0;
-        if (ObjectHelper.isEmpty(objs)) {
+        if (Clazz.isEmpty(objs)) {
             return success;
         }
         Class<T> cls = (Class<T>) objs[0].getClass();
@@ -216,7 +216,7 @@ public class Session {
 
         for (Field f : cls.getDeclaredFields()) {
             String fname = f.getName();
-            if (ObjectHelper.isThis0(f) || LinqHelper.isIn(fname, table.excludeColumns())
+            if (Clazz.isThis0(f) || Linq.isIn(fname, table.excludeColumns())
                     || fname.equalsIgnoreCase(pkField.getName()))  {
                 continue;
             }
@@ -234,7 +234,7 @@ public class Session {
                 key += MessageFormat.format(" `{0}` =? ,", fname);
                 i++;
             }
-            key = StringHelper.trim(key, ",");
+            key = Stringz.trim(key, ",");
             sql = MessageFormat.format(sqlPattern, table.name(), key, table.pk());
             try {
                 SQL_CACHE.put(sqlCacheKey, sql);

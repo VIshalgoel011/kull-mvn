@@ -46,7 +46,7 @@ import org.apache.commons.io.IOUtils;
 
 
 
-public class NetHelper {
+public class Netz {
 
     
        private static InputStream get(String url,NameValuePair... nvs) throws MalformedURLException, IOException{

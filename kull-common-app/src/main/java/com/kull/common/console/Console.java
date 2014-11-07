@@ -5,7 +5,7 @@
  */
 package com.kull.common.console;
 
-import com.kull.StringHelper;
+import com.kull.Stringz;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,11 +32,11 @@ public abstract class Console {
      }
      
      protected void ln(int times){
-         print(StringHelper.ln(times));
+         print(Stringz.ln(times));
      }
      
      protected void tab(int times){
-         print(StringHelper.tab(times));
+         print(Stringz.tab(times));
      }
      
      protected String prompt(String alert) throws IOException{

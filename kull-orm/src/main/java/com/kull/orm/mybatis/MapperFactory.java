@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-import com.kull.ObjectHelper;
+import com.kull.Clazz;
 import com.kull.orm.Database;
 import com.kull.orm.annotation.OrmTable;
 import com.kull.orm.dialect.Dialect;
@@ -62,16 +62,16 @@ public class MapperFactory {
 		
 		Set<MapperTemplate> mapperTemplates=new HashSet<MapperTemplate>();
 		for(Class<? extends IMapper> nameSpace :nameSpaces){
-		Class modelClass=ObjectHelper.actualTypeBy(nameSpace,IMapper.INDEX_MODEL_CLASS);
+		Class modelClass=Clazz.actualTypeBy(nameSpace,IMapper.INDEX_MODEL_CLASS);
 		OrmTable tableConfig=nameSpace.getAnnotation(OrmTable.class);
 		if(tableConfig==null){
 			throw new NullPointerException(MessageFormat.format("class {0} don't have annotation:{1}",nameSpace.getName(),OrmTable.class.getName()));
 		}
 		tablePrefix=tablePrefix==null?"":tablePrefix;
 		if(database==Database.oracle&& !"".equals(tableConfig.oracleSeqIdRegexp())){
-			mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),ObjectHelper.toSet(tableConfig.excludeColumns()),tableConfig.oracleSeqIdRegexp()));
+			mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Clazz.toSet(tableConfig.excludeColumns()),tableConfig.oracleSeqIdRegexp()));
 		  }else{
-				mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),ObjectHelper.toSet(tableConfig.excludeColumns())));
+				mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Clazz.toSet(tableConfig.excludeColumns())));
 		  }
 		}
 		return mapperTemplates ;
@@ -85,7 +85,7 @@ public class MapperFactory {
 	   MapperTemplate mapper=null;	
            Class modelClass=null;
             if(nameSpace!=null){
-                 modelClass=(Class) ObjectHelper.actualTypeBy(nameSpace,IMapper.INDEX_MODEL_CLASS);
+                 modelClass=(Class) Clazz.actualTypeBy(nameSpace,IMapper.INDEX_MODEL_CLASS);
 		if(modelClass==null )throw new Exception("MapperFactory creating error: nameSpace and modelclass can't be null");
 		
                 }
@@ -105,7 +105,7 @@ public class MapperFactory {
 		    	String colName=mtdata.getColumnName(i);
 		    	String colType=mtdata.getColumnTypeName(i);
 		        String colCName=mtdata.getCatalogName(i);
-		    	if(ObjectHelper.isNotEmpty(excludeColumns)){
+		    	if(Clazz.isNotEmpty(excludeColumns)){
 		    		boolean isExclude=false;
 		    		for(String column : excludeColumns){
 		    			if(colName.equalsIgnoreCase(column)){

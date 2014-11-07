@@ -5,7 +5,7 @@
  */
 package com.kull.orm.dialect;
 
-import com.kull.LinqHelper;
+import com.kull.Linq;
 import com.kull.able.Foreachable;
 import com.kull.orm.Session;
 import com.kull.orm.Utils;

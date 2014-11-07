@@ -5,8 +5,8 @@
  */
 package com.kull.web.struts;
 
-import com.kull.ObjectHelper;
-import com.kull.StringHelper;
+import com.kull.Clazz;
+import com.kull.Stringz;
 import com.kull.orm.Session;
 import com.kull.script.Html;
 import com.kull.web.Utils;
@@ -58,7 +58,7 @@ public abstract class SqlDSActionSupport extends DSActionSupport {
     protected String postOrderby() {
 
         String orderby = "", sort = request.getParameter("sort"), order = request.getParameter("order");
-        if (StringHelper.isNotBlank(sort) && StringHelper.isNotBlank(order)) {
+        if (Stringz.isNotBlank(sort) && Stringz.isNotBlank(order)) {
             orderby += sort + " " + order;
         }
         return orderby;
@@ -69,7 +69,7 @@ public abstract class SqlDSActionSupport extends DSActionSupport {
         for (Iterator<String> it = this.parameters.keySet().iterator(); it.hasNext();) {
             String name = it.next();
             String value = this.parameters.get(name)[0];
-            if (StringHelper.isBlank(value)) {
+            if (Stringz.isBlank(value)) {
                 continue;
             }
             if (name.startsWith("qc_like_")) {
@@ -104,15 +104,15 @@ public abstract class SqlDSActionSupport extends DSActionSupport {
     protected final String createDataSql() {
         String sql = "", sqlPattern = "select {0} from {1} {2} ";
         String condition = "", columns = this.columns(), viewName = viewName(), baseCondition = this.baseCondition(), postCondition = this.postCondition();
-        if (StringHelper.isNotBlank(baseCondition) && StringHelper.isNotBlank(postCondition)) {
-            baseCondition = StringHelper.trim(baseCondition, ",", "and", "or", "and");
-            postCondition = StringHelper.trim(postCondition, ",", "and", "or", "and");
+        if (Stringz.isNotBlank(baseCondition) && Stringz.isNotBlank(postCondition)) {
+            baseCondition = Stringz.trim(baseCondition, ",", "and", "or", "and");
+            postCondition = Stringz.trim(postCondition, ",", "and", "or", "and");
             condition = MessageFormat.format(" where {0} and ( {1} ) ", baseCondition, postCondition);
-        } else if (StringHelper.isNotBlank(baseCondition)) {
-            baseCondition = StringHelper.trim(baseCondition, ",", "and", "or", "and");
+        } else if (Stringz.isNotBlank(baseCondition)) {
+            baseCondition = Stringz.trim(baseCondition, ",", "and", "or", "and");
             condition = " where " + baseCondition;
-        } else if (StringHelper.isNotBlank(postCondition)) {
-            postCondition = StringHelper.trim(postCondition, ",", "and", "or", "and");
+        } else if (Stringz.isNotBlank(postCondition)) {
+            postCondition = Stringz.trim(postCondition, ",", "and", "or", "and");
             condition = " where " + postCondition;
         }
         sql = MessageFormat.format(sqlPattern,
@@ -125,14 +125,14 @@ public abstract class SqlDSActionSupport extends DSActionSupport {
     }
 
     protected final String createOrderbySql() {
-        String sql = createDataSql(), orderby = " ", baseOrderby = StringHelper.trim(this.baseOrderby(), ","), postOrderby = StringHelper.trim(this.postOrderby(), ",");
+        String sql = createDataSql(), orderby = " ", baseOrderby = Stringz.trim(this.baseOrderby(), ","), postOrderby = Stringz.trim(this.postOrderby(), ",");
 
-        if (StringHelper.isNotBlank(baseOrderby) && StringHelper.isNotBlank(postOrderby)) {
-            orderby += MessageFormat.format(" order by {0},{1} ", StringHelper.trim(baseOrderby, ","), StringHelper.trim(postOrderby, ","));
-        } else if (StringHelper.isNotBlank(baseOrderby)) {
-            orderby += " order by " + StringHelper.trim(baseOrderby, ",");
-        } else if (StringHelper.isNotBlank(postOrderby)) {
-            orderby += " order by " + StringHelper.trim(postOrderby, ",");
+        if (Stringz.isNotBlank(baseOrderby) && Stringz.isNotBlank(postOrderby)) {
+            orderby += MessageFormat.format(" order by {0},{1} ", Stringz.trim(baseOrderby, ","), Stringz.trim(postOrderby, ","));
+        } else if (Stringz.isNotBlank(baseOrderby)) {
+            orderby += " order by " + Stringz.trim(baseOrderby, ",");
+        } else if (Stringz.isNotBlank(postOrderby)) {
+            orderby += " order by " + Stringz.trim(postOrderby, ",");
         }
         sql += orderby;
         return sql;
@@ -141,11 +141,11 @@ public abstract class SqlDSActionSupport extends DSActionSupport {
     protected final String createCountSql() {
         String sql = "", sqlPattern = "select count(*) from {0} {1} ";
         String condition = "", baseCondition = this.baseCondition(), postCondition = this.postCondition(), viewName = viewName();
-        if (StringHelper.isNotBlank(baseCondition) && StringHelper.isNotBlank(postCondition)) {
+        if (Stringz.isNotBlank(baseCondition) && Stringz.isNotBlank(postCondition)) {
             condition = MessageFormat.format(" where {0} and ( {1} ) ", baseCondition, postCondition);
-        } else if (StringHelper.isNotBlank(baseCondition)) {
+        } else if (Stringz.isNotBlank(baseCondition)) {
             condition = " where " + baseCondition;
-        } else if (StringHelper.isNotBlank(postCondition)) {
+        } else if (Stringz.isNotBlank(postCondition)) {
             condition = " where " + postCondition;
         }
 
@@ -227,13 +227,13 @@ public abstract class SqlDSActionSupport extends DSActionSupport {
 			String field=rsmd.getColumnLabel(i);
 			int ct=rsmd.getColumnType(i);
 			String editor="type:''validatebox'',options:'{'required:true '}'";
-			if(ObjectHelper.isIn(ct, Types.BIGINT,Types.INTEGER,Types.SMALLINT,Types.TINYINT)){
+			if(Clazz.isIn(ct, Types.BIGINT,Types.INTEGER,Types.SMALLINT,Types.TINYINT)){
 				editor="type:''numberspinner'',options:'{'required:true,precision:0 '}'";
-			}else if(ObjectHelper.isIn(ct, Types.FLOAT,Types.DOUBLE)){
+			}else if(Clazz.isIn(ct, Types.FLOAT,Types.DOUBLE)){
 				editor="type:''numberbox'',options:'{'required:true,precision:2 '}'";
-			}else if(ObjectHelper.isIn(ct, Types.DATE)){
+			}else if(Clazz.isIn(ct, Types.DATE)){
 				editor="type:''datebox'',options:'{'required:true '}'";
-			}else if(ObjectHelper.isIn(ct, Types.TIMESTAMP)){
+			}else if(Clazz.isIn(ct, Types.TIMESTAMP)){
 				editor="type:''datetimebox'',options:'{'required:true '}'"; 
 			}
 			datagrid.append(MessageFormat.format("\t<th data-options=\"field:''{0}'',width:180,title:''{0}'',editor:'{' "+editor+" '}'\">"+field+"</th> \n",field));
@@ -247,13 +247,13 @@ public abstract class SqlDSActionSupport extends DSActionSupport {
 			String field=rsmd.getColumnLabel(i);
 			int ct=rsmd.getColumnType(i);
 			String editor="type:\"validatebox\",options:'{'required:true '}'";
-			if(ObjectHelper.isIn(ct, Types.BIGINT,Types.INTEGER,Types.SMALLINT,Types.TINYINT)){
+			if(Clazz.isIn(ct, Types.BIGINT,Types.INTEGER,Types.SMALLINT,Types.TINYINT)){
 				editor="type:\"numberspinner\",options:'{'required:true,precision:0 '}'";
-			}else if(ObjectHelper.isIn(ct, Types.FLOAT,Types.DOUBLE)){
+			}else if(Clazz.isIn(ct, Types.FLOAT,Types.DOUBLE)){
 				editor="type:\"numberbox\",options:'{'required:true,precision:2 '}'";
-			}else if(ObjectHelper.isIn(ct, Types.DATE)){
+			}else if(Clazz.isIn(ct, Types.DATE)){
 				editor="type:\"datebox\",options:'{'required:true '}'";
-			}else if(ObjectHelper.isIn(ct, Types.TIMESTAMP)){
+			}else if(Clazz.isIn(ct, Types.TIMESTAMP)){
 				editor="type:\"datetimebox\",options:'{'required:true '}'";
 			}
 			datagrid_js.append(MessageFormat.format("var col_{0}='{'field:''{0}'',width:180,title:''{0}'',editor:'{' "+editor+" '}' '}'; \n",field));
@@ -277,8 +277,8 @@ public abstract class SqlDSActionSupport extends DSActionSupport {
 		
 		html
 		.append("<html><body>")
-		.append(Html.fieldset("easyui-datagrid html", "<pre>"+StringHelper.htmlWapper(datagrid.toString())+"</pre>"))
-		.append(Html.fieldset("easyui-datagrid js", "<pre>"+StringHelper.htmlWapper(datagrid_js.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-datagrid html", "<pre>"+Stringz.htmlWapper(datagrid.toString())+"</pre>"))
+		.append(Html.fieldset("easyui-datagrid js", "<pre>"+Stringz.htmlWapper(datagrid_js.toString())+"</pre>"))
 		.append("</body></html>");
                 Session.close(connection, ps, null);
                 this.response.getWriter().write(html.toString());

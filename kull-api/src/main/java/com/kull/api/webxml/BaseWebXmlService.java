@@ -24,7 +24,7 @@ import org.dom4j.Node;
 
 
 
-import com.kull.NetHelper;
+import com.kull.Netz;
 
 
 
@@ -72,7 +72,7 @@ public abstract  class BaseWebXmlService {
          );
          System.err.println(url);
 		 HttpGet get=new HttpGet(url);
-		 String context=NetHelper.getString(url);
+		 String context=Netz.getString(url);
 		 try{
 		 doc= DocumentHelper.parseText(context);
 		 }catch(Exception ex){
@@ -98,7 +98,7 @@ public abstract  class BaseWebXmlService {
 		 }
 		
 		 post.setParams(params);
-		 String context=NetHelper.doPost(post).getMsg();
+		 String context=Netz.doPost(post).getMsg();
 		 try{
 		 doc= DocumentHelper.parseText(context);
 		 }catch(Exception ex){

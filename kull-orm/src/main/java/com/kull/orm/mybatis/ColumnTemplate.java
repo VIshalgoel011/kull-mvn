@@ -1,7 +1,7 @@
 package com.kull.orm.mybatis;
 
 
-import com.kull.StringHelper;
+import com.kull.Stringz;
 import com.kull.orm.ColumnType;
 
 
@@ -86,7 +86,7 @@ public class ColumnTemplate {
 
 	public static String getJavaColName(String lStrDbColName)
 	{
-		if(StringHelper.isBlank(lStrDbColName))return "";
+		if(Stringz.isBlank(lStrDbColName))return "";
 		StringBuffer lSbrModelColName=new StringBuffer("");
 		String[] lSubNames=lStrDbColName.split("_");
 		boolean isFirstSubNameLen1=false;
@@ -101,7 +101,7 @@ public class ColumnTemplate {
 //				}
 //			}
 //			else{
-			   lSbrModelColName.append(StringHelper.format(lSubName, StringHelper.Format.upcaseFirstChar));
+			   lSbrModelColName.append(Stringz.format(lSubName, Stringz.Format.upcaseFirstChar));
 //			}
 		}
 		return lSbrModelColName.toString();

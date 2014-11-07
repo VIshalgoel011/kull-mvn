@@ -5,8 +5,8 @@
  */
 package com.kull.web.struts;
 
-import com.kull.ObjectHelper;
-import com.kull.StringHelper;
+import com.kull.Clazz;
+import com.kull.Stringz;
 import com.kull.able.Resultable;
 import com.kull.web.Utils;
 import com.opensymphony.xwork2.ModelDriven;
@@ -27,7 +27,7 @@ public abstract class MDActionSupport<M> extends AwareActionSupport implements M
     }
 
     public boolean hasPk() {
-        return StringHelper.isNotBlank(pk);
+        return Stringz.isNotBlank(pk);
     }
 
     protected abstract Class<M> classM();
@@ -96,7 +96,7 @@ public abstract class MDActionSupport<M> extends AwareActionSupport implements M
             source = readByPk(pk);
 
             post = Utils.evalParameterModel(this.request, newModel(), "", "");
-            ObjectHelper.cp(post, source);
+            Clazz.cp(post, source);
             onUpdate(source, post, result);
             _update(source);
             onUpdateSuccess(m, post, result);

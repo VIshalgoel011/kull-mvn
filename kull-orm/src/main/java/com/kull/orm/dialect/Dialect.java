@@ -1,8 +1,8 @@
 package com.kull.orm.dialect;
 
-import com.kull.ObjectHelper;
-import com.kull.StringHelper;
-import com.kull.able.Ormable;
+import com.kull.Clazz;
+import com.kull.Stringz;
+import com.kull.orm.able.Ormable;
 import com.kull.orm.Database;
 import com.kull.orm.annotation.OrmTable;
 
@@ -76,11 +76,11 @@ public abstract class Dialect {
 
         StringBuffer context = new StringBuffer("");
 
-        Class[] importClss = {List.class, Date.class, Timestamp.class, Ormable.class, Resultable.class, Set.class, ObjectHelper.class, OrmTable.class};
+        Class[] importClss = {List.class, Date.class, Timestamp.class, Ormable.class, Resultable.class, Set.class, Clazz.class, OrmTable.class};
         context
-                .append("package " + packg + ";").append(StringHelper.ln(2));
+                .append("package " + packg + ";").append(Stringz.ln(2));
         for (Class importCls : importClss) {
-            context.append("import " + importCls.getName() + ";").append(StringHelper.ln(1));
+            context.append("import " + importCls.getName() + ";").append(Stringz.ln(1));
         }
 
         context.append("\n\n public class ").append(sname).append(" {  \n");

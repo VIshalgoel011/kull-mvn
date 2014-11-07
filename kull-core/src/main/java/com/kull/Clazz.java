@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.beanutils.PropertyUtils;
 
-public class ObjectHelper {
+public class Clazz {
 
     public static <T> Set<T> evalProperties(Collection collection, String name) {
         Set<T> propertis = new HashSet<T>();
@@ -55,7 +55,7 @@ public class ObjectHelper {
             } else if (t instanceof Long) {
                 t = (T) Long.valueOf(value);
             } else if (t instanceof Date) {
-                t = (T) DateTimeHelper.parse(value);
+                t = (T) DateTimez.parse(value);
             } else if (t instanceof Timestamp) {
                 t = (T) Timestamp.valueOf(value);
             } else if (t instanceof Boolean) {
@@ -75,6 +75,8 @@ public class ObjectHelper {
 
     public static <T> T valueOf(String value, T defaultValue, Class<T> cls) {
         T t = defaultValue;
+        
+        
         if (value == null) {
             return t;
         }
@@ -94,7 +96,7 @@ public class ObjectHelper {
             } else if (Long.class.equals(cls)) {
                 t = (T) Long.valueOf(value.toString());
             } else if (Date.class.equals(cls)) {
-                t = (T) DateTimeHelper.parse(value);
+                t = (T) DateTimez.parse(value);
             } else if (Timestamp.class.equals(cls)) {
                 t = (T) Timestamp.valueOf(value);
             } else if (Boolean.class.equals(cls)) {
@@ -126,7 +128,7 @@ public class ObjectHelper {
         if (o == null) {
             return true;
         }else if (o instanceof String) {
-            return StringHelper.isBlank((String) o);
+            return Stringz.isBlank((String) o);
         } else if (o instanceof Collection) {
             return ((Collection) o).isEmpty();
         } else if (o.getClass().isArray()) {
@@ -317,7 +319,7 @@ public class ObjectHelper {
         lClassReturn.add(c);
         if (!c.getSuperclass().equals(Object.class)) {
 
-            for (Class cls : ObjectHelper.getAllClass(c)) {
+            for (Class cls : Clazz.getAllClass(c)) {
                 lClassReturn.add(cls);
             }
         }
@@ -331,7 +333,7 @@ public class ObjectHelper {
             return CACHE_FIELDS.get(c);
         }
         List<Field> fields = new ArrayList<Field>();
-        for (Class cls : ObjectHelper.getAllClass(c)) {
+        for (Class cls : Clazz.getAllClass(c)) {
             for (Field field : cls.getDeclaredFields()) {
                 if (isThis0(field)) {
                     continue;
@@ -346,7 +348,7 @@ public class ObjectHelper {
 
     public static Set<Method> getAllDeclaredMethods(Class c) {
         Set<Method> methods = new HashSet<Method>();
-        for (Class cls : ObjectHelper.getAllClass(c)) {
+        for (Class cls : Clazz.getAllClass(c)) {
             for (Method method : cls.getDeclaredMethods()) {
                 methods.add(method);
 
@@ -370,7 +372,7 @@ public class ObjectHelper {
             return CACHE_SETTERS.get(c);
         }
         Map<String, Method> setters = new HashMap<String, Method>();
-        for (Field field : ObjectHelper.allDeclaredFieldsBy(c)) {
+        for (Field field : Clazz.allDeclaredFieldsBy(c)) {
             String settername = "set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
             setters.put(field.getName(), c.getMethod(settername, field.getType()));
         }
@@ -383,7 +385,7 @@ public class ObjectHelper {
             return CACHE_GETTERS.get(c);
         }
         Map<String, Method> getters = new HashMap<String, Method>();
-        for (Field field : ObjectHelper.allDeclaredFieldsBy(c)) {
+        for (Field field : Clazz.allDeclaredFieldsBy(c)) {
             String settername = "get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
             getters.put(field.getName(), c.getMethod(settername));
         }
@@ -391,6 +393,8 @@ public class ObjectHelper {
         return getters;
     }
 
+   
+    
     public static  void attr(Object obj, String pattern, Object value) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException  {
         PropertyUtils.setProperty(obj, pattern, value);
     }
@@ -461,7 +465,7 @@ public class ObjectHelper {
              try {
                  pcls = Class.forName(pname);
              } catch (ClassNotFoundException ex) {
-                 Logger.getLogger(ObjectHelper.class.getName()).log(Level.SEVERE, null, ex);
+                 Logger.getLogger(Clazz.class.getName()).log(Level.SEVERE, null, ex);
              }
              Object p=newInstance(pcls);
              t= (T)constr.newInstance(p);

@@ -5,7 +5,7 @@
  */
 package com.kull.test;
 
-import com.kull.ObjectHelper;
+import com.kull.Clazz;
 import com.kull.test.InnerClassTest.Inner.Inner0.Inner1.Inner2;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -63,8 +63,8 @@ public class InnerClassTest {
      @Test
      public void newInstance() throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
          
-         Inner2 inner=ObjectHelper.newInstance(Inner2.class);
-         InnerClassTest outter=ObjectHelper.newInstance(InnerClassTest.class);
+         Inner2 inner=Clazz.newInstance(Inner2.class);
+         InnerClassTest outter=Clazz.newInstance(InnerClassTest.class);
          assertNotNull(inner);
          assertNotNull(outter);
      }
