@@ -49,15 +49,15 @@ import org.apache.commons.io.IOUtils;
 public class Netz {
 
     
-       private static InputStream get(String url,NameValuePair... nvs) throws MalformedURLException, IOException{
+       private static InputStream get(String url,String... nvs) throws MalformedURLException, IOException{
            url+=url.contains("?")?"&":"?";
-           for (NameValuePair nv : nvs) {
-               url+=nv.getName()+"="+nv.getValue();
+           for(int i=0,j=1;j<nvs.length;i+=2,j+=2){
+               url+=nvs[i]+"="+nvs[j]+"&";
            }
            return new URL(url).openStream();
        }
        
-        public static String getString(String url,NameValuePair... nvs) throws MalformedURLException, IOException{
+        public static String getString(String url,String... nvs) throws MalformedURLException, IOException{
            InputStream in=get(url, nvs);
            String str= IOUtils.toString(in);
            IOUtils.closeQuietly(in);
@@ -81,7 +81,7 @@ public class Netz {
 		try {
 		    response = httpclient.execute(post);
 		    is = response.getEntity().getContent();
-			context=streamToString(is);
+			context=IOUtils.toString(is);
 			httpclient.clearRequestInterceptors();
             httpclient.clearResponseInterceptors();
 			is.close();
@@ -157,17 +157,6 @@ public class Netz {
         return is;
     }
 	
-    public static String streamToString(InputStream is) throws IOException{
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(is)); 
-	    StringBuilder sb = new StringBuilder(); 
-	    String line = null; 
-	   
-	      while ((line = reader.readLine()) != null) 
-	      { 
-	        sb.append(line); 
-	      } 
-	   
-	    return sb.toString(); 
-	}
+   
 	
 }
