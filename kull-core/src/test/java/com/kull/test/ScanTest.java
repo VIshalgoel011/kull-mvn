@@ -6,6 +6,8 @@
 package com.kull.test;
 
 import com.kull.Clazz;
+import java.io.IOException;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,9 +19,9 @@ import static org.junit.Assert.*;
  *
  * @author lin
  */
-public class EnvTest {
+public class ScanTest {
     
-    public EnvTest() {
+    public ScanTest() {
     }
     
     @BeforeClass
@@ -41,12 +43,12 @@ public class EnvTest {
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
-    
-    
      @Test
-     public void testType() {
-     
-         Clazz.injectEnv(Env.class);
+     public void hello() throws IOException, ClassNotFoundException {
          
+         List<Class<? extends Object>> thClasses=Clazz.genericClassIn(Clazz.class.getPackage(),Object.class);
+         for (Class<? extends Object> thClasse : thClasses) {
+             System.out.println(thClasse.getName());
+         }
      }
 }
