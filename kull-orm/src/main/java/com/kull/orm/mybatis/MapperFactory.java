@@ -14,6 +14,7 @@ import java.util.Set;
 
 
 import com.kull.Clazz;
+import com.kull.Collectionz;
 import com.kull.orm.Database;
 import com.kull.orm.annotation.OrmTable;
 import com.kull.orm.dialect.Dialect;
@@ -69,9 +70,9 @@ public class MapperFactory {
 		}
 		tablePrefix=tablePrefix==null?"":tablePrefix;
 		if(database==Database.oracle&& !"".equals(tableConfig.oracleSeqIdRegexp())){
-			mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Clazz.newSet(tableConfig.excludeColumns()),tableConfig.oracleSeqIdRegexp()));
+			mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Collectionz.newSet(tableConfig.excludeColumns()),tableConfig.oracleSeqIdRegexp()));
 		  }else{
-				mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Clazz.newSet(tableConfig.excludeColumns())));
+				mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Collectionz.newSet(tableConfig.excludeColumns())));
 		  }
 		}
 		return mapperTemplates ;

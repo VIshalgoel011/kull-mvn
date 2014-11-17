@@ -14,6 +14,7 @@ import org.apache.ibatis.type.JdbcType;
 
 import com.kull.Linq;
 import com.kull.Clazz;
+import com.kull.Collectionz;
 
 
 
@@ -125,7 +126,7 @@ public class DynamicQueryBound {
 	}
 	
 	public <T> int excludeBinaryFields(){
-	   return	setExcludeFields(Clazz.newSet(JdbcType.BINARY,JdbcType.BIT,JdbcType.BLOB,JdbcType.CLOB ,JdbcType.LONGVARBINARY,JdbcType.VARBINARY,JdbcType.NCLOB));
+	   return	setExcludeFields(Collectionz.newSet(JdbcType.BINARY,JdbcType.BIT,JdbcType.BLOB,JdbcType.CLOB ,JdbcType.LONGVARBINARY,JdbcType.VARBINARY,JdbcType.NCLOB));
 	}
 
 	public <T> int setExcludeFields(Set<T> exclude) {
