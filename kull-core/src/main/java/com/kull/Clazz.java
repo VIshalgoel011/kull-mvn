@@ -88,37 +88,11 @@ public class Clazz {
             return t;
         }
         try {
-            if (String.class.equals(cls)) {
-                t = (T) value;
-            } else if (Character.class.equals(cls) && value.length() > 0) {
-                t = (T) Character.valueOf(value.charAt(0));
-            } else if (Integer.class.equals(cls)) {
-                t = (T) Integer.valueOf(value);
-            } else if (Double.class.equals(cls)) {
-                t = (T) Double.valueOf(value);
-            } else if (Float.class.equals(cls)) {
-                t = (T) Float.valueOf(value);
-            } else if (BigDecimal.class.equals(cls)) {
-                t = (T) BigDecimal.valueOf(Long.valueOf(value));
-            } else if (Long.class.equals(cls)) {
-                t = (T) Long.valueOf(value.toString());
-            } else if (Date.class.equals(cls)) {
-                t = (T) DateFormatter.parsez(value);
-            } else if (Timestamp.class.equals(cls)) {
-                t = (T) Timestamp.valueOf(value);
-            } else if (Boolean.class.equals(cls)) {
-                if (value.equalsIgnoreCase("Y")) {
-                    t = (T) Boolean.TRUE;
-                } else {
-                    t = (T) Boolean.valueOf(value);
-                }
-            } else if (t instanceof Byte[]) {
-                t = (T) value.getBytes();
-            }
-        } catch (Exception e) {
-            t = defaultValue;
+           t= valueOf(cls, value);
+        } finally{
+          return t;
         }
-        return t;
+        
     }
 
     @SuppressWarnings("all")
@@ -154,20 +128,7 @@ public class Clazz {
         return !isEmpty(o);
     }
 
-    @SuppressWarnings("all")
-    public static Map toMap(Object[] array, String... keys) {
-        if (array == null) {
-            return new HashMap();
-        }
-        Map m = new LinkedHashMap();
-        for (int i = 0; i < keys.length; i++) {
-            if (array.length == i) {
-                break;
-            }
-            m.put(keys[i], array[i]);
-        }
-        return m;
-    }
+   
 
     public static boolean isInterface(Class c, String szInterface) {
         Class[] face = c.getInterfaces();
@@ -191,23 +152,7 @@ public class Clazz {
         return false;
     }
 
-    public static <T> List<T> toList(Map<Object, T> map) {
-        List<T> listReturn = new ArrayList();
-        for (Iterator<Object> it = map.keySet().iterator(); it.hasNext();) {
-            Object key = it.next();
-            listReturn.add(map.get(key));
-        }
-        return listReturn;
 
-    }
-
-    public static <T> List<T> list(T... ts) {
-        List<T> list = new ArrayList<T>();
-        for (T t : ts) {
-            list.add(t);
-        }
-        return list;
-    }
 
     public static <T> boolean isEquals(T obj1, T obj2) {
         if (obj1 != null && obj2 != null) {
@@ -475,13 +420,7 @@ public class Clazz {
         }
     }
 
-    public static <T> Set<T> newSet(T... vals) {
-        Set<T> tset = new HashSet<T>();
-        for (T val : vals) {
-            tset.add(val);
-        }
-        return tset;
-    }
+   
 
     public static boolean instanceOf(Field field, Class cls) {
         return cls.getName().equals(field.getType().getName());
@@ -517,8 +456,8 @@ public class Clazz {
 
         return classTes;
     }
-    
-    public static  List<Class> implementClassIn(Package pac, Class ... impls) throws IOException, ClassNotFoundException {
+
+    public static List<Class> implementClassIn(Package pac, Class... impls) throws IOException, ClassNotFoundException {
 
         List<Class> classTes = new ArrayList<Class>();
 
@@ -542,9 +481,9 @@ public class Clazz {
         }
         return false;
     }
-    
-    public static Set<Class> implementsBy(Class cls){
-         Class ptcls = (Class) cls;
+
+    public static Set<Class> implementsBy(Class cls) {
+        Class ptcls = (Class) cls;
         Set<Class> ainterfaces = new HashSet<Class>();
         while (ptcls != null) {
             Class[] ifs = ptcls.getInterfaces();
@@ -564,7 +503,9 @@ public class Clazz {
         Class ptcls = (Class) source;
         Set<Class> ainterfaces = implementsBy(ptcls);
         for (Class aInterface : interfaces) {
-            if(!ainterfaces.contains(aInterface))return false;
+            if (!ainterfaces.contains(aInterface)) {
+                return false;
+            }
         }
         return true;
     }
@@ -596,57 +537,52 @@ public class Clazz {
                 classes.addAll(classesIn(packageName, filePath, recursive));
             } else if ("jar".equals(protocol)) {
 
-                JarFile jar;
-                try {
-                    // 获取jar
-                    jar = ((JarURLConnection) url.openConnection())
-                            .getJarFile();
-                    // 从此jar包 得到一个枚举类
-                    Enumeration<JarEntry> entries = jar.entries();
-                    // 同样的进行循环迭代
-                    while (entries.hasMoreElements()) {
-                        // 获取jar里的一个实体 可以是目录 和一些jar包里的其他文件 如META-INF等文件
-                        JarEntry entry = entries.nextElement();
-                        String name = entry.getName();
-                        // 如果是以/开头的
-                        if (name.charAt(0) == '/') {
-                            // 获取后面的字符串
-                            name = name.substring(1);
-                        }
-                        // 如果前半部分和定义的包名相同
-                        if (name.startsWith(packageDirName)) {
-                            int idx = name.lastIndexOf('/');
-                            // 如果以"/"结尾 是一个包
-                            if (idx != -1) {
-                                // 获取包名 把"/"替换成"."
-                                packageName = name.substring(0, idx)
-                                        .replace('/', '.');
-                            }
-                            // 如果可以迭代下去 并且是一个包
-                            if ((idx != -1) || recursive) {
-                                // 如果是一个.class文件 而且不是目录
-                                if (name.endsWith(".class")
-                                        && !entry.isDirectory()) {
-                                    // 去掉后面的".class" 获取真正的类名
-                                    String className = name.substring(
-                                            packageName.length() + 1, name
-                                            .length() - 6);
-                                    try {
-                                        // 添加到classes
-                                        classes.add(Class
-                                                .forName(packageName + '.'
-                                                        + className));
-                                    } catch (ClassNotFoundException e) {
-                                        throw new IOException(e);
-                                    }
-                                }
+                JarFile jar = ((JarURLConnection) url.openConnection())
+                        .getJarFile();
+                // 从此jar包 得到一个枚举类
+                Enumeration<JarEntry> entries = jar.entries();
+                // 同样的进行循环迭代
+                while (entries.hasMoreElements()) {
+                    // 获取jar里的一个实体 可以是目录 和一些jar包里的其他文件 如META-INF等文件
+                    JarEntry entry = entries.nextElement();
+                    String name = entry.getName();
+                    // 如果是以/开头的
+                    if (name.charAt(0) == '/') {
+                        // 获取后面的字符串
+                        name = name.substring(1);
+                    }
+                    // 如果前半部分和定义的包名相同
+                    if (!name.startsWith(packageDirName)) {
+                        continue;
+                    }
+                    int idx = name.lastIndexOf('/');
+                    // 如果以"/"结尾 是一个包
+                    if (idx != -1) {
+                        // 获取包名 把"/"替换成"."
+                        packageName = name.substring(0, idx)
+                                .replace('/', '.');
+                    }
+                    // 如果可以迭代下去 并且是一个包
+                    if ((idx != -1) || recursive) {
+                        // 如果是一个.class文件 而且不是目录
+                        if (name.endsWith(".class")
+                                && !entry.isDirectory()) {
+                            // 去掉后面的".class" 获取真正的类名
+                            String className = name.substring(
+                                    packageName.length() + 1, name
+                                    .length() - 6);
+                            try {
+                                // 添加到classes
+                                classes.add(Class
+                                        .forName(packageName + '.'
+                                                + className));
+                            } catch (ClassNotFoundException e) {
+                                throw new IOException(e);
                             }
                         }
                     }
-                } catch (IOException e) {
-                    // log.error("在扫描用户定义视图时从jar包获取文件出错");
-                    e.printStackTrace();
                 }
+
             }
         }
 
