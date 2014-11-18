@@ -3,12 +3,14 @@ package com.kull;
 import com.kull.able.Filterable;
 import com.kull.able.Foreachable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import org.apache.commons.lang.Validate;
 
 
 
@@ -164,5 +166,25 @@ public  class Linq {
             }
 
             return index;
+        }
+        
+        public static <E extends Comparable> E min(E... vals){
+            
+            if(vals.length<=0)return null;
+            E min=vals[0];
+            for(E val : vals){
+               min=val.compareTo(min)<0?val:min;
+            }
+            return min;
+        }
+        
+        public static <E extends Comparable> E max(E... vals){
+            
+            if(vals.length<=0)return null;
+            E max=vals[0];
+            for(E val : vals){
+               max=val.compareTo(max)>0?val:max;
+            }
+            return max;
         }
 }
