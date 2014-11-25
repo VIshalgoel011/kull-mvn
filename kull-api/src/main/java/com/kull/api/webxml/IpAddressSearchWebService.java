@@ -6,13 +6,8 @@ import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.Node;
 
-import com.kull.Machinez;
 
-import java.io.BufferedReader;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 
 
@@ -28,7 +23,7 @@ public class IpAddressSearchWebService extends BaseWebXmlService {
 	}
 	
 	public IpGeo thisIpGeo() throws Exception{
-		return getCountryCityByIp(Machinez.DNSOnWindows());
+		return null;//getCountryCityByIp(Machinez.DNSOnWindows());
 	}
 	
 	public IpGeo getCountryCityByIp(String theIpAddress) throws Exception{
