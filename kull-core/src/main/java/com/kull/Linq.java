@@ -187,4 +187,11 @@ public  class Linq {
             }
             return max;
         }
+        
+        public static Object firstNotNull(Object... vals){
+            for (Object val : vals) {
+                if(val!=null)return val;
+            }
+            return null;
+        }
 }
