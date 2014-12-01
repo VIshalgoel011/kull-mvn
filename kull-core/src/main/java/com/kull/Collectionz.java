@@ -6,6 +6,7 @@
 package com.kull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,23 +17,14 @@ import java.util.Set;
  */
 public class Collectionz {
     
-     public static <T> Set<T> newSet(T... vals) {
-        Set<T> tset = new HashSet<T>();
-        for (T val : vals) {
-            tset.add(val);
-        }
+     public static <T> Set<T> asSet(T... vals) {
+        Set<T> tset = new HashSet<T>(Arrays.asList(vals));
         return tset;
     }
     
       
      
-     public static <T> List<T> newList(T... ts) {
-        List<T> list = new ArrayList<T>();
-        for (T t : ts) {
-            list.add(t);
-        }
-        return list;
-    }
+    
 
     
      

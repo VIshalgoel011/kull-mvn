@@ -126,7 +126,7 @@ public class DynamicQueryBound {
 	}
 	
 	public <T> int excludeBinaryFields(){
-	   return	setExcludeFields(Collectionz.newSet(JdbcType.BINARY,JdbcType.BIT,JdbcType.BLOB,JdbcType.CLOB ,JdbcType.LONGVARBINARY,JdbcType.VARBINARY,JdbcType.NCLOB));
+	   return	setExcludeFields(Collectionz.asSet(JdbcType.BINARY,JdbcType.BIT,JdbcType.BLOB,JdbcType.CLOB ,JdbcType.LONGVARBINARY,JdbcType.VARBINARY,JdbcType.NCLOB));
 	}
 
 	public <T> int setExcludeFields(Set<T> exclude) {

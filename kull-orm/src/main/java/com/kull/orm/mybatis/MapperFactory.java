@@ -70,9 +70,9 @@ public class MapperFactory {
 		}
 		tablePrefix=tablePrefix==null?"":tablePrefix;
 		if(database==Database.oracle&& !"".equals(tableConfig.oracleSeqIdRegexp())){
-			mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Collectionz.newSet(tableConfig.excludeColumns()),tableConfig.oracleSeqIdRegexp()));
+			mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Collectionz.asSet(tableConfig.excludeColumns()),tableConfig.oracleSeqIdRegexp()));
 		  }else{
-				mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Collectionz.newSet(tableConfig.excludeColumns())));
+				mapperTemplates.add(createMapperTemplate(nameSpace,tablePrefix+tableConfig.name(), tableConfig.pk(),Collectionz.asSet(tableConfig.excludeColumns())));
 		  }
 		}
 		return mapperTemplates ;
