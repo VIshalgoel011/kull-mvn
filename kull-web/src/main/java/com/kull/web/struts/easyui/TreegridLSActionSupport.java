@@ -11,13 +11,13 @@ import java.util.Map;
 import com.kull.Stringz;
 import com.kull.orm.Session;
 import com.kull.script.Html;
-import com.kull.web.struts.DSActionSupport;
-import com.kull.web.struts.SqlDSActionSupport;
+import com.kull.web.struts.LSActionSupport;
+import com.kull.web.struts.SqlLSActionSupport;
 
 
 
 
-public abstract class TreegridDSActionSupport extends SqlDSActionSupport {
+public abstract class TreegridLSActionSupport extends SqlLSActionSupport {
 	public final String _parentIdField="_parentId";
 
 	protected String root;

@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * @author lin
  */
-public abstract class DSActionSupport extends AwareActionSupport {
+public abstract class LSActionSupport extends AwareActionSupport {
 
     
 

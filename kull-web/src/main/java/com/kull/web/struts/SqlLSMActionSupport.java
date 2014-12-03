@@ -20,7 +20,7 @@ import net.sf.json.JSONSerializer;
  *
  * @author lin
  */
-public abstract class SqlDSMActionSupport<M> extends SqlDSActionSupport {
+public abstract class SqlLSMActionSupport<M> extends SqlLSActionSupport {
     
   
         protected String rows,pk,pkname="id";

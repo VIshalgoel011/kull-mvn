@@ -9,6 +9,6 @@ package com.kull.web.struts;
  *
  * @author lin
  */
-public abstract class MongoDSActionSupport extends DSActionSupport{
+public abstract class MongoLSActionSupport extends LSActionSupport{
     
 }

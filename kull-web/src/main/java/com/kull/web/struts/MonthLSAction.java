@@ -11,7 +11,7 @@ package com.kull.web.struts;
  *
  * @author lin
  */
-public abstract class MonthDSAction extends DSActionSupport{
+public abstract class MonthLSAction extends LSActionSupport{
     
     protected int year,month;
 

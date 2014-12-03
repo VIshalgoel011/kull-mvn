@@ -15,15 +15,15 @@ import java.util.Vector;
 import com.kull.Clazz;
 import com.kull.orm.Session;
 import com.kull.web.Utils;
-import com.kull.web.struts.DSActionSupport;
-import com.kull.web.struts.SqlDSActionSupport;
+import com.kull.web.struts.LSActionSupport;
+import com.kull.web.struts.SqlLSActionSupport;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 
 
-public abstract class TreeDSActionSupport extends SqlDSActionSupport {
+public abstract class TreeLSActionSupport extends SqlLSActionSupport {
 
 	public final String idField="id",textField="text",_parentIdField="_parentId",iconClsField="iconCls",childrenField="children",attributesField="attributes",stateField="state",checkedField="checked";
 	

@@ -12,8 +12,8 @@ import com.kull.script.Html;
 
 import com.kull.script.JsMap;
 import com.kull.web.Utils;
-import com.kull.web.struts.DSActionSupport;
-import com.kull.web.struts.SqlDSActionSupport;
+import com.kull.web.struts.LSActionSupport;
+import com.kull.web.struts.SqlLSActionSupport;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -27,7 +27,7 @@ import java.util.Map;
  *
  * @author lin
  */
-public abstract class ComboDSActionSupport extends SqlDSActionSupport{
+public abstract class ComboLSActionSupport extends SqlLSActionSupport{
     
     public final String ordernoField="_orderno",textField="_text",valueField="_code";
 

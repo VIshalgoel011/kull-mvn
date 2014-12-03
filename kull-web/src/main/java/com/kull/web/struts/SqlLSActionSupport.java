@@ -27,7 +27,7 @@ import net.sf.json.JSONObject;
  *
  * @author lin
  */
-public abstract class SqlDSActionSupport extends DSActionSupport {
+public abstract class SqlLSActionSupport extends LSActionSupport {
     
     protected Connection connection;
     protected Session session;
