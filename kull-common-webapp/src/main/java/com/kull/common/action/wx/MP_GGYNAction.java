@@ -83,7 +83,7 @@ public class MP_GGYNAction extends MPActionSupport{
                articles.add(article);
             }
             newss.setArticles(articles);
-            
+            newss.setArticleCount(10);
             res=newss;
         }
         
