@@ -73,6 +73,6 @@ ApplicationAware,CookiesAware,ParameterAware,PrincipalAware {
 	}
 
 	protected String basePath(){
-           return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/"; 
+           return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath(); 
         }
 }

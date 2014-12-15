@@ -82,7 +82,7 @@ public class MP_GGYNAction extends MPActionSupport{
                Article article=new Article();
                article.setPicUrl(book.getImage());
                article.setUrl(downloadurl);
-               article.setTitle(book.toString()+"\n"+downloadurl);
+               article.setTitle(book.toString());
                article.setDescription(book.getSubTitle());
                articles.add(article);
             }
