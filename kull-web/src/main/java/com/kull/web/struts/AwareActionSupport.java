@@ -72,5 +72,7 @@ ApplicationAware,CookiesAware,ParameterAware,PrincipalAware {
 		this.principalProxy=principalProxy;
 	}
 
-	
+	protected String basePath(){
+           return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/"; 
+        }
 }

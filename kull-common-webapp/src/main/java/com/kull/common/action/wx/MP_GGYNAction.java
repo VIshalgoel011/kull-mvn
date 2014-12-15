@@ -15,10 +15,12 @@ import cn.songxinqiang.weixin4j.request.RequestVoiceMessage;
 import cn.songxinqiang.weixin4j.response.ResponseBaseMessage;
 import cn.songxinqiang.weixin4j.response.ResponseNewsMessage;
 import cn.songxinqiang.weixin4j.response.model.Article;
+import com.kull.Netz;
 import com.kull.api.ItEbooks;
 import com.kull.api.ItEbooks.Book;
 import com.kull.web.struts.weixin.CliMPActionSupport;
 import com.kull.web.struts.weixin.MPActionSupport;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,11 +78,11 @@ public class MP_GGYNAction extends MPActionSupport{
             List<Article> articles=new ArrayList<Article>();
             for(int i=0;i<sre.getBooks().size()&&i<10;i++){
                Book book=sre.getBooks().get(i);
-               
+               String downloadurl=this.basePath()+"/"+this.namespace+"/"+this.action+"/downloadEbook/"+book.getID();
                Article article=new Article();
                article.setPicUrl(book.getImage());
-               article.setUrl(book.getDownload());
-               article.setTitle(book.toString());
+               article.setUrl(downloadurl);
+               article.setTitle(book.toString()+"\n"+downloadurl);
                article.setDescription(book.getSubTitle());
                articles.add(article);
             }
@@ -92,6 +94,27 @@ public class MP_GGYNAction extends MPActionSupport{
         return res;
     }
 
-  
+   
+
+ 
+    protected String pk,namespace,action;
+
+    public void setPk(String pk) {
+        this.pk = pk;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+    
+    
+    public void downloadEbook() throws IOException{
+           Book book=ItEbooks.book(pk);
+           response.sendRedirect(book.getDownload());
+    }
     
 }
