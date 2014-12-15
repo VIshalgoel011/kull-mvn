@@ -76,10 +76,11 @@ public class MP_GGYNAction extends MPActionSupport{
             List<Article> articles=new ArrayList<Article>();
             for(int i=0;i<sre.getBooks().size()&&i<10;i++){
                Book book=sre.getBooks().get(i);
+               
                Article article=new Article();
                article.setPicUrl(book.getImage());
                article.setUrl(book.getDownload());
-               article.setTitle(book.getTitle());
+               article.setTitle(book.toString());
                article.setDescription(book.getSubTitle());
                articles.add(article);
             }

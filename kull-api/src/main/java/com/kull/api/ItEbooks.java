@@ -91,6 +91,13 @@ public class ItEbooks {
        protected String ID, Title, SubTitle ,Description, Image,Author,ISBN,Publisher,Download;
        protected int Page,Year;
 
+        @Override
+        public String toString() {
+            return MessageFormat.format("{0}[{1},{2},{3}]", this.Title,this.ISBN,this.Author,this.Year);
+        }
+
+       
+       
         public String getID() {
             return ID;
         }
