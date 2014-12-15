@@ -93,7 +93,7 @@ public class ItEbooks {
 
         @Override
         public String toString() {
-            return MessageFormat.format("{0}[{1},{2},{3}]", this.Title,this.ISBN,this.Author,this.Year);
+            return MessageFormat.format("{0} \n{1}", this.Title,this.SubTitle);
         }
 
        
