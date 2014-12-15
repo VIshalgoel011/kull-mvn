@@ -74,7 +74,8 @@ public class MP_GGYNAction extends MPActionSupport{
             ItEbooks.SearchResult sre=ItEbooks.search(query, page);
             ResponseNewsMessage newss=new ResponseNewsMessage();
             List<Article> articles=new ArrayList<Article>();
-            for(Book book:sre.getBooks()){
+            for(int i=0;i<sre.getBooks().size()&&i<10;i++){
+               Book book=sre.getBooks().get(i);
                Article article=new Article();
                article.setPicUrl(book.getImage());
                article.setUrl(book.getDownload());
@@ -83,7 +84,7 @@ public class MP_GGYNAction extends MPActionSupport{
                articles.add(article);
             }
             newss.setArticles(articles);
-            newss.setArticleCount(10);
+            newss.setArticleCount(articles.size());
             res=newss;
         }
         
